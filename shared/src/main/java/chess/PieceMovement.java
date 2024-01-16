@@ -7,11 +7,13 @@ import java.util.ArrayList;
  */
 public abstract class PieceMovement {
   protected ChessPiece.PieceType type;
+  protected ChessGame.TeamColor color;
   protected ChessBoard board;
   protected ChessPosition position;
   protected ArrayList<ChessMove> possibleMoves;
 
   protected abstract void generateMoves();
+  protected abstract boolean validateMove(ChessMove move);
   public abstract ArrayList<ChessMove> pieceMoves();
 }
 
@@ -24,8 +26,9 @@ class King extends PieceMovement {
    * @param board     Given board
    * @param position  Given position
    */
-  public King(ChessBoard board, ChessPosition position) {
+  public King(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
     type = ChessPiece.PieceType.KING;
+    this.color = color;
     this.board = board;
     this.position = position;
     generateMoves();
@@ -37,6 +40,14 @@ class King extends PieceMovement {
   @Override
   protected void generateMoves() {
 
+  }
+
+  /**
+   * @return  If the move is on the board and doesn't end on a friendly piece
+   */
+  @Override
+  protected boolean validateMove(ChessMove move) {
+    return (move.moveIsOnBoard() && board.getPiece(move.getEndPosition()).getTeamColor() != color);
   }
 
   /**
@@ -57,11 +68,20 @@ class Queen extends PieceMovement {
    * @param board     Given board
    * @param position  Given position
    */
-  public Queen(ChessBoard board, ChessPosition position) {
+  public Queen(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
     type = ChessPiece.PieceType.QUEEN;
+    this.color = color;
     this.board = board;
     this.position = position;
     generateMoves();
+  }
+
+  /**
+   * @return  If the move is on the board and doesn't end on a friendly piece
+   */
+  @Override
+  protected boolean validateMove(ChessMove move) {
+    return (move.moveIsOnBoard() && board.getPiece(move.getEndPosition()).getTeamColor() != color);
   }
 
   /**
@@ -90,11 +110,20 @@ class Rook extends PieceMovement {
    * @param board     Given board
    * @param position  Given position
    */
-  public Rook(ChessBoard board, ChessPosition position) {
+  public Rook(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
     type = ChessPiece.PieceType.ROOK;
+    this.color = color;
     this.board = board;
     this.position = position;
     generateMoves();
+  }
+
+  /**
+   * @return  If the move is on the board and doesn't end on a friendly piece
+   */
+  @Override
+  protected boolean validateMove(ChessMove move) {
+    return (move.moveIsOnBoard() && board.getPiece(move.getEndPosition()).getTeamColor() != color);
   }
 
   /**
@@ -123,11 +152,20 @@ class Bishop extends PieceMovement {
    * @param board     Given board
    * @param position  Given position
    */
-  public Bishop(ChessBoard board, ChessPosition position) {
+  public Bishop(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
     type = ChessPiece.PieceType.BISHOP;
+    this.color = color;
     this.board = board;
     this.position = position;
     generateMoves();
+  }
+
+  /**
+   * @return  If the move is on the board and doesn't end on a friendly piece
+   */
+  @Override
+  protected boolean validateMove(ChessMove move) {
+    return (move.moveIsOnBoard() && board.getPiece(move.getEndPosition()).getTeamColor() != color);
   }
 
   /**
@@ -156,11 +194,20 @@ class Knight extends PieceMovement {
    * @param board     Given board
    * @param position  Given position
    */
-  public Knight(ChessBoard board, ChessPosition position) {
+  public Knight(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
     type = ChessPiece.PieceType.KNIGHT;
+    this.color = color;
     this.board = board;
     this.position = position;
     generateMoves();
+  }
+
+  /**
+   * @return  If the move is on the board and doesn't end on a friendly piece
+   */
+  @Override
+  protected boolean validateMove(ChessMove move) {
+    return (move.moveIsOnBoard() && board.getPiece(move.getEndPosition()).getTeamColor() != color);
   }
 
   /**
@@ -189,11 +236,20 @@ class Pawn extends PieceMovement {
    * @param board     Given board
    * @param position  Given position
    */
-  public Pawn(ChessBoard board, ChessPosition position) {
+  public Pawn(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
     type = ChessPiece.PieceType.PAWN;
+    this.color = color;
     this.board = board;
     this.position = position;
     generateMoves();
+  }
+
+  /**
+   * @return  If the move is on the board and doesn't end on a friendly piece
+   */
+  @Override
+  protected boolean validateMove(ChessMove move) {
+    return (move.moveIsOnBoard() && board.getPiece(move.getEndPosition()).getTeamColor() != color);
   }
 
   /**

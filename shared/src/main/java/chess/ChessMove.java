@@ -64,4 +64,8 @@ public class ChessMove {
     public ChessPiece.PieceType getPromotionPiece() {
         throw new RuntimeException("Not implemented");
     }
+
+    public boolean moveIsOnBoard() {
+        return (endPosition.positionIsOnBoard() && startPosition.positionIsOnBoard());
+    }
 }

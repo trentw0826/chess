@@ -7,7 +7,7 @@ import java.util.Arrays;
  * A chessboard that can hold and rearrange chess pieces.
  */
 public class ChessBoard {
-    public static final int LENGTH = 8; //TODO: find where this should go (constants class?)
+    public static final int LENGTH = 8; //TODO: find where this should go (constants class?) + replace all instances of '8'
 
     private ChessPiece[][] board;
 

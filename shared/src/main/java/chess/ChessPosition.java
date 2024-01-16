@@ -46,4 +46,11 @@ public class ChessPosition {
     public int getColumn() {
         return col;
     }
+
+    /**
+     * @return if both the row and the col are within the 8x8 bounds of the board
+     */
+    public boolean positionIsOnBoard() {
+        return (0 <= row && row < 8 && 0 <= col && col < 8);
+    }
 }

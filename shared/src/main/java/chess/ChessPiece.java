@@ -1,6 +1,5 @@
 package chess;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -74,15 +73,17 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        ChessPiece.PieceType type = board.getPiece(myPosition).pieceType;
+        ChessPiece piece = board.getPiece(myPosition);
+        ChessPiece.PieceType type = piece.pieceType;
+        ChessGame.TeamColor teamColor = piece.pieceColor;
         PieceMovement pieceMoves;
         switch (type) {
-            case KING -> pieceMoves = new King(board, myPosition);
-            case QUEEN -> pieceMoves = new Queen(board, myPosition);
-            case ROOK -> pieceMoves = new Rook(board, myPosition);
-            case BISHOP -> pieceMoves = new Bishop(board, myPosition);
-            case KNIGHT -> pieceMoves = new Knight(board, myPosition);
-            case PAWN -> pieceMoves = new Pawn(board, myPosition);
+            case KING -> pieceMoves = new King(board, myPosition, teamColor);
+            case QUEEN -> pieceMoves = new Queen(board, myPosition, teamColor);
+            case ROOK -> pieceMoves = new Rook(board, myPosition, teamColor);
+            case BISHOP -> pieceMoves = new Bishop(board, myPosition, teamColor);
+            case KNIGHT -> pieceMoves = new Knight(board, myPosition, teamColor);
+            case PAWN -> pieceMoves = new Pawn(board, myPosition, teamColor);
             default -> throw new IllegalArgumentException("Invalid pieceType");
         }
         return pieceMoves.pieceMoves();
