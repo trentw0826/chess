@@ -13,8 +13,14 @@ public abstract class PieceMovement {
   protected ArrayList<ChessMove> possibleMoves;
 
   protected abstract void generateMoves();
-  protected abstract boolean validateMove(ChessMove move);
   public abstract ArrayList<ChessMove> pieceMoves();
+
+  /**
+   * @return  If the move is on the board and doesn't end on a friendly piece
+   */
+  protected boolean validateMove(ChessMove move) {
+    return (move.moveIsOnBoard() && board.getPiece(move.getEndPosition()).getTeamColor() != color);
+  }
 }
 
 /**
@@ -43,14 +49,6 @@ class King extends PieceMovement {
   }
 
   /**
-   * @return  If the move is on the board and doesn't end on a friendly piece
-   */
-  @Override
-  protected boolean validateMove(ChessMove move) {
-    return (move.moveIsOnBoard() && board.getPiece(move.getEndPosition()).getTeamColor() != color);
-  }
-
-  /**
    * @return the possibleMoves array
    */
   @Override
@@ -74,14 +72,6 @@ class Queen extends PieceMovement {
     this.board = board;
     this.position = position;
     generateMoves();
-  }
-
-  /**
-   * @return  If the move is on the board and doesn't end on a friendly piece
-   */
-  @Override
-  protected boolean validateMove(ChessMove move) {
-    return (move.moveIsOnBoard() && board.getPiece(move.getEndPosition()).getTeamColor() != color);
   }
 
   /**
@@ -119,14 +109,6 @@ class Rook extends PieceMovement {
   }
 
   /**
-   * @return  If the move is on the board and doesn't end on a friendly piece
-   */
-  @Override
-  protected boolean validateMove(ChessMove move) {
-    return (move.moveIsOnBoard() && board.getPiece(move.getEndPosition()).getTeamColor() != color);
-  }
-
-  /**
    * Populate the possibleMoves array with all possible moves for ROOK (based on 'board' and 'position' attributes)
    */
   @Override
@@ -158,14 +140,6 @@ class Bishop extends PieceMovement {
     this.board = board;
     this.position = position;
     generateMoves();
-  }
-
-  /**
-   * @return  If the move is on the board and doesn't end on a friendly piece
-   */
-  @Override
-  protected boolean validateMove(ChessMove move) {
-    return (move.moveIsOnBoard() && board.getPiece(move.getEndPosition()).getTeamColor() != color);
   }
 
   /**
@@ -203,14 +177,6 @@ class Knight extends PieceMovement {
   }
 
   /**
-   * @return  If the move is on the board and doesn't end on a friendly piece
-   */
-  @Override
-  protected boolean validateMove(ChessMove move) {
-    return (move.moveIsOnBoard() && board.getPiece(move.getEndPosition()).getTeamColor() != color);
-  }
-
-  /**
    * Populate the possibleMoves array with all possible moves for KNIGHT (based on 'board' and 'position' attributes)
    */
   @Override
@@ -242,14 +208,6 @@ class Pawn extends PieceMovement {
     this.board = board;
     this.position = position;
     generateMoves();
-  }
-
-  /**
-   * @return  If the move is on the board and doesn't end on a friendly piece
-   */
-  @Override
-  protected boolean validateMove(ChessMove move) {
-    return (move.moveIsOnBoard() && board.getPiece(move.getEndPosition()).getTeamColor() != color);
   }
 
   /**
