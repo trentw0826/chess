@@ -9,9 +9,8 @@ import java.util.Collection;
  * signature of the existing methods.
  */
 public class ChessPiece {
-
-    public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
-    }
+    private ChessGame.TeamColor pieceColor;
+    private ChessPiece.PieceType pieceType;
 
     /**
      * The various different chess piece options
@@ -26,17 +25,44 @@ public class ChessPiece {
     }
 
     /**
+     * ChessPiece class constructor
+     *
+     * @param pieceColor The color of the piece
+     * @param type The piece type
+     */
+    public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+        this.pieceColor = pieceColor;
+        this.pieceType = type;
+    }
+
+    /**
+     * Setter for private variable pieceColor
+     * @param pieceColor The new desired pieceColor
+     */
+    public void setPieceColor(ChessGame.TeamColor pieceColor) {
+        this.pieceColor = pieceColor;
+    }
+
+    /**
+     * Setter for private variable pieceType
+     * @param pieceType The new desired pieceType
+     */
+    public void setPieceType(PieceType pieceType) {
+        this.pieceType = pieceType;
+    }
+
+    /**
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-        throw new RuntimeException("Not implemented");
+        return pieceColor;
     }
 
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
-        throw new RuntimeException("Not implemented");
+        return pieceType;
     }
 
     /**
