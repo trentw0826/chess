@@ -7,23 +7,52 @@ package chess;
  * signature of the existing methods.
  */
 public class ChessMove {
+    private ChessPosition startPosition;
+    private ChessPosition endPosition;
+    private ChessPiece.PieceType promotionPiece;
 
-    public ChessMove(ChessPosition startPosition, ChessPosition endPosition,
-                     ChessPiece.PieceType promotionPiece) {
+    public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece) {
+        this.startPosition = startPosition;
+        this.endPosition = endPosition;
+        this.promotionPiece = promotionPiece;
     }
 
     /**
      * @return ChessPosition of starting location
      */
     public ChessPosition getStartPosition() {
-        throw new RuntimeException("Not implemented");
+        return startPosition;
     }
 
     /**
      * @return ChessPosition of ending location
      */
     public ChessPosition getEndPosition() {
-        throw new RuntimeException("Not implemented");
+        return endPosition;
+    }
+
+    /**
+     * Setter for private asset startPosition
+     * @param startPosition Desired startPosition
+     */
+    public void setStartPosition(ChessPosition startPosition) {
+        this.startPosition=startPosition;
+    }
+
+    /**
+     * Setter for private asset endPosition
+     * @param endPosition Desired endPosition
+     */
+    public void setEndPosition(ChessPosition endPosition) {
+        this.endPosition=endPosition;
+    }
+
+    /**
+     * Setter for private asset promotionPiece
+     * @param promotionPiece Desired promotionPiece
+     */
+    public void setPromotionPiece(ChessPiece.PieceType promotionPiece) {
+        this.promotionPiece=promotionPiece;
     }
 
     /**
