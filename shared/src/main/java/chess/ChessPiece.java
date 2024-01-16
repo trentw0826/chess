@@ -27,8 +27,8 @@ public class ChessPiece {
     /**
      * ChessPiece class constructor
      *
-     * @param pieceColor The color of the piece
-     * @param type The piece type
+     * @param pieceColor    The color of the piece
+     * @param type          The piece type
      */
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.pieceColor = pieceColor;
