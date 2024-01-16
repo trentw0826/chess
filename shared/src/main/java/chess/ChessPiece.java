@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -73,6 +74,17 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        throw new RuntimeException("Not implemented");
+        ChessPiece.PieceType type = board.getPiece(myPosition).pieceType;
+        PieceMovement pieceMoves;
+        switch (type) {
+            case KING -> pieceMoves = new King(board, myPosition);
+            case QUEEN -> pieceMoves = new Queen(board, myPosition);
+            case ROOK -> pieceMoves = new Rook(board, myPosition);
+            case BISHOP -> pieceMoves = new Bishop(board, myPosition);
+            case KNIGHT -> pieceMoves = new Knight(board, myPosition);
+            case PAWN -> pieceMoves = new Pawn(board, myPosition);
+            default -> throw new IllegalArgumentException("Invalid pieceType");
+        }
+        return pieceMoves.pieceMoves();
     }
 }
