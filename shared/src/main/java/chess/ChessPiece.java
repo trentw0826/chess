@@ -65,6 +65,33 @@ public class ChessPiece {
         return pieceType;
     }
 
+    @Override
+    public String toString() {
+        String str;
+        if (pieceColor == ChessGame.TeamColor.WHITE) {
+            switch (pieceType) {
+                case KING -> str="WK♔";
+                case QUEEN -> str="WQ♕";
+                case ROOK -> str="WR♖";
+                case BISHOP -> str="WB♗";
+                case KNIGHT -> str="WKn♘";
+                case PAWN -> str="WP♙";
+                default -> throw new IllegalArgumentException("invalid pieceType referenced");
+            }
+        } else {    // pieceColor == ChessGame.TeamColor.BLACK
+            switch (pieceType) {
+                case KING -> str="BK♚";
+                case QUEEN -> str="BQ♛";
+                case ROOK -> str="BR♜";
+                case BISHOP -> str="BB♝";
+                case KNIGHT -> str="BKn♞";
+                case PAWN -> str="BP♟";
+                default -> throw new IllegalArgumentException("invalid pieceType referenced");
+            }
+        }
+        return str;
+    }
+
     /**
      * Calculates all the positions a chess piece can move to
      * Does not take into account moves that are illegal due to leaving the king in
@@ -86,6 +113,6 @@ public class ChessPiece {
             case PAWN -> pieceMoves = new Pawn(board, myPosition, teamColor);
             default -> throw new IllegalArgumentException("Invalid pieceType");
         }
-        return pieceMoves.pieceMoves();
+        return pieceMoves.getPossibleMoves();
     }
 }
