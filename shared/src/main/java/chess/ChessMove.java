@@ -55,6 +55,11 @@ public class ChessMove {
         this.promotionPiece=promotionPiece;
     }
 
+    @Override
+    public String toString() {
+        return startPosition + "->" + endPosition;
+    }
+
     /**
      * Gets the type of piece to promote a pawn to if pawn promotion is part of this
      * chess move
@@ -65,6 +70,9 @@ public class ChessMove {
         throw new RuntimeException("Not implemented");
     }
 
+    /**
+     * @return  If both the start and end positions are found on the board
+     */
     public boolean moveIsOnBoard() {
         return (endPosition.positionIsOnBoard() && startPosition.positionIsOnBoard());
     }

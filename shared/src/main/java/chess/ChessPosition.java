@@ -47,10 +47,24 @@ public class ChessPosition {
         return col;
     }
 
+    @Override
+    public String toString() {
+        return "(" + row + ", " + col + ')';
+    }
+
     /**
      * @return if both the row and the col are within the 8x8 bounds of the board
      */
     public boolean positionIsOnBoard() {
-        return (0 <= row && row < 8 && 0 <= col && col < 8);
+        return (0 < row && row <= 8 && 0 < col && col <= 8);
+    }
+
+    /**
+     * @param xVal  the x value to update the row
+     * @param yVal  the y value to update the column
+     * @return      a ChessPosition updated relatively by 'xVal' and 'yVal'
+     */
+    public ChessPosition relativePosition(int xVal, int yVal) {
+        return new ChessPosition(row + xVal, col + yVal);
     }
 }

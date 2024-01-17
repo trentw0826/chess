@@ -1,6 +1,6 @@
 package chess;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Parent class used to generate all possible moves of a given piece
@@ -10,16 +10,23 @@ public abstract class PieceMovement {
   protected ChessGame.TeamColor color;
   protected ChessBoard board;
   protected ChessPosition position;
-  protected ArrayList<ChessMove> possibleMoves;
+  protected HashSet<ChessMove> possibleMoves = new HashSet<>();
 
   protected abstract void generateMoves();
-  public abstract ArrayList<ChessMove> pieceMoves();
+  public abstract HashSet<ChessMove> getPossibleMoves();
 
   /**
    * @return  If the move is on the board and doesn't end on a friendly piece
    */
   protected boolean validateMove(ChessMove move) {
-    return (move.moveIsOnBoard() && board.getPiece(move.getEndPosition()).getTeamColor() != color);
+    ChessPosition endPosition=move.getEndPosition();
+    ChessPiece endPiece=board.getPiece(endPosition);
+
+    // The end position on the board and is either empty or occupied by an enemy piece
+    if (move.moveIsOnBoard()) {
+      return endPiece == null || endPiece.getTeamColor() != color;
+    }
+    return false;
   }
 }
 
@@ -52,8 +59,8 @@ class King extends PieceMovement {
    * @return the possibleMoves array
    */
   @Override
-  public ArrayList<ChessMove> pieceMoves() {
-    return new ArrayList<>();
+  public HashSet<ChessMove> getPossibleMoves() {
+    return possibleMoves;
   }
 }
 
@@ -86,8 +93,8 @@ class Queen extends PieceMovement {
    * @return the possibleMoves array
    */
   @Override
-  public ArrayList<ChessMove> pieceMoves() {
-    return new ArrayList<>();
+  public HashSet<ChessMove> getPossibleMoves() {
+    return possibleMoves;
   }
 }
 
@@ -120,8 +127,8 @@ class Rook extends PieceMovement {
    * @return the possibleMoves array
    */
   @Override
-  public ArrayList<ChessMove> pieceMoves() {
-    return new ArrayList<>();
+  public HashSet<ChessMove> getPossibleMoves() {
+    return possibleMoves;
   }
 }
 
@@ -147,16 +154,37 @@ class Bishop extends PieceMovement {
    */
   @Override
   protected void generateMoves() {
-
+    // upper right direction
+    for (int i = 1; validateMove(new ChessMove(position, position.relativePosition(i, i), null)); i++) {
+      ChessPosition newEndPosition = position.relativePosition(i, i);
+      possibleMoves.add(new ChessMove(position, newEndPosition, null));
+      if (board.getPiece(newEndPosition) != null) { break; }
+    }
+    // lower right direction
+    for (int i = 1; validateMove(new ChessMove(position, position.relativePosition(-i, i), null)); i++) {
+      ChessPosition newEndPosition = position.relativePosition(-i, i);
+      possibleMoves.add(new ChessMove(position, newEndPosition, null));
+      if (board.getPiece(newEndPosition) != null) { break; }
+    }
+    // lower right direction
+    for (int i = 1; validateMove(new ChessMove(position, position.relativePosition(i, -i), null)); i++) {
+      ChessPosition newEndPosition = position.relativePosition(i, -i);
+      possibleMoves.add(new ChessMove(position, newEndPosition, null));
+      if (board.getPiece(newEndPosition) != null) { break; }
+    }
+    // lower left direction
+    for (int i = 1; validateMove(new ChessMove(position, position.relativePosition(-i, -i), null)); i++) {
+      ChessPosition newEndPosition = position.relativePosition(-i, -i);
+      possibleMoves.add(new ChessMove(position, newEndPosition, null));
+      if (board.getPiece(newEndPosition) != null) { break; }
+    }
   }
 
   /**
    * @return the possibleMoves array
    */
   @Override
-  public ArrayList<ChessMove> pieceMoves() {
-    return new ArrayList<>();
-  }
+  public HashSet<ChessMove> getPossibleMoves() { return possibleMoves; }
 }
 
 /**
@@ -188,8 +216,8 @@ class Knight extends PieceMovement {
    * @return the possibleMoves array
    */
   @Override
-  public ArrayList<ChessMove> pieceMoves() {
-    return new ArrayList<>();
+  public HashSet<ChessMove> getPossibleMoves() {
+    return possibleMoves;
   }
 }
 
@@ -222,7 +250,7 @@ class Pawn extends PieceMovement {
    * @return the possibleMoves array
    */
   @Override
-  public ArrayList<ChessMove> pieceMoves() {
-    return new ArrayList<>();
+  public HashSet<ChessMove> getPossibleMoves() {
+    return possibleMoves;
   }
 }
