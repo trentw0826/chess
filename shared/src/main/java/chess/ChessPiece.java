@@ -90,6 +90,7 @@ public class ChessPiece {
     public String toString() {
         String str;
         if (pieceColor == ChessGame.TeamColor.WHITE) {
+            // White team
             switch (pieceType) {
                 case KING -> str="WK♔";
                 case QUEEN -> str="WQ♕";
@@ -99,7 +100,8 @@ public class ChessPiece {
                 case PAWN -> str="WP♙";
                 default -> throw new IllegalArgumentException("invalid pieceType referenced");
             }
-        } else {    // pieceColor == ChessGame.TeamColor.BLACK
+        } else {
+            // Black team
             switch (pieceType) {
                 case KING -> str="BK♚";
                 case QUEEN -> str="BQ♛";

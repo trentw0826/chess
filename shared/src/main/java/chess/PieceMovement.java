@@ -321,8 +321,7 @@ class Pawn extends PieceMovement {
       }
 
       // Side captures
-      int[] sideOffsets = {(color == ChessGame.TeamColor.WHITE) ? 1 : -1, 1};
-      for (int offset : sideOffsets) {
+      for (int offset : new int[]{-1, 1}) {
         ChessMove sideMove = new ChessMove(position, position.relativePosition(direction, offset), null);
         if (validatePawnMove(sideMove)) {
           possibleMoves.add(sideMove);
