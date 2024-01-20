@@ -70,6 +70,10 @@ public class ChessBoard {
         return board[position.getRow() - 1][position.getColumn() - 1];
     }
 
+    public ChessPiece getPiece(ChessMove move) {
+        return (getPiece(move.getStartPosition()));
+    }
+
     /**
      * Sets the board to the default starting board
      * (How the game of chess normally starts)

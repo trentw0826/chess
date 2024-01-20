@@ -20,6 +20,19 @@ public class ChessMove {
     }
 
     /**
+     * Constructor creates ChessMove based on two relative numbers
+     * @param startPosition     start position
+     * @param x                 row offset
+     * @param y                 column offset
+     * @param promotionPiece    promotion piece
+     */
+    public ChessMove(ChessPosition startPosition, int x, int y, ChessPiece.PieceType promotionPiece) {
+        this.startPosition = startPosition;
+        this.endPosition = startPosition.relativePosition(x, y);
+        this.promotionPiece = promotionPiece;
+    }
+
+    /**
      * @param o other ChessMove object
      * @return if both objects' attributes are equal
      */
