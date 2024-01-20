@@ -19,6 +19,34 @@ public class ChessBoard {
     }
 
     /**
+     * @param o other ChessBoard object
+     * @return true if the boards are equal
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessBoard that=(ChessBoard) o;
+        return Arrays.deepEquals(board, that.board);
+    }
+
+    /**
+     * @return deepHashCode of board attribute
+     */
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(board);
+    }
+
+    /**
+     * @return deepToString of board attribute
+     */
+    @Override
+    public String toString() {
+        return Arrays.deepToString(board);
+    }
+
+    /**
      * Adds a chess piece to the chessboard
      *
      * @param position Where to add the piece to
