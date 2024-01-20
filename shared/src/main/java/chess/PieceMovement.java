@@ -22,12 +22,31 @@ public abstract class PieceMovement {
     ChessPosition endPosition = move.getEndPosition();
     ChessPiece endPiece = board.getPiece(endPosition);
 
-    // The end position on the board and is either empty or occupied by an enemy piece
+    // The end position on the board and is either empty or occupied by an enemy piece (not a pawn)
     if (move.moveIsOnBoard()) {
       return endPiece == null || endPiece.getTeamColor() != color;
     } else return false;
   }
+
+  protected boolean validatePawnMove(ChessMove move) {
+    ChessPosition startPosition = move.getStartPosition();
+    ChessPosition endPosition = move.getEndPosition();
+    ChessPiece endPiece = board.getPiece(endPosition);
+
+    // If the move is empty
+    if (endPiece == null) {
+      return (move.moveIsOnBoard() && startPosition.getColumn() == endPosition.getColumn());
+    }
+    // If capturing diagonally
+    else {
+      int rowDifference = Math.abs(endPosition.getRow() - startPosition.getRow());
+      int colDifference = Math.abs(endPosition.getColumn() - startPosition.getColumn());
+      return rowDifference == 1 && colDifference == 1 && endPiece.getTeamColor() != color;
+    }
+  }
 }
+
+
 
 /**
  * Generate and store moves for the KING found at given position on the given board
@@ -285,7 +304,31 @@ class Pawn extends PieceMovement {
    */
   @Override
   protected void generateMoves() {
+      int direction = (color == ChessGame.TeamColor.WHITE) ? 1 : -1;
 
+      // Single square move
+      ChessMove oneSquareMove = new ChessMove(position, position.relativePosition(direction, 0), null);
+      if (validatePawnMove(oneSquareMove)) {
+        possibleMoves.add(oneSquareMove);
+
+        // Double square move for starting position
+        int startingRow = (color == ChessGame.TeamColor.WHITE) ? 2 : 7;
+        int doubleMoveOffset = 2 * direction;
+        ChessMove doubleMove = new ChessMove(position, position.relativePosition(doubleMoveOffset, 0), null);
+        if (position.getRow() == startingRow && validatePawnMove(doubleMove)) {
+          possibleMoves.add(doubleMove);
+        }
+      }
+
+      // Side captures
+      int[] sideOffsets = {(color == ChessGame.TeamColor.WHITE) ? 1 : -1, 1};
+      for (int offset : sideOffsets) {
+        ChessMove sideMove = new ChessMove(position, position.relativePosition(direction, offset), null);
+        if (validatePawnMove(sideMove)) {
+          possibleMoves.add(sideMove);
+        }
+      }
+      // TODO: Add promotion logic
   }
 
   /**
