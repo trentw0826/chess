@@ -19,14 +19,13 @@ public abstract class PieceMovement {
    * @return  If the move is on the board and doesn't end on a friendly piece
    */
   protected boolean validateMove(ChessMove move) {
-    ChessPosition endPosition=move.getEndPosition();
-    ChessPiece endPiece=board.getPiece(endPosition);
+    ChessPosition endPosition = move.getEndPosition();
+    ChessPiece endPiece = board.getPiece(endPosition);
 
     // The end position on the board and is either empty or occupied by an enemy piece
     if (move.moveIsOnBoard()) {
       return endPiece == null || endPiece.getTeamColor() != color;
-    }
-    return false;
+    } else return false;
   }
 }
 
@@ -52,7 +51,19 @@ class King extends PieceMovement {
    */
   @Override
   protected void generateMoves() {
+    //TODO: Update function with avoidance of pieces with enemy vision
 
+    // Double nested loop checks every square next to the king
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        if (i == 1 && j == 1) continue;
+        ChessPosition endPosition = position.relativePosition(i-1,j-1);
+        ChessMove move = new ChessMove(position, endPosition, null);
+        if (validateMove(move)) {
+          possibleMoves.add(move);
+        }
+      }
+    }
   }
 
   /**
@@ -84,6 +95,7 @@ class Queen extends PieceMovement {
   /**
    * Populate the possibleMoves array with all possible moves for QUEEN (based on 'board' and 'position' attributes)
    */
+  // TODO: create method
   @Override
   protected void generateMoves() {
 
@@ -120,7 +132,30 @@ class Rook extends PieceMovement {
    */
   @Override
   protected void generateMoves() {
-
+    // going up
+    for (int i = 1; validateMove(new ChessMove(position, position.relativePosition(i, 0), null)); i++) {
+      ChessPosition newEndPosition = position.relativePosition(i, 0);
+      possibleMoves.add(new ChessMove(position, newEndPosition, null));
+      if (board.getPiece(newEndPosition) != null) { break; }
+    }
+    // going down
+    for (int i = 1; validateMove(new ChessMove(position, position.relativePosition(-i, 0), null)); i++) {
+      ChessPosition newEndPosition = position.relativePosition(-i, 0);
+      possibleMoves.add(new ChessMove(position, newEndPosition, null));
+      if (board.getPiece(newEndPosition) != null) { break; }
+    }
+    // going left
+    for (int i = 1; validateMove(new ChessMove(position, position.relativePosition(0, -i), null)); i++) {
+      ChessPosition newEndPosition = position.relativePosition(0, -i);
+      possibleMoves.add(new ChessMove(position, newEndPosition, null));
+      if (board.getPiece(newEndPosition) != null) { break; }
+    }
+    // going right
+    for (int i = 1; validateMove(new ChessMove(position, position.relativePosition(0, i), null)); i++) {
+      ChessPosition newEndPosition = position.relativePosition(0, i);
+      possibleMoves.add(new ChessMove(position, newEndPosition, null));
+      if (board.getPiece(newEndPosition) != null) { break; }
+    }
   }
 
   /**
@@ -191,6 +226,11 @@ class Bishop extends PieceMovement {
  * Generate and store moves for the KNIGHT found at given position on the given board
  */
 class Knight extends PieceMovement {
+  final int[][] knightMoveOffsets = {
+          {-2, -1}, {-1, -2}, {1, -2}, {2, -1},
+          {2, 1}, {1, 2}, {-1, 2}, {-2, 1}
+  };
+
   /**
    * Constructor generates KNIGHT piece and its possible moves based on 'board' and 'position'
    * @param board     Given board
@@ -209,16 +249,18 @@ class Knight extends PieceMovement {
    */
   @Override
   protected void generateMoves() {
-
+    for (int[] arr : knightMoveOffsets) {
+      ChessPosition endPosition = position.relativePosition(arr[0], arr[1]);
+      ChessMove move = new ChessMove(position, endPosition, null);
+      if (validateMove(move)) possibleMoves.add(move);
+    }
   }
 
   /**
    * @return the possibleMoves array
    */
   @Override
-  public HashSet<ChessMove> getPossibleMoves() {
-    return possibleMoves;
-  }
+  public HashSet<ChessMove> getPossibleMoves() { return possibleMoves; }
 }
 
 /**
