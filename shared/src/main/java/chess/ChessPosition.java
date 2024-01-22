@@ -82,7 +82,7 @@ public class ChessPosition {
      * @param yVal  the y value to update the column
      * @return      a ChessPosition updated relatively by 'xVal' and 'yVal'
      */
-    public ChessPosition relativePosition(int xVal, int yVal) {
+    public ChessPosition getRelativePosition(int xVal, int yVal) {
         return new ChessPosition(row + xVal, col + yVal);
     }
 }

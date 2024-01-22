@@ -28,7 +28,7 @@ public class ChessMove {
      */
     public ChessMove(ChessPosition startPosition, int x, int y, ChessPiece.PieceType promotionPiece) {
         this.startPosition = startPosition;
-        this.endPosition = startPosition.relativePosition(x, y);
+        this.endPosition = startPosition.getRelativePosition(x, y);
         this.promotionPiece = promotionPiece;
     }
 

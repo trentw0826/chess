@@ -92,13 +92,11 @@ class King extends PieceMovement {
    */
   @Override
   protected void generateMoves() {
-    //TODO: Update function with avoidance of pieces with enemy vision
-
     // Double nested loop checks every square next to the king
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
         if (i == 1 && j == 1) continue;
-        ChessPosition endPosition = position.relativePosition(i-1,j-1);
+        ChessPosition endPosition = position.getRelativePosition(i-1,j-1);
         ChessMove move = new ChessMove(position, endPosition, null);
         addMoveIfValid(move);
       }
@@ -169,29 +167,24 @@ class Rook extends PieceMovement {
    */
   @Override
   protected void generateMoves() {
-    // going up
-    for (int i = 1; validateMove(new ChessMove(position, i, 0, null)); i++) {
-      ChessPosition newEndPosition = position.relativePosition(i, 0);
-      possibleMoves.add(new ChessMove(position, newEndPosition, null));
-      if (board.getPiece(newEndPosition) != null) { break; }
-    }
-    // going down
-    for (int i = 1; validateMove(new ChessMove(position, -i, 0, null)); i++) {
-      ChessPosition newEndPosition = position.relativePosition(-i, 0);
-      possibleMoves.add(new ChessMove(position, newEndPosition, null));
-      if (board.getPiece(newEndPosition) != null) { break; }
-    }
-    // going left
-    for (int i = 1; validateMove(new ChessMove(position, 0, -i, null)); i++) {
-      ChessPosition newEndPosition = position.relativePosition(0, -i);
-      possibleMoves.add(new ChessMove(position, newEndPosition, null));
-      if (board.getPiece(newEndPosition) != null) { break; }
-    }
-    // going right
-    for (int i = 1; validateMove(new ChessMove(position, 0, i, null)); i++) {
-      ChessPosition newEndPosition = position.relativePosition(0, i);
-      possibleMoves.add(new ChessMove(position, newEndPosition, null));
-      if (board.getPiece(newEndPosition) != null) { break; }
+    int[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+    for (int[] direction : directions) {
+      int rowOffset = direction[0];
+      int colOffset = direction[1];
+
+      boolean continueDirection = true;
+      int i = 1;
+
+      while (continueDirection) {
+        ChessPosition newEndPosition = position.getRelativePosition(i * rowOffset, i * colOffset);
+        if (!addMoveIfValid(new ChessMove(position, newEndPosition, null)) ||
+                (board.getPiece(newEndPosition) != null && board.getPiece(newEndPosition).getTeamColor() != color)) {
+          continueDirection = false;
+        }
+
+        i++;
+      }
     }
   }
 
@@ -226,29 +219,24 @@ class Bishop extends PieceMovement {
    */
   @Override
   protected void generateMoves() {
-    // upper right direction
-    for (int i = 1; validateMove(new ChessMove(position, i, i, null)); i++) {
-      ChessPosition newEndPosition = position.relativePosition(i, i);
-      possibleMoves.add(new ChessMove(position, newEndPosition, null));
-      if (board.getPiece(newEndPosition) != null) { break; }
-    }
-    // lower right direction
-    for (int i = 1; validateMove(new ChessMove(position, -i, i, null)); i++) {
-      ChessPosition newEndPosition = position.relativePosition(-i, i);
-      possibleMoves.add(new ChessMove(position, newEndPosition, null));
-      if (board.getPiece(newEndPosition) != null) { break; }
-    }
-    // lower right direction
-    for (int i = 1; validateMove(new ChessMove(position, i, -i, null)); i++) {
-      ChessPosition newEndPosition = position.relativePosition(i, -i);
-      possibleMoves.add(new ChessMove(position, newEndPosition, null));
-      if (board.getPiece(newEndPosition) != null) { break; }
-    }
-    // lower left direction
-    for (int i = 1; validateMove(new ChessMove(position, -i, -i, null)); i++) {
-      ChessPosition newEndPosition = position.relativePosition(-i, -i);
-      possibleMoves.add(new ChessMove(position, newEndPosition, null));
-      if (board.getPiece(newEndPosition) != null) { break; }
+    int[][] directions = {{1, 1}, {1, -1}, {-1, -1}, {-1, 1}};
+
+    for (int[] direction : directions) {
+      int rowOffset = direction[0];
+      int colOffset = direction[1];
+
+      boolean continueDirection = true;
+      int i = 1;
+
+      while (continueDirection) {
+        ChessPosition newEndPosition = position.getRelativePosition(i * rowOffset, i * colOffset);
+        if (!addMoveIfValid(new ChessMove(position, newEndPosition, null)) ||
+                (board.getPiece(newEndPosition) != null && board.getPiece(newEndPosition).getTeamColor() != color)) {
+          continueDirection = false;
+        }
+
+        i++;
+      }
     }
   }
 
@@ -282,7 +270,7 @@ class Knight extends PieceMovement {
   @Override
   protected void generateMoves() {
     for (int[] arr : knightMoveOffsets) {
-      ChessPosition endPosition = position.relativePosition(arr[0], arr[1]);
+      ChessPosition endPosition = position.getRelativePosition(arr[0], arr[1]);
       ChessMove move = new ChessMove(position, endPosition, null);
       addMoveIfValid(move);
     }
