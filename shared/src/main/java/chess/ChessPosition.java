@@ -41,16 +41,14 @@ public class ChessPosition {
      * Setter for row value
      * @param row New desired row value
      */
-    public void setRow(int row) {
-        this.row=row;
-    }
+    public void setRow(int row) { this.row = row; }
 
     /**
      * Setter for col value
      * @param col New desired col value
      */
     public void setCol(int col) {
-        this.col=col;
+        this.col = col;
     }
 
     /**
@@ -65,9 +63,7 @@ public class ChessPosition {
      * @return which column this position is in
      * 1 codes for the left row
      */
-    public int getColumn() {
-        return col;
-    }
+    public int getColumn() { return col; }
 
     @Override
     public String toString() {

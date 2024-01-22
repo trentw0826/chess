@@ -10,6 +10,11 @@ import java.util.Objects;
  * signature of the existing methods.
  */
 public class ChessPiece {
+    private final String[] chessStrings = {
+            "WK♔", "WQ♕", "WR♖", "WB♗", "WN♘", "WP♙",
+            "BK♚", "BQ♛", "BR♜", "BB♝", "BN♞", "BP♟",
+            "   "
+    };
     private ChessGame.TeamColor pieceColor;
     private ChessPiece.PieceType pieceType;
 
@@ -92,23 +97,23 @@ public class ChessPiece {
         if (pieceColor == ChessGame.TeamColor.WHITE) {
             // White team
             switch (pieceType) {
-                case KING -> str="WK♔";
-                case QUEEN -> str="WQ♕";
-                case ROOK -> str="WR♖";
-                case BISHOP -> str="WB♗";
-                case KNIGHT -> str="WKn♘";
-                case PAWN -> str="WP♙";
+                case KING -> str=chessStrings[0];
+                case QUEEN -> str=chessStrings[1];
+                case ROOK -> str=chessStrings[2];
+                case BISHOP -> str=chessStrings[3];
+                case KNIGHT -> str=chessStrings[4];
+                case PAWN -> str=chessStrings[5];
                 default -> throw new IllegalArgumentException("invalid pieceType referenced");
             }
         } else {
             // Black team
             switch (pieceType) {
-                case KING -> str="BK♚";
-                case QUEEN -> str="BQ♛";
-                case ROOK -> str="BR♜";
-                case BISHOP -> str="BB♝";
-                case KNIGHT -> str="BKn♞";
-                case PAWN -> str="BP♟";
+                case KING -> str=chessStrings[6];
+                case QUEEN -> str=chessStrings[7];
+                case ROOK -> str=chessStrings[8];
+                case BISHOP -> str=chessStrings[9];
+                case KNIGHT -> str=chessStrings[10];
+                case PAWN -> str=chessStrings[11];
                 default -> throw new IllegalArgumentException("invalid pieceType referenced");
             }
         }
