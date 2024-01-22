@@ -32,20 +32,43 @@ public abstract class PieceMovement {
     } else return false;
   }
 
+  /**
+   * Validates a pawn move
+   * The move is valid if: It's a single push towards a blank square, it's a diagonal push towards an
+   * enemy-occupied square, or it's a double move that moves through two blank squares
+   * @param move
+   * @return if pawn move is valid
+   */
   protected boolean validatePawnMove(ChessMove move) {
+    if (board.getPiece(move).getPieceType() != ChessPiece.PieceType.PAWN) {
+      throw new IllegalArgumentException("validatePawnMove only accepts pawn moves");
+    }
+
     ChessPosition startPosition = move.getStartPosition();
     ChessPosition endPosition = move.getEndPosition();
+
     ChessPiece endPiece = board.getPiece(endPosition);
 
-    // If the move is empty
-    if (endPiece == null) {
-      return (move.moveIsOnBoard() && startPosition.getColumn() == endPosition.getColumn());
+
+    int rowDifference = Math.abs(endPosition.getRow() - startPosition.getRow());
+    int colDifference = Math.abs(endPosition.getColumn() - startPosition.getColumn());
+
+    int startRow = (color == ChessGame.TeamColor.WHITE) ? 2 : 7;
+
+    // Move must exist within the bounds of a double move/diagonal move to be valid
+    if (rowDifference < 1 || rowDifference >= 3 || colDifference >= 2) return false;
+
+    if (rowDifference == 2) {
+      // Double move
+      ChessPosition oneSquareAhead = new ChessPosition(startPosition.getRow() + 1, startPosition.getColumn());
+      return startPosition.getRow() == startRow &&
+              (board.getPiece(oneSquareAhead) == null && board.getPiece(endPosition) == null);
     }
-    // If capturing diagonally
+    else if (colDifference == 1) {
+      return (endPiece != null && endPiece.getTeamColor() != color);
+    }
     else {
-      int rowDifference = Math.abs(endPosition.getRow() - startPosition.getRow());
-      int colDifference = Math.abs(endPosition.getColumn() - startPosition.getColumn());
-      return rowDifference == 1 && colDifference == 1 && endPiece.getTeamColor() != color;
+      return (endPiece == null);
     }
   }
 
@@ -92,15 +115,19 @@ class King extends PieceMovement {
    */
   @Override
   protected void generateMoves() {
-    // Double nested loop checks every square next to the king
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-        if (i == 1 && j == 1) continue;
-        ChessPosition endPosition = position.getRelativePosition(i-1,j-1);
-        ChessMove move = new ChessMove(position, endPosition, null);
-        addMoveIfValid(move);
-      }
+    int[][] directions = {
+            {1, 0}, {0, 1}, {-1, 0}, {0, -1},  // Rook-like horizontal and vertical moves
+            {1, 1}, {1, -1}, {-1, -1}, {-1, 1}  // Bishop-like diagonal moves
+    };
+
+    for (int[] direction : directions) {
+      int rowOffset = direction[0];
+      int colOffset = direction[1];
+
+      ChessPosition newEndPosition = position.getRelativePosition(rowOffset, colOffset);
+      addMoveIfValid(new ChessMove(position, newEndPosition, null));
     }
+
   }
 
   /**
@@ -130,10 +157,30 @@ class Queen extends PieceMovement {
   /**
    * Populate the possibleMoves array with all possible moves for QUEEN (based on 'board' and 'position' attributes)
    */
-  // TODO: create method
   @Override
   protected void generateMoves() {
+    int[][] directions = {
+            {1, 0}, {0, 1}, {-1, 0}, {0, -1},  // horizontal + vertical
+            {1, 1}, {1, -1}, {-1, -1}, {-1, 1}  // diagonal
+    };
 
+    for (int[] direction : directions) {
+      int rowOffset = direction[0];
+      int colOffset = direction[1];
+
+      boolean continueDirection = true;
+      int i = 1;
+
+      while (continueDirection) {
+        ChessPosition newEndPosition = position.getRelativePosition(i * rowOffset, i * colOffset);
+        if (!addMoveIfValid(new ChessMove(position, newEndPosition, null)) ||
+                (board.getPiece(newEndPosition) != null && board.getPiece(newEndPosition).getTeamColor() != color)) {
+          continueDirection = false;
+        }
+
+        i++;
+      }
+    }
   }
 
   /**
@@ -311,43 +358,45 @@ class Pawn extends PieceMovement {
     int endRow = (color == ChessGame.TeamColor.WHITE) ? 7 : 2;
 
     ChessMove oneSquareMove = new ChessMove(position, direction, 0, null);
+    ChessMove doubleMove = new ChessMove(position, 2 * direction, 0, null);
 
     if (currRow == startingRow) {
       // Pawn hasn't moved yet
-      if (addMoveIfValid(oneSquareMove)) {
-        ChessMove doubleMove = new ChessMove(position, 2 * direction, 0, null);
-        addMoveIfValid(doubleMove);
+      if (addMoveIfValid(oneSquareMove)) { addMoveIfValid(doubleMove); }
 
-        for (int offset : new int[]{-1, 1}) {
-          ChessMove sideMove = new ChessMove(position, direction, offset, null);
-          addMoveIfValid(sideMove);
-        }
+      for (int offset : new int[]{-1, 1}) {
+        ChessMove sideMove=new ChessMove(position, direction, offset, null);
+        addMoveIfValid(sideMove);
       }
     } else if (currRow == endRow) {
       // Pawn is about to promote
-      if (validatePawnMove(oneSquareMove)) {
-        for (ChessPiece.PieceType promotionPiece : promotionTypes) {
-          possibleMoves.add(new ChessMove(position, direction, 0, promotionPiece));
-        }
-      }
+      promotePawnMoves(oneSquareMove);
       for (int offset : new int[]{-1, 1}) {
-        ChessMove sideMove = new ChessMove(position, direction, offset, null);
-        if (validatePawnMove(sideMove)) {
-          for (ChessPiece.PieceType promotionPiece : promotionTypes) {
-            possibleMoves.add(new ChessMove(position, direction, offset, promotionPiece));
-          }
-        }
+        ChessMove sideMove=new ChessMove(position, direction, offset, null);
+        promotePawnMoves(sideMove);
       }
-
     } else {
       // Pawn is in between start and promotion
       addMoveIfValid(oneSquareMove);
       for (int offset : new int[]{-1, 1}) {
-        ChessMove sideMove = new ChessMove(position, direction, offset, null);
+        ChessMove sideMove=new ChessMove(position, direction, offset, null);
         addMoveIfValid(sideMove);
       }
     }
   }
+
+  /**
+   * Update possibleMoves with promotion moves when necessary
+   * @param move a pawn promotion move
+   */
+  private void promotePawnMoves(ChessMove move) {
+    if (validatePawnMove(move)) {
+      for (ChessPiece.PieceType promotionPiece : promotionTypes) {
+        possibleMoves.add(new ChessMove(move.getStartPosition(), move.getEndPosition(), promotionPiece));
+      }
+    }
+  }
+
 
   /**
    * @return the possibleMoves array
