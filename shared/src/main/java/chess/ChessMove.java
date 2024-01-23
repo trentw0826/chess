@@ -34,7 +34,7 @@ public class ChessMove {
 
     /**
      * @param o other ChessMove object
-     * @return if both objects' attributes are equal
+     * @return  if both objects' attributes are equal
      */
     @Override
     public boolean equals(Object o) {
@@ -45,7 +45,7 @@ public class ChessMove {
     }
 
     /**
-     * @return hashCode based on attributes of the ChessMove class
+     * @return  hashCode based on attributes of the ChessMove class
      */
     @Override
     public int hashCode() {
@@ -53,56 +53,22 @@ public class ChessMove {
     }
 
     /**
-     * @return ChessPosition of starting location
+     * @return  ChessPosition of starting location
      */
     public ChessPosition getStartPosition() {
         return startPosition;
     }
 
     /**
-     * @return ChessPosition of ending location
+     * @return  ChessPosition of ending location
      */
     public ChessPosition getEndPosition() {
         return endPosition;
     }
 
-    /**
-     * Setter for private asset startPosition
-     * @param startPosition Desired startPosition
-     */
-    public void setStartPosition(ChessPosition startPosition) {
-        this.startPosition=startPosition;
-    }
-
-    /**
-     * Setter for private asset endPosition
-     * @param endPosition Desired endPosition
-     */
-    public void setEndPosition(ChessPosition endPosition) {
-        this.endPosition=endPosition;
-    }
-
-    /**
-     * Setter for private asset promotionPiece
-     * @param promotionPiece Desired promotionPiece
-     */
-    public void setPromotionPiece(ChessPiece.PieceType promotionPiece) {
-        this.promotionPiece=promotionPiece;
-    }
-
     @Override
     public String toString() {
         return startPosition + "->" + endPosition;
-    }
-
-    /**
-     * Gets the type of piece to promote a pawn to if pawn promotion is part of this
-     * chess move
-     *
-     * @return Type of piece to promote a pawn to, or null if no promotion
-     */
-    public ChessPiece.PieceType getPromotionPiece() {
-        throw new RuntimeException("Not implemented");
     }
 
     /**

@@ -9,8 +9,8 @@ import java.util.Objects;
  * signature of the existing methods.
  */
 public class ChessPosition {
-    private int row;
-    private int col;
+    private final int row;
+    private final int col;
 
     public ChessPosition(int row, int col) {
         this.row = row;
@@ -38,20 +38,6 @@ public class ChessPosition {
     }
 
     /**
-     * Setter for row value
-     * @param row New desired row value
-     */
-    public void setRow(int row) { this.row = row; }
-
-    /**
-     * Setter for col value
-     * @param col New desired col value
-     */
-    public void setCol(int col) {
-        this.col = col;
-    }
-
-    /**
      * @return which row this position is in
      * 1 codes for the bottom row
      */
@@ -65,6 +51,9 @@ public class ChessPosition {
      */
     public int getColumn() { return col; }
 
+    /**
+     * @return string representation of ChessPosition object
+     */
     @Override
     public String toString() {
         return "(" + row + ", " + col + ')';

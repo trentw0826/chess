@@ -3,33 +3,20 @@ package chess;
 
 import java.util.Arrays;
 
+import static chess.ChessGame.TeamColor.*;
+import static chess.ChessPiece.PieceType.*;
+
 /**
  * A chessboard that can hold and rearrange chess pieces.
  */
 public class ChessBoard {
     public static final int LENGTH = 8; //TODO: find where this should go (constants class?) + replace all instances of '8'
-//    private ChessPiece[][] startingBoard;
 
     private ChessPiece[][] board;
+
     public ChessBoard() {
         board = new ChessPiece[LENGTH][LENGTH];
     }
-
-//    /**
-//     * Populate the starting board with ChessPiece objects
-//     */
-//    private void populateStartingBoard() {
-//        final String[][] startingBoardString = {
-//                {"WR♖", "WN♘", "WB♗", "WK♔", "WQ♕", "WB♗", "WN♘", "WR♖"},
-//                {"WP♙", "WP♙", "WP♙", "WP♙", "WP♙", "WP♙", "WP♙", "WP♙"},
-//                {"   ", "   ", "   ", "   ", "   ", "   ", "   ", "   "},
-//                {"   ", "   ", "   ", "   ", "   ", "   ", "   ", "   "},
-//                {"   ", "   ", "   ", "   ", "   ", "   ", "   ", "   "},
-//                {"   ", "   ", "   ", "   ", "   ", "   ", "   ", "   "},
-//                {"BP♟", "BP♟", "BP♟", "BP♟", "BP♟", "BP♟", "BP♟", "BP♟"},
-//                {"BR♜", "BN♞", "BB♝", "BK♚", "BQ♛", "BB♝", "BN♞", "BR♜"},
-//        };
-//    }
 
     /**
      * @param o other ChessBoard object
@@ -57,6 +44,25 @@ public class ChessBoard {
     @Override
     public String toString() {
         return Arrays.deepToString(board);
+    }
+
+    /**
+     * Checks if a position is empty
+     *
+     * @param position a position to check for emptiness
+     * @return if the piece at 'position' is null
+     */
+    public boolean positionIsEmpty(ChessPosition position) {
+        return (position.positionIsOnBoard() && board[position.getRow() - 1][position.getColumn() - 1] == null);
+    }
+
+    /**
+     * Checks if the ending position of a move is empty
+     * @param move a move to check for emptiness
+     * @return if the ending square is blank
+     */
+    public boolean endPositionEmpty(ChessMove move) {
+        return positionIsEmpty(move.getEndPosition());
     }
 
     /**
@@ -97,14 +103,14 @@ public class ChessBoard {
      */
     public void resetBoard() {
         board = new ChessPiece[][]{
-                {new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.ROOK), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KNIGHT), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.QUEEN), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KING), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KNIGHT), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.ROOK)},
-                {new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN), new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN)},
+                {new ChessPiece(WHITE, ROOK), new ChessPiece(WHITE, KNIGHT), new ChessPiece(WHITE, BISHOP), new ChessPiece(WHITE, QUEEN), new ChessPiece(WHITE, KING), new ChessPiece(WHITE, BISHOP), new ChessPiece(WHITE, KNIGHT), new ChessPiece(WHITE, ROOK)},
+                {new ChessPiece(WHITE, PAWN), new ChessPiece(WHITE, PAWN), new ChessPiece(WHITE, PAWN), new ChessPiece(WHITE, PAWN), new ChessPiece(WHITE, PAWN), new ChessPiece(WHITE, PAWN), new ChessPiece(WHITE, PAWN), new ChessPiece(WHITE, PAWN)},
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null},
-                {new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN)},
-                {new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.ROOK), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KNIGHT), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.BISHOP), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.QUEEN), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KING), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.BISHOP), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KNIGHT), new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.ROOK)},
+                {new ChessPiece(BLACK, PAWN), new ChessPiece(BLACK, PAWN), new ChessPiece(BLACK, PAWN), new ChessPiece(BLACK, PAWN), new ChessPiece(BLACK, PAWN), new ChessPiece(BLACK, PAWN), new ChessPiece(BLACK, PAWN), new ChessPiece(BLACK,PAWN)},
+                {new ChessPiece(BLACK, ROOK), new ChessPiece(BLACK, KNIGHT), new ChessPiece(BLACK, BISHOP), new ChessPiece(BLACK, QUEEN), new ChessPiece(BLACK, KING), new ChessPiece(BLACK,BISHOP), new ChessPiece(BLACK, KNIGHT), new ChessPiece(BLACK, ROOK)},
         };
     }
 }
