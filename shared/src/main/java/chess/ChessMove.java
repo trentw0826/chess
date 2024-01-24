@@ -28,14 +28,14 @@ public class ChessMove {
     }
 
 
-    /**
-     * Constructs a ChessMove object without promotion piece specified (null).
-     * @param startPosition     desired start position
-     * @param endPosition       desired end position
-     */
-    public ChessMove(ChessPosition startPosition, ChessPosition endPosition) {
-        this(startPosition, endPosition,null);
-    }
+//    /**
+//     * Constructs a ChessMove object without promotion piece specified (null).
+//     * @param startPosition     desired start position
+//     * @param endPosition       desired end position
+//     */
+//    public ChessMove(ChessPosition startPosition, ChessPosition endPosition) {
+//        this(startPosition, endPosition,null);
+//    }
 
 
     /**
@@ -110,7 +110,7 @@ public class ChessMove {
     /**
      * @return  If both the start and end positions are found on the board
      */
-    public boolean moveIsOnBoard() {
+    public boolean moveIsWithinBounds() {
         return (endPosition.positionIsOnBoard() && startPosition.positionIsOnBoard());
     }
 }

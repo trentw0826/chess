@@ -36,7 +36,15 @@ public class ChessPiece {
         blackPieceStrings.put(KNIGHT, "BN♞");
         blackPieceStrings.put(PAWN, "BP♟");
         blackPieceStrings.put(NONE, "   ");
+    }
 
+
+    /**
+     * @return string representation of piece
+     */
+    @Override
+    public String toString() {
+        return (pieceColor == WHITE) ? whitePieceStrings.get(pieceType) : blackPieceStrings.get(pieceType);
     }
 
 
@@ -101,15 +109,6 @@ public class ChessPiece {
      */
     public PieceType getPieceType() {
         return pieceType;
-    }
-
-
-    /**
-     * @return string representation of piece
-     */
-    @Override
-    public String toString() {
-        return (pieceColor == WHITE) ? whitePieceStrings.get(pieceType) : blackPieceStrings.get(pieceType);
     }
 
 

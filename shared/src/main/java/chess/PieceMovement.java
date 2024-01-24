@@ -3,20 +3,23 @@ package chess;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.EnumSet;
 
 import static chess.ChessPiece.PieceType.*;
 import static chess.ChessGame.TeamColor.*;
+
 
 /**
  * Parent class used to generate all possible moves of a given piece.
  */
 public abstract class PieceMovement {
-  protected static final ChessPiece.PieceType[] PROMOTION_TYPES= {QUEEN, ROOK, BISHOP, KNIGHT};
 
-  protected static final int[][] KNIGHT_DIRECTIONS= {{-2, -1}, {-1, -2}, {1, -2}, {2, -1}, {2, 1}, {1, 2}, {-1, 2}, {-2, 1}};
-  protected static final int[][] SLIDING_DIRECTIONS= {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {1, -1}, {-1, -1}, {-1, 1}};
-  protected static final int[][] BISHOP_DIRECTIONS= Arrays.copyOfRange(SLIDING_DIRECTIONS, 4, 8);
-  protected static final int[][] ROOK_DIRECTIONS= Arrays.copyOfRange(SLIDING_DIRECTIONS, 0, 4);
+  protected static final EnumSet<ChessPiece.PieceType> PROMOTION_TYPES = EnumSet.of(QUEEN, ROOK, BISHOP, KNIGHT);
+
+  protected static final int[][] ALL_DIRECTIONS= {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {1, -1}, {-1, -1}, {-1, 1}};
+  protected static final int[][] BISHOP_DIRECTIONS = Arrays.copyOfRange(ALL_DIRECTIONS, 4, 8);
+  protected static final int[][] ROOK_DIRECTIONS = Arrays.copyOfRange(ALL_DIRECTIONS, 0, 4);
+  protected static final int[][] KNIGHT_DIRECTIONS = {{-2, -1}, {-1, -2}, {1, -2}, {2, -1}, {2, 1}, {1, 2}, {-1, 2}, {-2, 1}};
 
   protected ChessPiece.PieceType type;
   protected ChessGame.TeamColor color;
@@ -24,14 +27,40 @@ public abstract class PieceMovement {
   protected ChessPosition position;
   protected HashSet<ChessMove> possibleMoves = new HashSet<>();
 
-  public abstract Set<ChessMove> getPossibleMoves();
+  /**
+   * Constructs a PieceMovement object
+   * @param type      piece type
+   * @param color     piece color
+   * @param board     chess board
+   * @param position  position on the given chess board
+   */
+  protected PieceMovement(ChessPiece.PieceType type, ChessGame.TeamColor color, ChessBoard board, ChessPosition position) {
+
+    this.type = type;
+    this.color = color;
+    this.board = board;
+    this.position = position;
+  }
+
 
   /**
-   * Populate 'possibleMoves' based on an int[][] of possible directions.
+   * @return 'possibleMoves' set
+   */
+  public Set<ChessMove> getPossibleMoves() {
+    return possibleMoves;
+  }
+
+
+  /**
+   * Generate all possible sliding moves for the given directions (queens, bishops, rooks).
+   * For each direction (int[] size 2), loop over extensions of that direction (dir * 1, dir * 2, etc.) in
+   * the form of relative moves. If the end position is: empty -> add & continue loop; friendly piece -> break extension loop;
+   * enemy piece -> add & break extension loop.
    *
-   * @param directions  double array of possible directions
+   * @param directions  double array of directions to be checked
    */
   protected void generateDirectionalMoves(int[][] directions) {
+
     for (int[] direction : directions) {
       int rowOffset = direction[0];
       int colOffset = direction[1];
@@ -39,13 +68,36 @@ public abstract class PieceMovement {
       int i = 1;
 
       while (true) {
-        ChessPosition newEndPosition = position.getRelativePosition(i * rowOffset, i * colOffset);
-        ChessMove move = new ChessMove(position, newEndPosition);
-        if (!addMoveIfValid(move) || (!board.endPositionIsEmpty(move) && board.endPositionIsEnemy(move))) {
+        ChessMove move = new ChessMove(position, i * rowOffset, i * colOffset);
+
+        if (!(move.moveIsWithinBounds() && board.endPositionIsEmpty(move))) {
+          if (board.endPositionIsEnemy(move)) {
+            // Ends with enemy
+            addMove(move);
+          }
+          // Ends with enemy or friend
           break;
         }
+        // Ends empty
+        addMove(move);
         i++;
       }
+    }
+  }
+
+
+  /**
+   * Generate all possible discrete moves for the given directions (kings and knights).
+   *
+   * @param directions  provided array of directions
+   */
+  protected void generateDiscreteMoves(int[][] directions) {
+
+    for (int[] direction : directions) {
+      int rowOffset = direction[0];
+      int colOffset = direction[1];
+
+      addMoveIfValid(new ChessMove(position, rowOffset, colOffset));
     }
   }
 
@@ -54,21 +106,27 @@ public abstract class PieceMovement {
    * @return If the move is on the board and doesn't end on a friendly piece
    */
   protected boolean validateMove(ChessMove move) {
-    // The end position on the board and is either empty or occupied by an enemy piece (not a pawn)
-     return move.moveIsOnBoard() && (board.endPositionIsEnemy(move) || board.endPositionIsEmpty(move));
+
+    if (board.getPiece(move).getPieceType() == PAWN) {
+      return validatePawnMove(move);
+    } else {
+      // The end position on the board and is either empty or occupied by an enemy piece
+      return move.moveIsWithinBounds() && (board.endPositionIsEnemy(move) || board.endPositionIsEmpty(move));
+    }
   }
 
 
   /**
    * Validates a pawn move.
+   * A pawn move is valid if: it moves once to an empty square, it moves twice to an empty square
+   * (passing through an empty square), it moves up and to the side to an enemy-occupied square
    *
    * @param move  ChessMove object to be checked
-   * @return      true if: The move is a single push towards a blank square, it's a diagonal push towards an enemy-occupied square, or it's a double move that moves through two blank squares.
+   * @return      If pawn move is valid
    */
   protected boolean validatePawnMove(ChessMove move) {
-    if (board.getPiece(move).getPieceType()!= PAWN) {
-      throw new IllegalArgumentException("validatePawnMove only accepts pawn moves");
-    }
+
+    int direction = (board.getPiece(move).getTeamColor() == WHITE) ? 1 : -1;
 
     ChessPosition startPosition = move.getStartPosition();
     ChessPosition endPosition = move.getEndPosition();
@@ -76,26 +134,22 @@ public abstract class PieceMovement {
     int rowDifference = Math.abs(endPosition.getRow() - startPosition.getRow());
     int colDifference = Math.abs(endPosition.getColumn() - startPosition.getColumn());
 
-    // Pawn move is within theoretical bounds
-    if (rowDifference < 1 || rowDifference >= 3 || colDifference > 1) {
-      return false;
-    }
-
-    int direction = (board.getPiece(move).getTeamColor() == WHITE) ? 1 : -1;
-
     if (rowDifference == 1) {
-      if (colDifference == 1) {
-        // Sideways capture
+      if (colDifference == 1) {       // Sideways capture
         return board.endPositionIsEnemy(move);
-      } else {
-        // Single push forward
+      }
+      else if (colDifference == 0) {  // Single forward push
         return board.endPositionIsEmpty(move);
       }
-    } else {
-      // Double push forward
+      else {                          // Invalid colDifference
+        return false;
+      }
+    }
+    else if (rowDifference == 2) {    // Double forward push
       ChessMove doubleMove = new ChessMove(move.getStartPosition(), 2 * direction, 0);
       return board.endPositionIsEmpty(move) && board.endPositionIsEmpty(doubleMove);
     }
+    return false;                     // Invalid pawn move
   }
 
 
@@ -105,11 +159,21 @@ public abstract class PieceMovement {
    * @return if move was added
    */
   protected boolean addMoveIfValid(ChessMove move) {
-    if (board.getPiece(move).getPieceType() == PAWN) {
-      return validatePawnMove(move) && possibleMoves.add(move);
-    } else {
-      return validateMove(move) && possibleMoves.add(move);
+
+    if (validateMove(move)) {
+      addMove(move);
+      return true;
     }
+    return false;
+  }
+
+  /**
+   * Add move to 'possibleMoves' set.
+   *
+   * @param move  move to be added
+   */
+  protected void addMove(ChessMove move) {
+    possibleMoves.add(move);
   }
 }
 
@@ -125,35 +189,20 @@ class King extends PieceMovement {
    * @param position  Given position
    */
   public King(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
-    type = KING;
-    this.color = color;
-    this.board = board;
-    this.position = position;
+
+    super(KING, color, board, position);
     generateMoves();
   }
+
 
   /**
    * Populate the possibleMoves array with all possible moves for KING (based on 'board' and 'position' attributes)
    */
   private void generateMoves() {
-
-    for (int[] direction : SLIDING_DIRECTIONS) {
-      int rowOffset = direction[0];
-      int colOffset = direction[1];
-
-      addMoveIfValid(new ChessMove(position, rowOffset, colOffset));
-    }
-  }
-
-
-  /**
-   * @return the possibleMoves array
-   */
-  @Override
-  public HashSet<ChessMove> getPossibleMoves() {
-    return possibleMoves;
+    generateDiscreteMoves(ALL_DIRECTIONS);
   }
 }
+
 
 /**
  * Generate and store moves for the QUEEN found at given position on the given board.
@@ -167,10 +216,8 @@ class Queen extends PieceMovement {
    * @param position  Given position
    */
   public Queen(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
-    type = QUEEN;
-    this.color = color;
-    this.board = board;
-    this.position = position;
+
+    super(QUEEN, color, board, position);
     generateMoves();
   }
 
@@ -179,18 +226,10 @@ class Queen extends PieceMovement {
    * Populate the possibleMoves array with all possible moves for QUEEN (based on 'board' and 'position' attributes)
    */
   private void generateMoves() {
-    generateDirectionalMoves(SLIDING_DIRECTIONS);
-  }
-
-
-  /**
-   * @return the possibleMoves array
-   */
-  @Override
-  public HashSet<ChessMove> getPossibleMoves() {
-    return possibleMoves;
+    generateDirectionalMoves(ALL_DIRECTIONS);
   }
 }
+
 
 /**
  * Generate and store moves for the ROOK found at given position on the given board.
@@ -204,10 +243,8 @@ class Rook extends PieceMovement {
    * @param position  Given position
    */
   public Rook(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
-    type = ROOK;
-    this.color = color;
-    this.board = board;
-    this.position = position;
+
+    super(ROOK, color, board, position);
     generateMoves();
   }
 
@@ -218,16 +255,8 @@ class Rook extends PieceMovement {
   private void generateMoves() {
     generateDirectionalMoves(ROOK_DIRECTIONS);
   }
-
-
-  /**
-   * @return the possibleMoves array
-   */
-  @Override
-  public HashSet<ChessMove> getPossibleMoves() {
-    return possibleMoves;
-  }
 }
+
 
 /**
  * Generate and store moves for the BISHOP found at given position on the given board
@@ -240,10 +269,8 @@ class Bishop extends PieceMovement {
    * @param position  Given position
    */
   public Bishop(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
-    type = BISHOP;
-    this.color = color;
-    this.board = board;
-    this.position = position;
+
+    super(BISHOP, color, board, position);
     generateMoves();
   }
 
@@ -254,16 +281,8 @@ class Bishop extends PieceMovement {
   private void generateMoves() {
     generateDirectionalMoves(BISHOP_DIRECTIONS);
   }
-
-
-  /**
-   * @return the possibleMoves array
-   */
-  @Override
-  public HashSet<ChessMove> getPossibleMoves() {
-    return possibleMoves;
-  }
 }
+
 
 /**
  * Generate and store moves for the KNIGHT found at given position on the given board
@@ -276,10 +295,8 @@ class Knight extends PieceMovement {
    * @param position  Given position
    */
   public Knight(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
-    type = KNIGHT;
-    this.color = color;
-    this.board = board;
-    this.position = position;
+
+    super(KNIGHT, color, board, position);
     generateMoves();
   }
 
@@ -288,20 +305,7 @@ class Knight extends PieceMovement {
    * Populate the possibleMoves array with all possible moves for KNIGHT (based on 'board' and 'position' attributes)
    */
   private void generateMoves() {
-    for (int[] direction : KNIGHT_DIRECTIONS) {
-      ChessPosition endPosition = position.getRelativePosition(direction[0], direction[1]);
-      ChessMove move = new ChessMove(position, endPosition);
-      addMoveIfValid(move);
-    }
-  }
-
-
-  /**
-   * @return the possibleMoves array
-   */
-  @Override
-  public HashSet<ChessMove> getPossibleMoves() {
-    return possibleMoves;
+    generateDiscreteMoves(KNIGHT_DIRECTIONS);
   }
 }
 
@@ -310,10 +314,10 @@ class Knight extends PieceMovement {
  * Generate and store moves for the PAWN found at given position on the given board.
  */
 class Pawn extends PieceMovement {
-  int direction;
-  int startRow;
-  int endRow;
 
+  int direction;
+  boolean onStartRow;
+  boolean onEndRow;
 
   /**
    * Constructor generates PAWN piece and its possible moves based on 'board' and 'position'.
@@ -323,66 +327,41 @@ class Pawn extends PieceMovement {
    */
   public Pawn(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
 
-    type = PAWN;
-    this.color = color;
-    this.board = board;
-    this.position = position;
+    super(PAWN, color, board, position);
 
-    if (color == WHITE) {
-      direction = 1;
-      startRow = 2;
-      endRow = 7;
-    } else {
-      direction = -1;
-      startRow = 7;
-      endRow = 2;
-    }
+    boolean pawnIsWhite = (color == WHITE);
+
+    this.direction = pawnIsWhite ? 1 : -1;
+    onStartRow = (pawnIsWhite ? 2 : 7) == position.getRow();
+    onEndRow = (pawnIsWhite ? 7 : 2) == position.getRow();
+
     generateMoves();
   }
 
 
+  /**
+   * Generate all pawn moves
+   */
   private void generateMoves() {
 
-    int row = position.getRow();
-
-    if (row == endRow) {
-      // Pawn is about to promote
+    if (onEndRow) {
       generatePromotionMoves();
     } else {
-      if (row == startRow) {
-        // Pawn is on starting square
-        generateInitialMoves();
-      } else {
-        // Pawn is somewhere in the middle
-        generateNonInitialMoves();
-      }
+      generateNonPromotionMoves();
     }
   }
 
   /**
-   * Generate moves for the pawn if it is found on its starting square
+   * Generate pawn moves. Only will be called if pawn is not on end row
    */
-  private void generateInitialMoves() {
+  private void generateNonPromotionMoves() {
 
     ChessMove oneSquareMove = new ChessMove(position, direction, 0);
-    ChessMove doubleMove = new ChessMove(position, 2 * direction, 0);
 
-    if (addMoveIfValid(oneSquareMove)) {
+    if (addMoveIfValid(oneSquareMove) && onStartRow) {
+      ChessMove doubleMove = new ChessMove(position, 2 * direction, 0);
       addMoveIfValid(doubleMove);
     }
-
-    generateSideMoves();
-  }
-
-
-  /**
-   * Generate moves if the pawn is found in the middle of the board
-   */
-  private void generateNonInitialMoves() {
-
-    ChessMove oneSquareMove = new ChessMove(position, direction, 0);
-
-    addMoveIfValid(oneSquareMove);
 
     generateSideMoves();
   }
@@ -404,25 +383,14 @@ class Pawn extends PieceMovement {
    * Generate possible promotion moves if the pawn is found on the final row
    */
   private void generatePromotionMoves() {
-    if (position.getRow() != endRow) {
-      throw new IllegalArgumentException("generatePromotionMoves should only be called for a pawn about to promote");
-    }
 
-    for (int offset : new int[] {-1, 0, 1}) {
-      if (validatePawnMove(new ChessMove(position, direction, offset))) {
+    for (int offset : new int[]{-1, 0, 1}) {
+      ChessMove move = new ChessMove(position, direction, offset);
+      if (validateMove(move)) {
         for (ChessPiece.PieceType piece : PROMOTION_TYPES) {
           possibleMoves.add(new ChessMove(position, direction, offset, piece));
         }
       }
     }
-  }
-
-
-  /**
-   * @return the possibleMoves array
-   */
-  @Override
-  public HashSet<ChessMove> getPossibleMoves() {
-    return possibleMoves;
   }
 }
