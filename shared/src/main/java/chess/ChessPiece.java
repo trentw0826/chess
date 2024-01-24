@@ -62,22 +62,6 @@ public class ChessPiece {
     }
 
     /**
-     * Setter for private variable pieceColor
-     * @param pieceColor The new desired pieceColor
-     */
-    public void setPieceColor(ChessGame.TeamColor pieceColor) {
-        this.pieceColor = pieceColor;
-    }
-
-    /**
-     * Setter for private variable pieceType
-     * @param pieceType The new desired pieceType
-     */
-    public void setPieceType(PieceType pieceType) {
-        this.pieceType = pieceType;
-    }
-
-    /**
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {

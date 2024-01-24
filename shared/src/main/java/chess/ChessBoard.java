@@ -3,14 +3,14 @@ package chess;
 
 import java.util.Arrays;
 
-import static chess.ChessGame.TeamColor.*;
 import static chess.ChessPiece.PieceType.*;
+import static chess.ChessGame.TeamColor.*;
 
 /**
  * A chessboard that can hold and rearrange chess pieces.
  */
 public class ChessBoard {
-    public static final int LENGTH = 8; //TODO: find where this should go (constants class?) + replace all instances of '8'
+    public static final int LENGTH = 8;
 
     private ChessPiece[][] board;
 

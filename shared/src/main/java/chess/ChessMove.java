@@ -9,9 +9,9 @@ import java.util.Objects;
  * signature of the existing methods.
  */
 public class ChessMove {
-    private ChessPosition startPosition;
-    private ChessPosition endPosition;
-    private ChessPiece.PieceType promotionPiece;
+    private final ChessPosition startPosition;
+    private final ChessPosition endPosition;
+    private final ChessPiece.PieceType promotionPiece;
 
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece) {
         this.startPosition = startPosition;
@@ -19,17 +19,13 @@ public class ChessMove {
         this.promotionPiece = promotionPiece;
     }
 
-    /**
-     * Constructor creates ChessMove based on two relative numbers
-     * @param startPosition     start position
-     * @param x                 row offset
-     * @param y                 column offset
-     * @param promotionPiece    promotion piece
-     */
-    public ChessMove(ChessPosition startPosition, int x, int y, ChessPiece.PieceType promotionPiece) {
-        this.startPosition = startPosition;
-        this.endPosition = startPosition.getRelativePosition(x, y);
-        this.promotionPiece = promotionPiece;
+    public ChessMove(ChessPosition startPosition, ChessPosition endPosition) {
+        this(startPosition, endPosition,null);
+    }
+
+    public ChessMove(ChessPosition startPosition, int x, int y) {
+        this(startPosition, startPosition.getRelativePosition(x, y), null);
+
     }
 
     /**
