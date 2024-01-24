@@ -63,6 +63,7 @@ public class ChessBoard {
         return (endPosition.positionIsOnBoard() && board[endPosition.getRow() - 1][endPosition.getColumn() - 1] == null);
     }
 
+
     /**
      * Return if the starting piece and ending piece differ in color (if there is an ending piece).
      *
@@ -89,6 +90,7 @@ public class ChessBoard {
         board[position.getRow() - 1][position.getColumn() - 1] = piece;
     }
 
+
     /**
      * Gets a chess piece on the chessboard.
      *
@@ -103,6 +105,7 @@ public class ChessBoard {
         return board[position.getRow() - 1][position.getColumn() - 1];
     }
 
+
     /**
      * @param move selected ChessMove on the board
      * @return ChessPiece found at the start position of 'move'
@@ -110,6 +113,7 @@ public class ChessBoard {
     public ChessPiece getPiece(ChessMove move) {
         return (getPiece(move.getStartPosition()));
     }
+
 
     /**
      * Updates the chess board to the classic starting position.

@@ -49,6 +49,7 @@ public abstract class PieceMovement {
     }
   }
 
+
   /**
    * @return If the move is on the board and doesn't end on a friendly piece
    */
@@ -56,6 +57,7 @@ public abstract class PieceMovement {
     // The end position on the board and is either empty or occupied by an enemy piece (not a pawn)
      return move.moveIsOnBoard() && (board.endPositionIsEnemy(move) || board.endPositionIsEmpty(move));
   }
+
 
   /**
    * Validates a pawn move.
@@ -109,7 +111,6 @@ public abstract class PieceMovement {
       return validateMove(move) && possibleMoves.add(move);
     }
   }
-
 }
 
 
@@ -117,6 +118,7 @@ public abstract class PieceMovement {
  * Generate and store moves for the KING found at given position on the given board
  */
 class King extends PieceMovement {
+
   /**
    * Constructor generates KING piece and its possible moves based on 'board' and 'position'
    * @param board     Given board
@@ -143,6 +145,7 @@ class King extends PieceMovement {
     }
   }
 
+
   /**
    * @return the possibleMoves array
    */
@@ -156,6 +159,7 @@ class King extends PieceMovement {
  * Generate and store moves for the QUEEN found at given position on the given board.
  */
 class Queen extends PieceMovement {
+
   /**
    * Constructor generates QUEEN piece and its possible moves based on 'board' and 'position'.
    *
@@ -170,12 +174,14 @@ class Queen extends PieceMovement {
     generateMoves();
   }
 
+
   /**
    * Populate the possibleMoves array with all possible moves for QUEEN (based on 'board' and 'position' attributes)
    */
   private void generateMoves() {
     generateDirectionalMoves(SLIDING_DIRECTIONS);
   }
+
 
   /**
    * @return the possibleMoves array
@@ -190,6 +196,7 @@ class Queen extends PieceMovement {
  * Generate and store moves for the ROOK found at given position on the given board.
  */
 class Rook extends PieceMovement {
+
   /**
    * Constructor generates ROOK piece and its possible moves based on 'board' and 'position'.
    *
@@ -204,12 +211,14 @@ class Rook extends PieceMovement {
     generateMoves();
   }
 
+
   /**
    * Populate the possibleMoves array with all possible moves for ROOK (based on 'board' and 'position' attributes).
    */
   private void generateMoves() {
     generateDirectionalMoves(ROOK_DIRECTIONS);
   }
+
 
   /**
    * @return the possibleMoves array
@@ -224,6 +233,7 @@ class Rook extends PieceMovement {
  * Generate and store moves for the BISHOP found at given position on the given board
  */
 class Bishop extends PieceMovement {
+
   /**
    * Constructor generates BISHOP piece and its possible moves based on 'board' and 'position'
    * @param board     Given board
@@ -237,12 +247,14 @@ class Bishop extends PieceMovement {
     generateMoves();
   }
 
+
   /**
    * Populate the possibleMoves array with all possible moves for BISHOP (based on 'board' and 'position' attributes)
    */
   private void generateMoves() {
     generateDirectionalMoves(BISHOP_DIRECTIONS);
   }
+
 
   /**
    * @return the possibleMoves array
@@ -257,6 +269,7 @@ class Bishop extends PieceMovement {
  * Generate and store moves for the KNIGHT found at given position on the given board
  */
 class Knight extends PieceMovement {
+
   /**
    * Constructor generates KNIGHT piece and its possible moves based on 'board' and 'position'
    * @param board     Given board
@@ -270,6 +283,7 @@ class Knight extends PieceMovement {
     generateMoves();
   }
 
+
   /**
    * Populate the possibleMoves array with all possible moves for KNIGHT (based on 'board' and 'position' attributes)
    */
@@ -281,6 +295,7 @@ class Knight extends PieceMovement {
     }
   }
 
+
   /**
    * @return the possibleMoves array
    */
@@ -290,6 +305,7 @@ class Knight extends PieceMovement {
   }
 }
 
+
 /**
  * Generate and store moves for the PAWN found at given position on the given board.
  */
@@ -297,6 +313,7 @@ class Pawn extends PieceMovement {
   int direction;
   int startRow;
   int endRow;
+
 
   /**
    * Constructor generates PAWN piece and its possible moves based on 'board' and 'position'.
@@ -323,6 +340,7 @@ class Pawn extends PieceMovement {
     generateMoves();
   }
 
+
   private void generateMoves() {
 
     int row = position.getRow();
@@ -341,6 +359,9 @@ class Pawn extends PieceMovement {
     }
   }
 
+  /**
+   * Generate moves for the pawn if it is found on its starting square
+   */
   private void generateInitialMoves() {
 
     ChessMove oneSquareMove = new ChessMove(position, direction, 0);
@@ -353,13 +374,10 @@ class Pawn extends PieceMovement {
     generateSideMoves();
   }
 
-  private void generateSideMoves() {
-    for (int offset : new int[]{-1, 1}) {
-      ChessMove sideMove = new ChessMove(position, direction, offset);
-      addMoveIfValid(sideMove);
-    }
-  }
 
+  /**
+   * Generate moves if the pawn is found in the middle of the board
+   */
   private void generateNonInitialMoves() {
 
     ChessMove oneSquareMove = new ChessMove(position, direction, 0);
@@ -369,6 +387,22 @@ class Pawn extends PieceMovement {
     generateSideMoves();
   }
 
+
+  /**
+   * Generate possible side capture moves
+   */
+  private void generateSideMoves() {
+
+    for (int offset : new int[]{-1, 1}) {
+      ChessMove sideMove = new ChessMove(position, direction, offset);
+      addMoveIfValid(sideMove);
+    }
+  }
+
+
+  /**
+   * Generate possible promotion moves if the pawn is found on the final row
+   */
   private void generatePromotionMoves() {
     if (position.getRow() != endRow) {
       throw new IllegalArgumentException("generatePromotionMoves should only be called for a pawn about to promote");
@@ -382,6 +416,7 @@ class Pawn extends PieceMovement {
       }
     }
   }
+
 
   /**
    * @return the possibleMoves array

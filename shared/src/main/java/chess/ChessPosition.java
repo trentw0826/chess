@@ -9,13 +9,21 @@ import java.util.Objects;
  * signature of the existing methods.
  */
 public class ChessPosition {
+
     private final int row;
     private final int col;
 
+    /**
+     * Constructs a ChessPosition objects.
+     *
+     * @param row   desired row position
+     * @param col   desired col position
+     */
     public ChessPosition(int row, int col) {
         this.row = row;
         this.col = col;
     }
+
 
     /**
      * @param o other ChessPosition object
@@ -29,6 +37,7 @@ public class ChessPosition {
         return row == that.row && col == that.col;
     }
 
+
     /**
      * @return hashCode based on class attributes
      */
@@ -36,6 +45,7 @@ public class ChessPosition {
     public int hashCode() {
         return Objects.hash(row, col);
     }
+
 
     /**
      * @return which row this position is in
@@ -45,11 +55,13 @@ public class ChessPosition {
         return row;
     }
 
+
     /**
      * @return which column this position is in
      * 1 codes for the left row
      */
     public int getColumn() { return col; }
+
 
     /**
      * @return string representation of ChessPosition object
@@ -59,12 +71,14 @@ public class ChessPosition {
         return "(" + row + ", " + col + ')';
     }
 
+
     /**
      * @return if both the row and the col are within the 8x8 bounds of the board
      */
     public boolean positionIsOnBoard() {
         return (0 < row && row <= 8 && 0 < col && col <= 8);
     }
+
 
     /**
      * @param xVal  the x value to update the row

@@ -15,6 +15,9 @@ import static chess.ChessGame.TeamColor.*;
  */
 public class ChessPiece {
 
+    private final ChessGame.TeamColor pieceColor;
+    private final ChessPiece.PieceType pieceType;
+
     // Mapping of enum piece type values to string representations
     private static final EnumMap<PieceType, String> whitePieceStrings = new EnumMap<>(PieceType.class);
     private static final EnumMap<PieceType, String> blackPieceStrings = new EnumMap<>(PieceType.class);
@@ -36,8 +39,6 @@ public class ChessPiece {
 
     }
 
-    private final ChessGame.TeamColor pieceColor;
-    private final ChessPiece.PieceType pieceType;
 
     /**
      * The various different chess piece options
@@ -52,8 +53,9 @@ public class ChessPiece {
         NONE
     }
 
+
     /**
-     * ChessPiece class constructor
+     * ChessPiece class constructor.
      *
      * @param pieceColor    The color of the piece
      * @param type          The piece type
@@ -62,6 +64,7 @@ public class ChessPiece {
         this.pieceColor = pieceColor;
         this.pieceType = type;
     }
+
 
     /**
      * @param o other ChessPiece object
@@ -75,6 +78,7 @@ public class ChessPiece {
         return pieceColor == that.pieceColor && pieceType == that.pieceType;
     }
 
+
     /**
      * @return hashCode based on class attributes
      */
@@ -83,12 +87,14 @@ public class ChessPiece {
         return Objects.hash(pieceColor, pieceType);
     }
 
+
     /**
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
         return pieceColor;
     }
+
 
     /**
      * @return which type of chess piece this piece is
@@ -97,15 +103,20 @@ public class ChessPiece {
         return pieceType;
     }
 
+
+    /**
+     * @return string representation of piece
+     */
     @Override
     public String toString() {
         return (pieceColor == WHITE) ? whitePieceStrings.get(pieceType) : blackPieceStrings.get(pieceType);
     }
 
+
     /**
-     * Calculates all the positions a chess piece can move to
+     * Calculates all the positions a chess piece can move to.
      * Does not take into account moves that are illegal due to leaving the king in
-     * danger
+     * danger.
      *
      * @return Collection of valid moves
      */
