@@ -2,6 +2,10 @@ package chess;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.EnumMap;
+
+import static chess.ChessPiece.PieceType.*;
+import static chess.ChessGame.TeamColor.*;
 
 /**
  * Represents a single chess piece
@@ -10,13 +14,30 @@ import java.util.Objects;
  * signature of the existing methods.
  */
 public class ChessPiece {
-    private final String[] chessStrings = {
-            "WK♔", "WQ♕", "WR♖", "WB♗", "WN♘", "WP♙",
-            "BK♚", "BQ♛", "BR♜", "BB♝", "BN♞", "BP♟",
-            "   "
-    };
-    private ChessGame.TeamColor pieceColor;
-    private ChessPiece.PieceType pieceType;
+
+    // Mapping of enum piece type values to string representations
+    private static final EnumMap<PieceType, String> whitePieceStrings = new EnumMap<>(PieceType.class);
+    private static final EnumMap<PieceType, String> blackPieceStrings = new EnumMap<>(PieceType.class);
+    static {
+        whitePieceStrings.put(KING, "WK♔");
+        whitePieceStrings.put(QUEEN, "WQ♕");
+        whitePieceStrings.put(ROOK, "WR♖");
+        whitePieceStrings.put(BISHOP, "WB♗");
+        whitePieceStrings.put(KNIGHT, "WN♘");
+        whitePieceStrings.put(PAWN, "WP♙");
+        whitePieceStrings.put(NONE, "   ");
+        blackPieceStrings.put(KING, "BK♚");
+        blackPieceStrings.put(QUEEN, "BQ♛");
+        blackPieceStrings.put(ROOK, "BR♜");
+        blackPieceStrings.put(BISHOP, "BB♝");
+        blackPieceStrings.put(KNIGHT, "BN♞");
+        blackPieceStrings.put(PAWN, "BP♟");
+        blackPieceStrings.put(NONE, "   ");
+
+    }
+
+    private final ChessGame.TeamColor pieceColor;
+    private final ChessPiece.PieceType pieceType;
 
     /**
      * The various different chess piece options
@@ -27,7 +48,8 @@ public class ChessPiece {
         BISHOP,
         KNIGHT,
         ROOK,
-        PAWN
+        PAWN,
+        NONE
     }
 
     /**
@@ -77,31 +99,7 @@ public class ChessPiece {
 
     @Override
     public String toString() {
-        String str;
-        if (pieceColor == ChessGame.TeamColor.WHITE) {
-            // White team
-            switch (pieceType) {
-                case KING -> str=chessStrings[0];
-                case QUEEN -> str=chessStrings[1];
-                case ROOK -> str=chessStrings[2];
-                case BISHOP -> str=chessStrings[3];
-                case KNIGHT -> str=chessStrings[4];
-                case PAWN -> str=chessStrings[5];
-                default -> throw new IllegalArgumentException("invalid pieceType referenced");
-            }
-        } else {
-            // Black team
-            switch (pieceType) {
-                case KING -> str=chessStrings[6];
-                case QUEEN -> str=chessStrings[7];
-                case ROOK -> str=chessStrings[8];
-                case BISHOP -> str=chessStrings[9];
-                case KNIGHT -> str=chessStrings[10];
-                case PAWN -> str=chessStrings[11];
-                default -> throw new IllegalArgumentException("invalid pieceType referenced");
-            }
-        }
-        return str;
+        return (pieceColor == WHITE) ? whitePieceStrings.get(pieceType) : blackPieceStrings.get(pieceType);
     }
 
     /**
@@ -112,17 +110,15 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        ChessPiece piece = board.getPiece(myPosition);
-        ChessPiece.PieceType type = piece.pieceType;
-        ChessGame.TeamColor teamColor = piece.pieceColor;
         PieceMovement pieceMoves;
-        switch (type) {
-            case KING -> pieceMoves = new King(board, myPosition, teamColor);
-            case QUEEN -> pieceMoves = new Queen(board, myPosition, teamColor);
-            case ROOK -> pieceMoves = new Rook(board, myPosition, teamColor);
-            case BISHOP -> pieceMoves = new Bishop(board, myPosition, teamColor);
-            case KNIGHT -> pieceMoves = new Knight(board, myPosition, teamColor);
-            case PAWN -> pieceMoves = new Pawn(board, myPosition, teamColor);
+
+        switch (pieceType) {
+            case KING -> pieceMoves = new King(board, myPosition, pieceColor);
+            case QUEEN -> pieceMoves = new Queen(board, myPosition, pieceColor);
+            case ROOK -> pieceMoves = new Rook(board, myPosition, pieceColor);
+            case BISHOP -> pieceMoves = new Bishop(board, myPosition, pieceColor);
+            case KNIGHT -> pieceMoves = new Knight(board, myPosition, pieceColor);
+            case PAWN -> pieceMoves = new Pawn(board, myPosition, pieceColor);
             default -> throw new IllegalArgumentException("Invalid pieceType");
         }
         return pieceMoves.getPossibleMoves();

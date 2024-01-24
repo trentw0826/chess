@@ -3,7 +3,9 @@ package chess;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
 import static chess.ChessPiece.PieceType.*;
+import static chess.ChessGame.TeamColor.*;
 
 /**
  * Parent class used to generate all possible moves of a given piece.
@@ -29,19 +31,18 @@ public abstract class PieceMovement {
    *
    * @param directions  double array of possible directions
    */
-  public void generateDirectionalMoves(int[][] directions) {
+  protected void generateDirectionalMoves(int[][] directions) {
     for (int[] direction : directions) {
       int rowOffset = direction[0];
       int colOffset = direction[1];
 
-      boolean continueDirection = true;
       int i = 1;
 
-      while (continueDirection) {
+      while (true) {
         ChessPosition newEndPosition = position.getRelativePosition(i * rowOffset, i * colOffset);
-        if (!addMoveIfValid(new ChessMove(position, newEndPosition))
-                || (!board.positionIsEmpty(newEndPosition) && isEnemyPosition(newEndPosition))) {
-          continueDirection = false;
+        ChessMove move = new ChessMove(position, newEndPosition);
+        if (!addMoveIfValid(move) || (!board.endPositionIsEmpty(move) && board.endPositionIsEnemy(move))) {
+          break;
         }
         i++;
       }
@@ -49,30 +50,11 @@ public abstract class PieceMovement {
   }
 
   /**
-   * @param position  ChessPosition to check for enemy occupation
-   * @return          if the position holds an enemy piece
-   */
-  private boolean isEnemyPosition(ChessPosition position) {
-    ChessPiece endPiece = board.getPiece(position);
-    return endPiece != null && endPiece.getTeamColor() != color;
-  }
-
-  /**
-   * @param position  ChessPosition to check for emptiness
-   * @return          if the position is empty
-   */
-  private boolean isEmptyPosition(ChessPosition position) {
-    return board.getPiece(position) == null;
-  }
-
-  /**
    * @return If the move is on the board and doesn't end on a friendly piece
    */
   protected boolean validateMove(ChessMove move) {
-    ChessPosition endPosition = move.getEndPosition();
-
     // The end position on the board and is either empty or occupied by an enemy piece (not a pawn)
-     return move.moveIsOnBoard() && (isEnemyPosition(endPosition) || isEmptyPosition(endPosition));
+     return move.moveIsOnBoard() && (board.endPositionIsEnemy(move) || board.endPositionIsEmpty(move));
   }
 
   /**
@@ -89,27 +71,28 @@ public abstract class PieceMovement {
     ChessPosition startPosition = move.getStartPosition();
     ChessPosition endPosition = move.getEndPosition();
 
-    ChessPiece endPiece = board.getPiece(endPosition);
-
-    boolean endSquareEmpty = board.endPositionEmpty(move);
-
     int rowDifference = Math.abs(endPosition.getRow() - startPosition.getRow());
     int colDifference = Math.abs(endPosition.getColumn() - startPosition.getColumn());
 
-    int startRow = (color == ChessGame.TeamColor.WHITE)? 2 : 7;
-
-    if (rowDifference < 1 || rowDifference >= 3 || colDifference >= 2) {
+    // Pawn move is within theoretical bounds
+    if (rowDifference < 1 || rowDifference >= 3 || colDifference > 1) {
       return false;
     }
 
-    if (rowDifference == 2) {
-      ChessPosition oneSquareAhead = new ChessPosition(startPosition.getRow() + 1, startPosition.getColumn());
-      return startPosition.getRow() == startRow
-              && (board.positionIsEmpty(oneSquareAhead) && board.positionIsEmpty(endPosition));
-    } else if (colDifference == 1) {
-      return (!endSquareEmpty && endPiece.getTeamColor()!= color);
+    int direction = (board.getPiece(move).getTeamColor() == WHITE) ? 1 : -1;
+
+    if (rowDifference == 1) {
+      if (colDifference == 1) {
+        // Sideways capture
+        return board.endPositionIsEnemy(move);
+      } else {
+        // Single push forward
+        return board.endPositionIsEmpty(move);
+      }
     } else {
-      return endSquareEmpty;
+      // Double push forward
+      ChessMove doubleMove = new ChessMove(move.getStartPosition(), 2 * direction, 0);
+      return board.endPositionIsEmpty(move) && board.endPositionIsEmpty(doubleMove);
     }
   }
 
@@ -156,8 +139,7 @@ class King extends PieceMovement {
       int rowOffset = direction[0];
       int colOffset = direction[1];
 
-      ChessPosition newEndPosition = position.getRelativePosition(rowOffset, colOffset);
-      addMoveIfValid(new ChessMove(position, newEndPosition));
+      addMoveIfValid(new ChessMove(position, rowOffset, colOffset));
     }
   }
 
@@ -312,6 +294,10 @@ class Knight extends PieceMovement {
  * Generate and store moves for the PAWN found at given position on the given board.
  */
 class Pawn extends PieceMovement {
+  int direction;
+  int startRow;
+  int endRow;
+
   /**
    * Constructor generates PAWN piece and its possible moves based on 'board' and 'position'.
    *
@@ -319,31 +305,31 @@ class Pawn extends PieceMovement {
    * @param position  Given position
    */
   public Pawn(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
+
     type = PAWN;
     this.color = color;
     this.board = board;
     this.position = position;
+
+    if (color == WHITE) {
+      direction = 1;
+      startRow = 2;
+      endRow = 7;
+    } else {
+      direction = -1;
+      startRow = 7;
+      endRow = 2;
+    }
     generateMoves();
   }
 
-  public void generateMoves() {
-    int direction = (color == ChessGame.TeamColor.WHITE) ? 1 : -1;
-    int startRow = (color == ChessGame.TeamColor.WHITE) ? 2 : 7;
-    int endRow = (color == ChessGame.TeamColor.WHITE) ? 7 : 2;
+  private void generateMoves() {
 
     int row = position.getRow();
 
-    ChessMove oneSquareMove = new ChessMove(position, direction, 0);
-
     if (row == endRow) {
       // Pawn is about to promote
-      if (validatePawnMove(oneSquareMove)) {
-        generatePromotionMoves(oneSquareMove);
-      }
-      for (int offset : new int[]{-1, 1}) {
-        ChessMove sideMove = new ChessMove(position, direction, offset);
-        generatePromotionMoves(sideMove);
-      }
+      generatePromotionMoves();
     } else {
       if (row == startRow) {
         // Pawn is on starting square
@@ -356,10 +342,6 @@ class Pawn extends PieceMovement {
   }
 
   private void generateInitialMoves() {
-    int direction = (color == ChessGame.TeamColor.WHITE) ? 1 : -1;
-//    int startingRow = (color == ChessGame.TeamColor.WHITE) ? 2 : 7;
-
-//    int row = position.getRow();
 
     ChessMove oneSquareMove = new ChessMove(position, direction, 0);
     ChessMove doubleMove = new ChessMove(position, 2 * direction, 0);
@@ -368,6 +350,10 @@ class Pawn extends PieceMovement {
       addMoveIfValid(doubleMove);
     }
 
+    generateSideMoves();
+  }
+
+  private void generateSideMoves() {
     for (int offset : new int[]{-1, 1}) {
       ChessMove sideMove = new ChessMove(position, direction, offset);
       addMoveIfValid(sideMove);
@@ -375,22 +361,24 @@ class Pawn extends PieceMovement {
   }
 
   private void generateNonInitialMoves() {
-    int direction = (color == ChessGame.TeamColor.WHITE) ? 1 : -1;
 
     ChessMove oneSquareMove = new ChessMove(position, direction, 0);
 
     addMoveIfValid(oneSquareMove);
 
-    for (int offset : new int[]{-1, 1}) {
-      ChessMove sideMove = new ChessMove(position, direction, offset);
-      addMoveIfValid(sideMove);
-    }
+    generateSideMoves();
   }
 
-  private void generatePromotionMoves(ChessMove move) {
-    if (validatePawnMove(move)) {
-      for (ChessPiece.PieceType piece : PROMOTION_TYPES) {
-        possibleMoves.add(new ChessMove(move.getStartPosition(), move.getEndPosition(), piece));
+  private void generatePromotionMoves() {
+    if (position.getRow() != endRow) {
+      throw new IllegalArgumentException("generatePromotionMoves should only be called for a pawn about to promote");
+    }
+
+    for (int offset : new int[] {-1, 0, 1}) {
+      if (validatePawnMove(new ChessMove(position, direction, offset))) {
+        for (ChessPiece.PieceType piece : PROMOTION_TYPES) {
+          possibleMoves.add(new ChessMove(position, direction, offset, piece));
+        }
       }
     }
   }

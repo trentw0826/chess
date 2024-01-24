@@ -1,6 +1,5 @@
 package chess;
 
-
 import java.util.Arrays;
 
 import static chess.ChessPiece.PieceType.*;
@@ -10,13 +9,17 @@ import static chess.ChessGame.TeamColor.*;
  * A chessboard that can hold and rearrange chess pieces.
  */
 public class ChessBoard {
-    public static final int LENGTH = 8;
 
+    public static final int SIZE = 8;
     private ChessPiece[][] board;
 
+    /**
+     * Constructs ChessBoard object, a blank double array of size 8x8.
+     */
     public ChessBoard() {
-        board = new ChessPiece[LENGTH][LENGTH];
+        board = new ChessPiece[SIZE][SIZE];
     }
+
 
     /**
      * @param o other ChessBoard object
@@ -30,6 +33,7 @@ public class ChessBoard {
         return Arrays.deepEquals(board, that.board);
     }
 
+
     /**
      * @return deepHashCode of board attribute
      */
@@ -37,6 +41,7 @@ public class ChessBoard {
     public int hashCode() {
         return Arrays.deepHashCode(board);
     }
+
 
     /**
      * @return deepToString of board attribute
@@ -46,37 +51,46 @@ public class ChessBoard {
         return Arrays.deepToString(board);
     }
 
-    /**
-     * Checks if a position is empty
-     *
-     * @param position a position to check for emptiness
-     * @return if the piece at 'position' is null
-     */
-    public boolean positionIsEmpty(ChessPosition position) {
-        return (position.positionIsOnBoard() && board[position.getRow() - 1][position.getColumn() - 1] == null);
-    }
 
     /**
-     * Checks if the ending position of a move is empty
+     * Checks if the ending position of a move is empty.
+     *
      * @param move a move to check for emptiness
      * @return if the ending square is blank
      */
-    public boolean endPositionEmpty(ChessMove move) {
-        return positionIsEmpty(move.getEndPosition());
+    public boolean endPositionIsEmpty(ChessMove move) {
+        ChessPosition endPosition = move.getEndPosition();
+        return (endPosition.positionIsOnBoard() && board[endPosition.getRow() - 1][endPosition.getColumn() - 1] == null);
     }
 
     /**
-     * Adds a chess piece to the chessboard
+     * Return if the starting piece and ending piece differ in color (if there is an ending piece).
      *
-     * @param position Where to add the piece to
-     * @param piece    The piece to add
+     * @param move  move to be checked
+     * @return      if the ending position contains an enemy piece
+     */
+    public boolean endPositionIsEnemy(ChessMove move) {
+        ChessPiece startPiece = getPiece(move);
+        ChessPiece endPiece = getPiece(move.getEndPosition());
+
+        if (endPiece == null || startPiece == null) { return false; }
+
+        return (endPiece.getTeamColor() != startPiece.getTeamColor());
+    }
+
+
+    /**
+     * Adds a chess piece to the board.
+     *
+     * @param position where to add piece
+     * @param piece    piece to be added
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
         board[position.getRow() - 1][position.getColumn() - 1] = piece;
     }
 
     /**
-     * Gets a chess piece on the chessboard
+     * Gets a chess piece on the chessboard.
      *
      * @param position The position to get the piece from
      * @return Either the piece at the position, or null if no piece is at that
@@ -98,8 +112,7 @@ public class ChessBoard {
     }
 
     /**
-     * Sets the board to the default starting board
-     * (How the game of chess normally starts)
+     * Updates the chess board to the classic starting position.
      */
     public void resetBoard() {
         board = new ChessPiece[][]{

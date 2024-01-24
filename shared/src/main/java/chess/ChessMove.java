@@ -9,24 +9,56 @@ import java.util.Objects;
  * signature of the existing methods.
  */
 public class ChessMove {
+
     private final ChessPosition startPosition;
     private final ChessPosition endPosition;
     private final ChessPiece.PieceType promotionPiece;
 
+
+    /**
+     * Constructs a ChessMove object with promotion piece specified.
+     * @param startPosition     desired start position
+     * @param endPosition       desired end position
+     * @param promotionPiece    desired promotion piece
+     */
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition, ChessPiece.PieceType promotionPiece) {
         this.startPosition = startPosition;
         this.endPosition = endPosition;
         this.promotionPiece = promotionPiece;
     }
 
+
+    /**
+     * Constructs a ChessMove object without promotion piece specified (null).
+     * @param startPosition     desired start position
+     * @param endPosition       desired end position
+     */
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition) {
         this(startPosition, endPosition,null);
     }
 
-    public ChessMove(ChessPosition startPosition, int x, int y) {
-        this(startPosition, startPosition.getRelativePosition(x, y), null);
 
+    /**
+     * Constructs a ChessMove object by end coordinates, promotion piece unspecified (null).
+     * @param startPosition desired start position
+     * @param x             desired ending row
+     * @param y             desired ending column
+     */
+    public ChessMove(ChessPosition startPosition, int x, int y) {
+        this(startPosition, x, y, null);
     }
+
+
+    /**
+     * Constructs a ChessMove object by end coordinates, promotion piece specified@param startPosition desired start position.
+     * @param x             desired ending row
+     * @param y             desired ending column
+     * @param piece         desired promotion piece
+     */
+    public ChessMove(ChessPosition startPosition, int x, int y, ChessPiece.PieceType piece) {
+        this(startPosition, startPosition.getRelativePosition(x, y), piece);
+    }
+
 
     /**
      * @param o other ChessMove object
@@ -40,6 +72,7 @@ public class ChessMove {
         return Objects.equals(startPosition, chessMove.startPosition) && Objects.equals(endPosition, chessMove.endPosition) && promotionPiece == chessMove.promotionPiece;
     }
 
+
     /**
      * @return  hashCode based on attributes of the ChessMove class
      */
@@ -48,24 +81,31 @@ public class ChessMove {
         return Objects.hash(startPosition, endPosition, promotionPiece);
     }
 
+
     /**
-     * @return  ChessPosition of starting location
+     * @return  startPosition getter
      */
     public ChessPosition getStartPosition() {
         return startPosition;
     }
 
+
     /**
-     * @return  ChessPosition of ending location
+     * @return  endPosition getter
      */
     public ChessPosition getEndPosition() {
         return endPosition;
     }
 
+
+    /**
+     * @return string representation of ChessMove object
+     */
     @Override
     public String toString() {
         return startPosition + "->" + endPosition;
     }
+
 
     /**
      * @return  If both the start and end positions are found on the board
