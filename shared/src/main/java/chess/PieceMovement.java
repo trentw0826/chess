@@ -70,8 +70,8 @@ public abstract class PieceMovement {
       while (true) {
         ChessMove move = new ChessMove(position, i * rowOffset, i * colOffset);
 
-        if (!(move.moveIsWithinBounds() && board.endPositionIsEmpty(move))) {
-          if (board.endPositionIsEnemy(move)) {
+        if (!(move.moveIsWithinBounds() && board.landsOnEmpty(move))) {
+          if (board.landsOnEnemy(move)) {
             // Ends with enemy
             addMove(move);
           }
@@ -111,7 +111,7 @@ public abstract class PieceMovement {
       return validatePawnMove(move);
     } else {
       // The end position on the board and is either empty or occupied by an enemy piece
-      return move.moveIsWithinBounds() && (board.endPositionIsEnemy(move) || board.endPositionIsEmpty(move));
+      return move.moveIsWithinBounds() && (board.landsOnEnemy(move) || board.landsOnEmpty(move));
     }
   }
 
@@ -136,10 +136,10 @@ public abstract class PieceMovement {
 
     if (rowDifference == 1) {
       if (colDifference == 1) {       // Sideways capture
-        return board.endPositionIsEnemy(move);
+        return board.landsOnEnemy(move);
       }
       else if (colDifference == 0) {  // Single forward push
-        return board.endPositionIsEmpty(move);
+        return board.landsOnEmpty(move);
       }
       else {                          // Invalid colDifference
         return false;
@@ -147,7 +147,7 @@ public abstract class PieceMovement {
     }
     else if (rowDifference == 2) {    // Double forward push
       ChessMove doubleMove = new ChessMove(move.getStartPosition(), 2 * direction, 0);
-      return board.endPositionIsEmpty(move) && board.endPositionIsEmpty(doubleMove);
+      return board.landsOnEmpty(move) && board.landsOnEmpty(doubleMove);
     }
     return false;                     // Invalid pawn move
   }

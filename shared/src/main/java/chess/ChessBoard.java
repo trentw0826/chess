@@ -58,9 +58,9 @@ public class ChessBoard {
      * @param move a move to check for emptiness
      * @return if the ending square is blank
      */
-    public boolean endPositionIsEmpty(ChessMove move) {
+    public boolean landsOnEmpty(ChessMove move) {
         ChessPosition endPosition = move.getEndPosition();
-        return (endPosition.positionIsOnBoard() && board[endPosition.getRow() - 1][endPosition.getColumn() - 1] == null);
+        return (endPosition.positionIsWithinBounds() && board[endPosition.getRow() - 1][endPosition.getColumn() - 1] == null);
     }
 
 
@@ -70,13 +70,12 @@ public class ChessBoard {
      * @param move  move to be checked
      * @return      if the ending position contains an enemy piece
      */
-    public boolean endPositionIsEnemy(ChessMove move) {
-        ChessPiece startPiece = getPiece(move);
+    public boolean landsOnEnemy(ChessMove move) {
+        ChessPiece startPiece = getPiece(move.getStartPosition());
         ChessPiece endPiece = getPiece(move.getEndPosition());
 
-        if (endPiece == null || startPiece == null) { return false; }
-
-        return (endPiece.getTeamColor() != startPiece.getTeamColor());
+        // The end piece exists and is an enemy
+        return endPiece != null && endPiece.getTeamColor() != startPiece.getTeamColor();
     }
 
 
@@ -99,7 +98,7 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        if (!position.positionIsOnBoard()) {
+        if (!position.positionIsWithinBounds()) {
             return null;
         }
         return board[position.getRow() - 1][position.getColumn() - 1];

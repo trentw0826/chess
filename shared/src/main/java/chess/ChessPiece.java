@@ -38,6 +38,17 @@ public class ChessPiece {
         blackPieceStrings.put(NONE, "   ");
     }
 
+    /**
+     * ChessPiece class constructor.
+     *
+     * @param pieceColor    The color of the piece
+     * @param type          The piece type
+     */
+    public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+        this.pieceColor = pieceColor;
+        this.pieceType = type;
+    }
+
 
     /**
      * @return string representation of piece
@@ -59,18 +70,6 @@ public class ChessPiece {
         ROOK,
         PAWN,
         NONE
-    }
-
-
-    /**
-     * ChessPiece class constructor.
-     *
-     * @param pieceColor    The color of the piece
-     * @param type          The piece type
-     */
-    public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
-        this.pieceColor = pieceColor;
-        this.pieceType = type;
     }
 
 

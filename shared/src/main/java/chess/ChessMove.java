@@ -28,14 +28,14 @@ public class ChessMove {
     }
 
 
-//    /**
-//     * Constructs a ChessMove object without promotion piece specified (null).
-//     * @param startPosition     desired start position
-//     * @param endPosition       desired end position
-//     */
-//    public ChessMove(ChessPosition startPosition, ChessPosition endPosition) {
-//        this(startPosition, endPosition,null);
-//    }
+    /**
+     * Constructs a ChessMove object without promotion piece specified (null).
+     * @param startPosition     desired start position
+     * @param endPosition       desired end position
+     */
+    public ChessMove(ChessPosition startPosition, ChessPosition endPosition) {
+        this(startPosition, endPosition,null);
+    }
 
 
     /**
@@ -67,7 +67,7 @@ public class ChessMove {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) return false   ;
         ChessMove chessMove=(ChessMove) o;
         return Objects.equals(startPosition, chessMove.startPosition) && Objects.equals(endPosition, chessMove.endPosition) && promotionPiece == chessMove.promotionPiece;
     }
@@ -111,6 +111,6 @@ public class ChessMove {
      * @return  If both the start and end positions are found on the board
      */
     public boolean moveIsWithinBounds() {
-        return (endPosition.positionIsOnBoard() && startPosition.positionIsOnBoard());
+        return (endPosition.positionIsWithinBounds() && startPosition.positionIsWithinBounds());
     }
 }

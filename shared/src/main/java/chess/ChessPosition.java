@@ -20,6 +20,7 @@ public class ChessPosition {
      * @param col   desired col position
      */
     public ChessPosition(int row, int col) {
+
         this.row = row;
         this.col = col;
     }
@@ -75,7 +76,7 @@ public class ChessPosition {
     /**
      * @return if both the row and the col are within the 8x8 bounds of the board
      */
-    public boolean positionIsOnBoard() {
+    public boolean positionIsWithinBounds() {
         return (0 < row && row <= 8 && 0 < col && col <= 8);
     }
 
