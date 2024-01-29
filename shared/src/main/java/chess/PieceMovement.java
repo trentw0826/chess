@@ -10,10 +10,10 @@ import static chess.ChessGame.TeamColor.*;
 
 
 /**
- * Parent class used to generate all possible moves of a given piece.
+ * Given a board and position, calculates and holds all the possible moves of the piece at that position
  */
-public abstract class PieceMovement {
-
+public class PieceMovement {
+  // TODO: Convert to interface?
   protected static final EnumSet<ChessPiece.PieceType> PROMOTION_TYPES = EnumSet.of(QUEEN, ROOK, BISHOP, KNIGHT);
 
   protected static final int[][] ALL_DIRECTIONS= {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {1, -1}, {-1, -1}, {-1, 1}};
@@ -38,6 +38,14 @@ public abstract class PieceMovement {
 
     this.type = type;
     this.color = color;
+    this.board = board;
+    this.position = position;
+  }
+
+  protected PieceMovement(ChessBoard board, ChessPosition position) {
+
+    this.type = board.getPiece(position).getPieceType();
+    this.color = board.getPiece(position).getTeamColor();
     this.board = board;
     this.position = position;
   }
@@ -103,64 +111,13 @@ public abstract class PieceMovement {
 
 
   /**
-   * @return If the move is on the board and doesn't end on a friendly piece
-   */
-  protected boolean validateMove(ChessMove move) {
-
-    if (board.getPiece(move).getPieceType() == PAWN) {
-      return validatePawnMove(move);
-    } else {
-      // The end position on the board and is either empty or occupied by an enemy piece
-      return move.moveIsWithinBounds() && (board.landsOnEnemy(move) || board.landsOnEmpty(move));
-    }
-  }
-
-
-  /**
-   * Validates a pawn move.
-   * A pawn move is valid if: it moves once to an empty square, it moves twice to an empty square
-   * (passing through an empty square), it moves up and to the side to an enemy-occupied square
-   *
-   * @param move  ChessMove object to be checked
-   * @return      If pawn move is valid
-   */
-  protected boolean validatePawnMove(ChessMove move) {
-
-    int direction = (board.getPiece(move).getTeamColor() == WHITE) ? 1 : -1;
-
-    ChessPosition startPosition = move.getStartPosition();
-    ChessPosition endPosition = move.getEndPosition();
-
-    int rowDifference = Math.abs(endPosition.getRow() - startPosition.getRow());
-    int colDifference = Math.abs(endPosition.getColumn() - startPosition.getColumn());
-
-    if (rowDifference == 1) {
-      if (colDifference == 1) {       // Sideways capture
-        return board.landsOnEnemy(move);
-      }
-      else if (colDifference == 0) {  // Single forward push
-        return board.landsOnEmpty(move);
-      }
-      else {                          // Invalid colDifference
-        return false;
-      }
-    }
-    else if (rowDifference == 2) {    // Double forward push
-      ChessMove doubleMove = new ChessMove(move.getStartPosition(), 2 * direction, 0);
-      return board.landsOnEmpty(move) && board.landsOnEmpty(doubleMove);
-    }
-    return false;                     // Invalid pawn move
-  }
-
-
-  /**
    * Takes a move and adds it to possibleMoves if valid
    * @param move move to be tested
    * @return if move was added
    */
   protected boolean addMoveIfValid(ChessMove move) {
 
-    if (validateMove(move)) {
+    if (board.validateMove(move)) {
       addMove(move);
       return true;
     }
@@ -386,7 +343,7 @@ class Pawn extends PieceMovement {
 
     for (int offset : new int[]{-1, 0, 1}) {
       ChessMove move = new ChessMove(position, direction, offset);
-      if (validateMove(move)) {
+      if (board.validateMove(move)) {
         for (ChessPiece.PieceType piece : PROMOTION_TYPES) {
           possibleMoves.add(new ChessMove(position, direction, offset, piece));
         }

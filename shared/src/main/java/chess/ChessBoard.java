@@ -48,7 +48,14 @@ public class ChessBoard {
      */
     @Override
     public String toString() {
-        return Arrays.deepToString(board);
+        StringBuilder str = new StringBuilder();
+        for (ChessPiece[] row : board) {
+            for (ChessPiece piece : row) {
+                str.append("|").append(piece.toString());
+            }
+            str.append("|\n");
+        }
+        return str.toString();
     }
 
 
@@ -111,6 +118,85 @@ public class ChessBoard {
      */
     public ChessPiece getPiece(ChessMove move) {
         return (getPiece(move.getStartPosition()));
+    }
+
+
+    /**
+     * Validates a move based on the board and a given current turn.
+     *
+     * @param move      the move to be checked
+     * @param currTurn  current game turn
+     * @return          if the move is valid
+     */
+    protected boolean validateMove(ChessMove move, ChessGame.TeamColor currTurn) {
+        ChessPiece piece = getPiece(move);
+        if (piece.getTeamColor() != currTurn) {
+            return false;
+        }
+        return validateMove(move);
+    }
+
+    /**
+     * Validates a move without checking the turn.
+     *
+     * @param move  move to be checked
+     * @return      if the move is valid
+     */
+    protected boolean validateMove(ChessMove move) {
+        ChessPiece piece = getPiece(move);
+        if (piece.getPieceType() == PAWN) {
+            return validatePawnMove(move);
+        } else {
+            // The end position is on the board and is either empty or occupied by an enemy piece
+            return move.moveIsWithinBounds() && (landsOnEnemy(move) || landsOnEmpty(move));
+        }
+    }
+
+
+    /**
+     * Validates a pawn move.
+     * A pawn move is valid if: it moves once to an empty square, it moves twice to an empty square
+     * (passing through an empty square), it moves up and to the side to an enemy-occupied square
+     *
+     * @param move  ChessMove object to be checked
+     * @return      If pawn move is valid
+     */
+    protected boolean validatePawnMove(ChessMove move) {
+
+        int direction = (getPiece(move).getTeamColor() == WHITE) ? 1 : -1;
+
+        ChessPosition startPosition = move.getStartPosition();
+        ChessPosition endPosition = move.getEndPosition();
+
+        int rowDifference = Math.abs(endPosition.getRow() - startPosition.getRow());
+        int colDifference = Math.abs(endPosition.getColumn() - startPosition.getColumn());
+
+        if (rowDifference == 1) {
+            if (colDifference == 1) {       // Sideways capture
+                return landsOnEnemy(move);
+            }
+            else if (colDifference == 0) {  // Single forward push
+                return landsOnEmpty(move);
+            }
+            else {                          // Invalid colDifference
+                return false;
+            }
+        }
+        else if (rowDifference == 2) {    // Double forward push
+            ChessMove doubleMove = new ChessMove(move.getStartPosition(), 2 * direction, 0);
+            return landsOnEmpty(move) && landsOnEmpty(doubleMove);
+        }
+        return false;                     // Invalid pawn move
+    }
+
+
+    /**
+     * Adds an empty piece to the board at the given position.
+     *
+     * @param position  position to be made empty
+     */
+    public void addEmptyPiece(ChessPosition position) {
+        addPiece(position, null);
     }
 
 
