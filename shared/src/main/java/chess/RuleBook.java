@@ -5,6 +5,10 @@ import java.util.Collection;
 public interface RuleBook {
   Collection<ChessMove> validMoves = null;
 
+  default Collection<ChessMove> getValidMoves() {
+    return validMoves;
+  }
+
   /**
    * Returns if a given ChessBoard object represents a valid chess board position.
    * A board's position is valid if: All positions should have exactly one king for each side.

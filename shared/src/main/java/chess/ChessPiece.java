@@ -118,18 +118,7 @@ public class ChessPiece {
      *
      * @return Collection of valid moves
      */
-    public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        PieceMovement pieceMoves;
-
-        switch (pieceType) {
-            case KING -> pieceMoves = new King(board, myPosition, pieceColor);
-            case QUEEN -> pieceMoves = new Queen(board, myPosition, pieceColor);
-            case ROOK -> pieceMoves = new Rook(board, myPosition, pieceColor);
-            case BISHOP -> pieceMoves = new Bishop(board, myPosition, pieceColor);
-            case KNIGHT -> pieceMoves = new Knight(board, myPosition, pieceColor);
-            case PAWN -> pieceMoves = new Pawn(board, myPosition, pieceColor);
-            default -> throw new IllegalArgumentException("Invalid pieceType");
-        }
-        return pieceMoves.getPossibleMoves();
+    public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition position) {
+        return PieceMovement.getPossibleMoves(board, position);
     }
 }

@@ -10,14 +10,13 @@ import static chess.ChessGame.TeamColor.*;
  */
 public class ChessBoard {
 
-    public static final int SIZE = 8;
     private ChessPiece[][] board;
 
     /**
      * Constructs ChessBoard object, a blank double array of size 8x8.
      */
     public ChessBoard() {
-        board = new ChessPiece[SIZE][SIZE];
+        board = new ChessPiece[ChessConstants.BOARD_SIZE][ChessConstants.BOARD_SIZE];
     }
 
 
@@ -43,6 +42,7 @@ public class ChessBoard {
     }
 
 
+    // TODO: Fix nullpointerexception in toString
     /**
      * @return deepToString of board attribute
      */

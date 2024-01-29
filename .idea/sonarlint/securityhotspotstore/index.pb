@@ -37,3 +37,9 @@ S
 #src/main/java/chess/ChessBoard.java,1\3\139d0d4bb2b8e11a4e03dbed5b694452387fb52a
 ]
 -src/main/java/chess/InvalidMoveException.java,7\4\74dbc6a85b1a58bc483c83143b099c250c60bd7d
+y
+Isrc/test/java/passoffTests/chessTests/chessPieceTests/QueenMoveTests.java,6\f\6fcaede35267e7775e58c69043350c168133442f
+W
+'src/main/java/chess/ChessConstants.java,e\e\ee1b4f744f97e5a6bbc93ccb80feccd5d025cc6b
+x
+Hsrc/test/java/passoffTests/chessTests/chessPieceTests/PawnMoveTests.java,7\4\74d39e18807bd4133eca21d9e39d9088150d34c4
