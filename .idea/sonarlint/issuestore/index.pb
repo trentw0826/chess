@@ -43,3 +43,9 @@ W
 'src/main/java/chess/ChessConstants.java,e\e\ee1b4f744f97e5a6bbc93ccb80feccd5d025cc6b
 x
 Hsrc/test/java/passoffTests/chessTests/chessPieceTests/PawnMoveTests.java,7\4\74d39e18807bd4133eca21d9e39d9088150d34c4
+V
+&src/main/java/chess/ChessRuleBook.java,2\6\261ec67fabc615c7eb95fccf8574433b67a6a682
+[
++src/test/java/passoffTests/TestFactory.java,e\f\ef92c18298091d5f469cb3aa27c892701eb79258
+y
+Isrc/test/java/passoffTests/chessTests/chessExtraCredit/CastlingTests.java,4\0\40682cccdb76b5362cc447e0dc7c4b0cb2024761

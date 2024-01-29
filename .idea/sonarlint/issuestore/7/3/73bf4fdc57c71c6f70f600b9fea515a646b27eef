@@ -1,0 +1,19 @@
+
+c	java:S112‡"FDefine and throw a dedicated exception instead of using a generic one.(ŽÖ–†8à À·Õ1
+c	java:S112“"FDefine and throw a dedicated exception instead of using a generic one.(ŽÖ–†8à À·Õ1
+c	java:S112 "FDefine and throw a dedicated exception instead of using a generic one.(ŽÖ–†8à À·Õ1
+n
+java:S1192‡"PDefine a constant instead of duplicating this literal "Not implemented" 3 times.(ŽÖ–†8á À·Õ1
+v
+java:S1450"YRemove the "validMoves" field and declare it as a local variable in the relevant methods.(Óù‹ƒ8æ À·Õ1
+X	java:S125p"<This block of commented-out lines of code should be removed.(‚±Ç8ê À·Õ1
+O
+java:S1135p"2Complete the task associated to this TODO comment.(‚±Ç8ê À·Õ1
+U
+java:S1135†"2Complete the task associated to this TODO comment.(€£‰·ûÿÿÿÿ8ë À·Õ1
+U
+java:S1135’"2Complete the task associated to this TODO comment.(€£‰·ûÿÿÿÿ8ì À·Õ1
+U
+java:S1135Ÿ"2Complete the task associated to this TODO comment.(€£‰·ûÿÿÿÿ8í À·Õ1
+K
+java:S1068".Remove this unused "validMoves" private field.(Óù‹ƒ8í À·Õ1

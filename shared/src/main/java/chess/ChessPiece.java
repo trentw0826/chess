@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.EnumMap;
 
@@ -13,7 +14,7 @@ import static chess.ChessGame.TeamColor.*;
  * Note: You can add to this class, but you may not alter
  * signature of the existing methods.
  */
-public class ChessPiece {
+public class ChessPiece implements Cloneable {
 
     private final ChessGame.TeamColor pieceColor;
     private final ChessPiece.PieceType pieceType;
@@ -59,7 +60,7 @@ public class ChessPiece {
     }
 
 
-    /**
+  /**
      * The various different chess piece options
      */
     public enum PieceType {
@@ -95,6 +96,12 @@ public class ChessPiece {
     }
 
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+
     /**
      * @return Which team this chess piece belongs to
      */
@@ -119,6 +126,6 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition position) {
-        return PieceMovement.getPossibleMoves(board, position);
+        return ChessRuleBook.getValidMoves(board, position);
     }
 }

@@ -1,0 +1,27 @@
+
+g	java:S112)"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8çôä¹Õ1
+
+java:S1488"bImmediately return this expression instead of assigning it to the temporary variable "validMoves".(ğ•«à8èôä¹Õ1
+Z
+java:S1854'"=Remove this useless assignment to local variable "peekBoard".(¿ì¤å8ìôä¹Õ1
+M
+java:S1172#"+Remove this unused method parameter "move".(·ä˜şÿÿÿÿ8ìôä¹Õ1
+K
+java:S1481%".Remove this unused "peekBoard" local variable.(ïĞ¢´8íôä¹Õ1
+T
+java:S1135,"2Complete the task associated to this TODO comment.(Áƒ§ıÿÿÿÿ8Â»å¹Õ1
+X
+java:S1172H";Remove these unused method parameters "board", "teamColor".(ÖŒ¸†8îôä¹Õ1
+X	java:S125="<This block of commented-out lines of code should be removed.(¸ï§Ò8îôä¹Õ1
+W
+java:S1172S";Remove these unused method parameters "board", "teamColor".(¾ÌÓx8îôä¹Õ1
+]
+java:S1172^";Remove these unused method parameters "board", "teamColor".(÷ï×÷üÿÿÿÿ8ïôä¹Õ1
+U
+java:S1144#"3Remove this unused private "peekEnemyMoves" method.(·ä˜şÿÿÿÿ8ïôä¹Õ1
+K
+java:S1144H".Remove this unused private "isInCheck" method.(ÖŒ¸†8ïôä¹Õ1
+N
+java:S1144S"2Remove this unused private "isInCheckMate" method.(¾ÌÓx8ïôä¹Õ1
+T
+java:S1144^"2Remove this unused private "isInStaleMate" method.(÷ï×÷üÿÿÿÿ8ïôä¹Õ1

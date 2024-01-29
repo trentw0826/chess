@@ -15,7 +15,6 @@ public class ChessGame {
     private TeamColor teamTurn;
     private ChessBoard board;
     private Collection<ChessMove> validMoves;
-    private RuleBook ruleBook;
 
     /**
      * Constructs a ChessGame object
@@ -49,7 +48,6 @@ public class ChessGame {
 
     /**
      * Overwritten toString method
-     * @return
      */
     @Override
     public String toString() {
@@ -95,16 +93,12 @@ public class ChessGame {
     /**
      * Gets a valid moves for a piece at the given location
      *
-     * @param startPosition the piece to get valid moves for
+     * @param position the piece to get valid moves for
      * @return Set of valid moves for requested piece, or null if no piece at
      * startPosition
      */
-    public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        ChessPiece piece = board.getPiece(startPosition);
-        if (piece == null) {
-            return null;
-        }
-        return piece.pieceMoves(board, startPosition);
+    public Collection<ChessMove> validMoves(ChessPosition position) {
+        return ChessRuleBook.getValidMoves(board, position);
     }
 
 

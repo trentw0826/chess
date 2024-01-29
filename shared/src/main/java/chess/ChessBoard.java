@@ -8,7 +8,7 @@ import static chess.ChessGame.TeamColor.*;
 /**
  * A chessboard that can hold and rearrange chess pieces.
  */
-public class ChessBoard {
+public class ChessBoard implements Cloneable {
 
     private ChessPiece[][] board;
 
@@ -56,6 +56,30 @@ public class ChessBoard {
             str.append("|\n");
         }
         return str.toString();
+    }
+
+
+    /**
+     * Overwritten clone method.
+     *
+     * @return  a deep copy of the ChessBoard object
+     * @throws  CloneNotSupportedException if cloning is not supported
+     */
+    @Override
+    public ChessBoard clone() throws CloneNotSupportedException {
+        ChessBoard clonedBoard = (ChessBoard) super.clone();
+
+        // Deep copy of the ChessPiece objects
+        clonedBoard.board = new ChessPiece[ChessConstants.BOARD_SIZE][ChessConstants.BOARD_SIZE];
+        for (int i = 0; i < ChessConstants.BOARD_SIZE; i++) {
+            for (int j = 0; j < ChessConstants.BOARD_SIZE; j++) {
+                if (board[i][j] != null) {
+                    clonedBoard.board[i][j] = (ChessPiece) board[i][j].clone();
+                }
+            }
+        }
+
+        return clonedBoard;
     }
 
 

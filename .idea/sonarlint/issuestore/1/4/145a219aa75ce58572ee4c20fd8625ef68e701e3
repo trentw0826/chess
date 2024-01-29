@@ -1,0 +1,19 @@
+
+W
+java:S2386"5Move "validMoves" to a class and lower its visibility(¤Ÿ´ùÿÿÿÿ8Ñ€õ—Õ1
+N
+java:S1172",Remove this unused method parameter "board".(‰ƒªùÿÿÿÿ8ôã—Õ1
+X
+java:S1172"";Remove these unused method parameters "board", "teamColor".(ÖŒ¸†8ôã—Õ1
+W
+java:S1172-";Remove these unused method parameters "board", "teamColor".(¾ÌÓx8ôã—Õ1
+]
+java:S11728";Remove these unused method parameters "board", "teamColor".(÷ï×÷üÿÿÿÿ8–¹ä—Õ1
+S
+java:S1144"1Remove this unused private "isBoardValid" method.(‰ƒªùÿÿÿÿ8©äÛ—Õ1
+K
+java:S1144"".Remove this unused private "isInCheck" method.(ÖŒ¸†8ªäÛ—Õ1
+N
+java:S1144-"2Remove this unused private "isInCheckMate" method.(¾ÌÓx8äÈÜ—Õ1
+T
+java:S11448"2Remove this unused private "isInStaleMate" method.(÷ï×÷üÿÿÿÿ8—‹Ş—Õ1
