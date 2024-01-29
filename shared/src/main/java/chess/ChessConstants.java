@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.EnumSet;
+import java.util.Map;
 
 /**
  * Class of chess constants
@@ -16,6 +17,14 @@ public class ChessConstants {
           ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.KNIGHT);
 
   protected static final int BOARD_SIZE = 8;
+
+  static final Map<ChessPiece.PieceType, Character> PIECE_TYPE_TO_CHAR= Map.of(
+          ChessPiece.PieceType.PAWN, 'p',
+          ChessPiece.PieceType.KNIGHT, 'n',
+          ChessPiece.PieceType.ROOK, 'r',
+          ChessPiece.PieceType.QUEEN, 'q',
+          ChessPiece.PieceType.KING, 'k',
+          ChessPiece.PieceType.BISHOP, 'b');
 
   // Private constructor to avoid compiler's implicit one
   private ChessConstants() { throw new AssertionError("ChessConstants class should not be instantiated"); }

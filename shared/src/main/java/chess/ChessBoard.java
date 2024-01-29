@@ -1,6 +1,6 @@
 package chess;
 
-import java.util.Arrays;
+import java.util.*;
 
 import static chess.ChessPiece.PieceType.*;
 import static chess.ChessGame.TeamColor.*;
@@ -42,7 +42,6 @@ public class ChessBoard implements Cloneable {
     }
 
 
-    // TODO: Fix nullpointerexception in toString
     /**
      * @return deepToString of board attribute
      */
@@ -51,7 +50,8 @@ public class ChessBoard implements Cloneable {
         StringBuilder str = new StringBuilder();
         for (ChessPiece[] row : board) {
             for (ChessPiece piece : row) {
-                str.append("|").append(piece.toString());
+                String pieceStr = (piece == null) ? " " : piece.toString();
+                str.append("|").append(pieceStr);
             }
             str.append("|\n");
         }
