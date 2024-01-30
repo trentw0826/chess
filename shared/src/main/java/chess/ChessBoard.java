@@ -158,11 +158,15 @@ public class ChessBoard implements Cloneable {
             throw new InvalidMoveException("Invalid move attempted: " + move);
         }
 
-        ChessPosition startPosition = move.getStartPosition();
-        ChessPosition endPosition = move.getEndPosition();
+        ChessPiece startPiece = getPiece(move);
+        addEmptyPiece(move.getStartPosition());
 
-        addPiece(endPosition, getPiece(startPosition));
-        addEmptyPiece(startPosition);
+        if (move.hasPromotionPiece()) {
+            addPiece(move.getEndPosition(), new ChessPiece(move.getPromotionPiece(), startPiece.getTeamColor()));
+        }
+        else {
+            addPiece(move.getEndPosition(), new ChessPiece(startPiece.getPieceType(), startPiece.getTeamColor()));
+        }
     }
 
 
@@ -315,14 +319,14 @@ public class ChessBoard implements Cloneable {
      */
     public void resetBoard() {
         board = new ChessPiece[][]{
-                {new ChessPiece(WHITE, ROOK), new ChessPiece(WHITE, KNIGHT), new ChessPiece(WHITE, BISHOP), new ChessPiece(WHITE, QUEEN), new ChessPiece(WHITE, KING), new ChessPiece(WHITE, BISHOP), new ChessPiece(WHITE, KNIGHT), new ChessPiece(WHITE, ROOK)},
-                {new ChessPiece(WHITE, PAWN), new ChessPiece(WHITE, PAWN), new ChessPiece(WHITE, PAWN), new ChessPiece(WHITE, PAWN), new ChessPiece(WHITE, PAWN), new ChessPiece(WHITE, PAWN), new ChessPiece(WHITE, PAWN), new ChessPiece(WHITE, PAWN)},
+                {new ChessPiece(ROOK, WHITE), new ChessPiece(KNIGHT, WHITE), new ChessPiece(BISHOP, WHITE), new ChessPiece(QUEEN, WHITE), new ChessPiece(KING, WHITE), new ChessPiece(BISHOP, WHITE), new ChessPiece(KNIGHT, WHITE), new ChessPiece(ROOK, WHITE)},
+                {new ChessPiece(PAWN, WHITE), new ChessPiece(PAWN, WHITE), new ChessPiece(PAWN, WHITE), new ChessPiece(PAWN, WHITE), new ChessPiece(PAWN, WHITE), new ChessPiece(PAWN, WHITE), new ChessPiece(PAWN, WHITE), new ChessPiece(PAWN, WHITE)},
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null},
-                {new ChessPiece(BLACK, PAWN), new ChessPiece(BLACK, PAWN), new ChessPiece(BLACK, PAWN), new ChessPiece(BLACK, PAWN), new ChessPiece(BLACK, PAWN), new ChessPiece(BLACK, PAWN), new ChessPiece(BLACK, PAWN), new ChessPiece(BLACK,PAWN)},
-                {new ChessPiece(BLACK, ROOK), new ChessPiece(BLACK, KNIGHT), new ChessPiece(BLACK, BISHOP), new ChessPiece(BLACK, QUEEN), new ChessPiece(BLACK, KING), new ChessPiece(BLACK,BISHOP), new ChessPiece(BLACK, KNIGHT), new ChessPiece(BLACK, ROOK)},
+                {new ChessPiece(PAWN, BLACK), new ChessPiece(PAWN, BLACK), new ChessPiece(PAWN, BLACK), new ChessPiece(PAWN, BLACK), new ChessPiece(PAWN, BLACK), new ChessPiece(PAWN, BLACK), new ChessPiece(PAWN, BLACK), new ChessPiece(PAWN, BLACK)},
+                {new ChessPiece(ROOK, BLACK), new ChessPiece(KNIGHT, BLACK), new ChessPiece(BISHOP, BLACK), new ChessPiece(QUEEN, BLACK), new ChessPiece(KING, BLACK), new ChessPiece(BISHOP, BLACK), new ChessPiece(KNIGHT, BLACK), new ChessPiece(ROOK, BLACK)},
         };
     }
 }

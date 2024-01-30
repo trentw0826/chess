@@ -99,6 +99,20 @@ public class ChessMove {
 
 
     /**
+     * @return  promotionPiece getter
+     */
+    public ChessPiece.PieceType getPromotionPiece() {
+        return promotionPiece;
+    }
+
+    /**
+     * @return  if chessMove object has a promotion piece
+     */
+    public boolean hasPromotionPiece() {
+        return promotionPiece != null;
+    }
+
+    /**
      * @return string representation of ChessMove object
      */
     @Override

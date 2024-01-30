@@ -19,10 +19,10 @@ public class ChessPiece implements Cloneable {
   /**
    * ChessPiece class constructor.
    *
-   * @param pieceColor    The color of the piece
-   * @param type          The piece type
+   * @param type       The piece type
+   * @param pieceColor The color of the piece
    */
-  public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+  public ChessPiece(PieceType type, ChessGame.TeamColor pieceColor) {
       this.pieceColor = pieceColor;
       this.pieceType = type;
   }
@@ -94,6 +94,8 @@ public class ChessPiece implements Cloneable {
   public PieceType getPieceType() {
       return pieceType;
   }
+
+
 
 
   // TODO: Delete this method ONCE phase1 is over (is only used to pass phase0 test cases)
