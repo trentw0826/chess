@@ -49,3 +49,7 @@ V
 +src/test/java/passoffTests/TestFactory.java,e\f\ef92c18298091d5f469cb3aa27c892701eb79258
 y
 Isrc/test/java/passoffTests/chessTests/chessExtraCredit/CastlingTests.java,4\0\40682cccdb76b5362cc447e0dc7c4b0cb2024761
+V
+&src/main/java/chess/ChessPosition.java,1\2\12180158e3ed9f2b7cf9588a38f33fca071ee26a
+R
+"src/main/java/chess/ChessMove.java,4\2\429c55da8253d8ee02138d80d1951c5e7d4a468c

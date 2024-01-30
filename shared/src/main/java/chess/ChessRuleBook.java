@@ -22,7 +22,7 @@ public interface ChessRuleBook {
     // If so, remove that move from the possibleMoves array
     ChessGame game = new ChessGame(board, board.getPiece(position).getTeamColor());
     for (ChessMove move : possibleMoves) {
-      peekPossibleEnemyMoves(game, move);
+      Collection<ChessMove> possibleEnemyMoves = peekPossibleEnemyMoves(game, move);
     }
     return possibleMoves;
   }
@@ -46,15 +46,15 @@ public interface ChessRuleBook {
       throw new IllegalArgumentException("Attempted to move null piece");
     }
 
-    ChessGame peekGame = new ChessGame(board, teamTurn);
-
     // Make the move on copied game and check for all possible moves
+    ChessGame peekGame = new ChessGame(board, teamTurn);
     try {
       peekGame.makeMove(move);
     } catch (InvalidMoveException e) {
       throw new RuntimeException(e);
     }
 
+    // Generate all enemy positions and add their possible moves
     Collection<ChessPosition> enemyPositions = peekGame.iterateForFriendlyPieces();
     for (ChessPosition enemyPosition : enemyPositions) {
       possibleEnemyMoves.addAll(PieceMovement.getPossibleMoves(peekGame.getBoard(), enemyPosition));

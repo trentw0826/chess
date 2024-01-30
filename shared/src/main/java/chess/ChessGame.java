@@ -90,14 +90,6 @@ public class ChessGame {
 
 
     /**
-     * Reset the validMoves array
-     */
-    private void resetPossibleMoves() {
-        validMoves = new HashSet<>();
-    }
-
-
-    /**
      * Gets a valid moves for a piece at the given location
      *
      * @param position the piece to get valid moves for
@@ -148,7 +140,7 @@ public class ChessGame {
       int colIt = 0;
       for (ChessPiece piece : row) {
         if (piece != null && piece.getTeamColor() == teamTurn) {
-          friendlyPositions.add(new ChessPosition(rowIt, colIt));
+          friendlyPositions.add(new ChessPosition(rowIt + 1, colIt + 1));
         }
         colIt++;
       }
