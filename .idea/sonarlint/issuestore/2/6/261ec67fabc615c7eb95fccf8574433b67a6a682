@@ -1,17 +1,2 @@
 
-g	java:S112!"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8ËŞ©ÀÕ1
-X	java:S1258"<This block of commented-out lines of code should be removed.(¸ï§Ò8ÕŞ©ÀÕ1
-T
-java:S11359"2Complete the task associated to this TODO comment.(‰ÎÏ…úÿÿÿÿ8ÕŞ©ÀÕ1
-]
-java:S1172\";Remove these unused method parameters "board", "teamColor".(ÇéŠÑÿÿÿÿÿ8ÖŞ©ÀÕ1
-T
-java:S1135]"2Complete the task associated to this TODO comment.(€£‰·ûÿÿÿÿ8ÖŞ©ÀÕ1
-]
-java:S1172h";Remove these unused method parameters "board", "teamColor".(’£‹úÿÿÿÿ8×Ş©ÀÕ1
-T
-java:S1135i"2Complete the task associated to this TODO comment.(€£‰·ûÿÿÿÿ8×Ş©ÀÕ1
-T
-java:S1144\"2Remove this unused private "isInCheckMate" method.(ÇéŠÑÿÿÿÿÿ8×Ş©ÀÕ1
-T
-java:S1144h"2Remove this unused private "isInStaleMate" method.(’£‹úÿÿÿÿ8×Ş©ÀÕ1
+g	java:S112!"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8›¶ıÀÕ1

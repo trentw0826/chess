@@ -74,8 +74,9 @@ public interface ChessRuleBook {
    * @return          if said team is in checkmate
    */
   static boolean isInCheckMate(ChessBoard board, TeamColor teamColor) {
-    // TODO: Implement
-    return false;
+    ChessPosition kingPosition = board.getKingPosition(teamColor);
+    Collection<ChessMove> validKingMoves = getValidMoves(board, kingPosition);
+    return (validKingMoves.isEmpty() && isInCheck(board, teamColor));
   }
 
   /**
@@ -86,7 +87,8 @@ public interface ChessRuleBook {
    * @return          if said team is in stalemate
    */
   static boolean isInStaleMate(ChessBoard board, TeamColor teamColor) {
-    // TODO: Implement
-    return false;
+    ChessPosition kingPosition = board.getKingPosition(teamColor);
+    Collection<ChessMove> validKingMoves = getValidMoves(board, kingPosition);
+    return (validKingMoves.isEmpty() && !isInCheck(board, teamColor));
   }
 }

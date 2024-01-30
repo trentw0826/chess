@@ -1,7 +1,10 @@
 package chess;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Objects;
+
+import static chess.ChessConstants.BOARD_SIZE;
 
 /**
  * For a class that can manage a chess game, making moves on a board
@@ -135,8 +138,7 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        // TODO: Implement
-        throw new RuntimeException("Not implemented");
+        return ChessRuleBook.isInCheckMate(board, teamColor);
     }
 
 
@@ -148,8 +150,7 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        // TODO: Implement
-        throw new RuntimeException("Not implemented");
+        return ChessRuleBook.isInStaleMate(board, teamColor);
     }
 
 
