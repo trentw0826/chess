@@ -1,26 +1,17 @@
 
-g	java:S1127"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8ŒÂ¾¼Õ1
-N
-java:S1172N",Remove this unused method parameter "board".(‰ƒªùÿÿÿÿ8”Â¾¼Õ1
-O
-java:S1135O"2Complete the task associated to this TODO comment.(Ø‘ƒ˜8”Â¾¼Õ1
-X
-java:S1172Z";Remove these unused method parameters "board", "teamColor".(ÖŒ¸†8•Â¾¼Õ1
+g	java:S112!"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ8ËŞ©ÀÕ1
+X	java:S1258"<This block of commented-out lines of code should be removed.(¸ï§Ò8ÕŞ©ÀÕ1
 T
-java:S1135["2Complete the task associated to this TODO comment.(€£‰·ûÿÿÿÿ8•Â¾¼Õ1
-W
-java:S1172f";Remove these unused method parameters "board", "teamColor".(¾ÌÓx8•Â¾¼Õ1
-T
-java:S1135g"2Complete the task associated to this TODO comment.(€£‰·ûÿÿÿÿ8•Â¾¼Õ1
+java:S11359"2Complete the task associated to this TODO comment.(‰ÎÏ…úÿÿÿÿ8ÕŞ©ÀÕ1
 ]
-java:S1172r";Remove these unused method parameters "board", "teamColor".(÷ï×÷üÿÿÿÿ8–Â¾¼Õ1
+java:S1172\";Remove these unused method parameters "board", "teamColor".(ÇéŠÑÿÿÿÿÿ8ÖŞ©ÀÕ1
 T
-java:S1135s"2Complete the task associated to this TODO comment.(€£‰·ûÿÿÿÿ8–Â¾¼Õ1
-S
-java:S1144N"1Remove this unused private "isBoardValid" method.(‰ƒªùÿÿÿÿ8–Â¾¼Õ1
-K
-java:S1144Z".Remove this unused private "isInCheck" method.(ÖŒ¸†8–Â¾¼Õ1
-N
-java:S1144f"2Remove this unused private "isInCheckMate" method.(¾ÌÓx8–Â¾¼Õ1
+java:S1135]"2Complete the task associated to this TODO comment.(€£‰·ûÿÿÿÿ8ÖŞ©ÀÕ1
+]
+java:S1172h";Remove these unused method parameters "board", "teamColor".(’£‹úÿÿÿÿ8×Ş©ÀÕ1
 T
-java:S1144r"2Remove this unused private "isInStaleMate" method.(÷ï×÷üÿÿÿÿ8–Â¾¼Õ1
+java:S1135i"2Complete the task associated to this TODO comment.(€£‰·ûÿÿÿÿ8×Ş©ÀÕ1
+T
+java:S1144\"2Remove this unused private "isInCheckMate" method.(ÇéŠÑÿÿÿÿÿ8×Ş©ÀÕ1
+T
+java:S1144h"2Remove this unused private "isInStaleMate" method.(’£‹úÿÿÿÿ8×Ş©ÀÕ1

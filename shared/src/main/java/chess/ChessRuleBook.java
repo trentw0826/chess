@@ -1,7 +1,9 @@
 package chess;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Iterator;
+
+import static chess.ChessGame.TeamColor;
 
 public interface ChessRuleBook {
 
@@ -17,68 +19,44 @@ public interface ChessRuleBook {
   static Collection<ChessMove> getValidMoves(ChessBoard board, ChessPosition position) {
 
     Collection<ChessMove> possibleMoves = PieceMovement.getPossibleMoves(board, position);
+    TeamColor turnColor = board.getPiece(position).getTeamColor();
 
-    // For every possible move, peek into the enemy board and see if the king is in check
-    // If so, remove that move from the possibleMoves array
-    ChessGame game = new ChessGame(board, board.getPiece(position).getTeamColor());
-    for (ChessMove move : possibleMoves) {
-      Collection<ChessMove> possibleEnemyMoves = peekPossibleEnemyMoves(game, move);
+    // For every possible move, see if the king would be in check
+    Iterator<ChessMove> iterator = possibleMoves.iterator();
+    while (iterator.hasNext()) {
+      ChessMove move = iterator.next();
+      ChessBoard boardAfterMove = new ChessBoard(board);
+
+      try {
+        boardAfterMove.makeMove(move);
+      } catch (InvalidMoveException e) {
+        throw new RuntimeException(e);
+      }
+
+      // Pass the theoretical board into isInCheck as if it were still (turnColor)'s turn
+      if (isInCheck(boardAfterMove, turnColor)) {
+        iterator.remove();  // Use iterator to safely remove the current element
+      }
     }
     return possibleMoves;
   }
 
-  /**
-   * For a given move on a chess board, return what the enemy moves would be.
-   *
-   * @param game   chess game to be peeked
-   * @param move    possible move on the board
-   * @return        set of all enemy moves
-   */
-  private static Collection<ChessMove> peekPossibleEnemyMoves(ChessGame game, ChessMove move) {
 
-    ChessBoard board = game.getBoard();
-    ChessGame.TeamColor teamTurn = game.getTeamTurn();
-
-    Collection<ChessMove> possibleEnemyMoves = new HashSet<>();
-    ChessPiece movingPiece = board.getPiece(move);
-
-    if (movingPiece == null) {
-      throw new IllegalArgumentException("Attempted to move null piece");
-    }
-
-    // Make the move on copied game and check for all possible moves
-    ChessGame peekGame = new ChessGame(board, teamTurn);
-    try {
-      peekGame.makeMove(move);
-    } catch (InvalidMoveException e) {
-      throw new RuntimeException(e);
-    }
-
-    // Generate all enemy positions and add their possible moves
-    Collection<ChessPosition> enemyPositions = peekGame.iterateForFriendlyPieces();
-    for (ChessPosition enemyPosition : enemyPositions) {
-      possibleEnemyMoves.addAll(PieceMovement.getPossibleMoves(peekGame.getBoard(), enemyPosition));
-    }
-
-    return possibleEnemyMoves;
-  }
-
-
-  /**
-   * Returns if a given ChessBoard object represents a valid chess board position.
-   * A board's position is valid if: All positions should have exactly one king for each side.
-   * No more than 8 pawns per side.
-   * No pawns on the first or eighth ranks.
-   * Both kings can't be in check
-   * The player not on the move can't be in check.
-   *
-   * @param board board to be checked
-   * @return      if board is valid
-   */
-  private boolean isBoardValid(ChessBoard board) {
-    // TODO: Implement (only if necessary)
-    return false;
-  }
+//  /**
+//   * Returns if a given ChessBoard object represents a valid chess board position.
+//   * A board's position is valid if: All positions should have exactly one king for each side.
+//   * No more than 8 pawns per side.
+//   * No pawns on the first or eighth ranks.
+//   * Both kings can't be in check
+//   * The player not on the move can't be in check.
+//   *
+//   * @param board board to be checked
+//   * @return      if board is valid
+//   */
+//  private boolean isBoardValid(ChessBoard board) {
+//    // TODO: Implement (only if necessary)
+//    return false;
+//  }
 
   /**
    * Returns if the team on the given board is in check;
@@ -87,8 +65,20 @@ public interface ChessRuleBook {
    * @param teamColor team to revise for being in check
    * @return          if the team is in check
    */
-  private boolean isInCheck(ChessBoard board, ChessGame.TeamColor teamColor) {
-    // TODO: Implement
+  private static boolean isInCheck(ChessBoard board, TeamColor teamColor) {
+
+    TeamColor enemyColor = (teamColor == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
+
+    // For each enemy position, check if any of its moves can take the white king
+    Collection<ChessPosition> enemyPositions = board.iterateForFriendlyPieces(enemyColor);
+    for (ChessPosition anEnemyPosition : enemyPositions) {
+      Collection<ChessMove> possibleEnemyMoves = PieceMovement.getPossibleMoves(board, anEnemyPosition);
+      for (ChessMove possibleEnemyMove : possibleEnemyMoves) {
+        if (board.landsOnEnemy(possibleEnemyMove) && board.getCapturedPiece(possibleEnemyMove).getPieceType() == ChessPiece.PieceType.KING) {
+          return true;
+        }
+      }
+    }
     return false;
   }
 
@@ -99,7 +89,7 @@ public interface ChessRuleBook {
    * @param teamColor team to revise for being in checkmate
    * @return          if said team is in checkmate
    */
-  private boolean isInCheckMate(ChessBoard board, ChessGame.TeamColor teamColor) {
+  private boolean isInCheckMate(ChessBoard board, TeamColor teamColor) {
     // TODO: Implement
     return false;
   }
@@ -111,7 +101,7 @@ public interface ChessRuleBook {
    * @param teamColor team to revise for being in stalemate
    * @return          if said team is in stalemate
    */
-  private boolean isInStaleMate(ChessBoard board, ChessGame.TeamColor teamColor) {
+  private boolean isInStaleMate(ChessBoard board, TeamColor teamColor) {
     // TODO: Implement
     return false;
   }
