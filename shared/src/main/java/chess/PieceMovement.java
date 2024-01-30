@@ -14,7 +14,7 @@ public interface PieceMovement {
    * @return set of all possible moves for the given board at the given position.
    */
   static Collection<ChessMove> getPossibleMoves(ChessBoard board, ChessPosition position) {
-    Collection<ChessMove> moves = Collections.emptySet();
+    Collection<ChessMove> moves = new HashSet<>();
 
     ChessPiece piece = board.getPiece(position);
     if (piece == null) return moves;

@@ -48,7 +48,8 @@ public class ChessBoard implements Cloneable {
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
-        for (ChessPiece[] row : board) {
+        for (int i = 8; i >= 1; i--) {
+            ChessPiece[] row = board[i - 1];
             for (ChessPiece piece : row) {
                 String pieceStr = (piece == null) ? " " : piece.toString();
                 str.append("|").append(pieceStr);
@@ -144,6 +145,13 @@ public class ChessBoard implements Cloneable {
         return (getPiece(move.getStartPosition()));
     }
 
+
+    /**
+     * @return  'board' attribute
+     */
+    public ChessPiece[][] getBoard() {
+        return board;
+    }
 
     /**
      * Validates a move based on the board and a given current turn.
