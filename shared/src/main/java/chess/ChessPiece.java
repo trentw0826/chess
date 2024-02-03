@@ -96,9 +96,6 @@ public class ChessPiece implements Cloneable {
   }
 
 
-
-
-  // TODO: Delete this method ONCE phase1 is over (is only used to pass phase0 test cases)
   /**
    * Calculates all the positions a chess piece can move to.
    * Does not take into account moves that are illegal due to leaving the king in
@@ -107,6 +104,6 @@ public class ChessPiece implements Cloneable {
    * @return Collection of valid moves
    */
   public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition position) {
-      return ChessRuleBook.getValidMoves(board, position);
+    return PieceMovement.getPossibleMoves(board, position);
   }
 }
