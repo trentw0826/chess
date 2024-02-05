@@ -48,7 +48,6 @@ public class ChessPiece implements Cloneable {
       KNIGHT,
       ROOK,
       PAWN,
-      NONE
   }
 
 
@@ -74,6 +73,11 @@ public class ChessPiece implements Cloneable {
   }
 
 
+  /**
+   * Overwritten clone  method.
+   *
+   * @return  clone of the current ChessPiece object
+   */
   @Override
   public Object clone() throws CloneNotSupportedException {
       return super.clone();
