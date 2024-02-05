@@ -22,7 +22,7 @@ public class ChessPiece implements Cloneable {
    * @param type       The piece type
    * @param pieceColor The color of the piece
    */
-  public ChessPiece(PieceType type, ChessGame.TeamColor pieceColor) {
+  public ChessPiece(ChessGame.TeamColor pieceColor, PieceType type) {
       this.pieceColor = pieceColor;
       this.pieceType = type;
   }

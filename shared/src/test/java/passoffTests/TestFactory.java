@@ -23,7 +23,7 @@ public class TestFactory {
     }
 
     public static ChessPiece getNewPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
-        return new ChessPiece(type, pieceColor);
+        return new ChessPiece(pieceColor, type);
     }
 
     public static ChessPosition getNewPosition(int row, int col) {
@@ -67,7 +67,9 @@ public class TestFactory {
     }
 
     static public void validateMoves(ChessBoard board, ChessPiece testPiece, ChessPosition startPosition, Set<ChessMove> validMoves) {
-        var pieceMoves = new HashSet<>(testPiece.pieceMoves(board, startPosition));
+        var generatedMoves = testPiece.pieceMoves(board, startPosition);
+        var pieceMoves = new HashSet<>(generatedMoves);
+        Assertions.assertEquals(generatedMoves.size(), pieceMoves.size(), "Duplicate move");
         Assertions.assertEquals(validMoves, pieceMoves, "Wrong moves");
     }
 
