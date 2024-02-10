@@ -1,12 +1,10 @@
-# ♕ BYU CS 240 Chess
+# ♕ Chess
 
 This project demonstrates mastery of proper software design, client/server architecture, networking using HTTP and WebSocket, database persistence, unit testing, serialization, and security.
 
 ## 10k Architecture Overview
 
-The application implements a multiplayer chess server and a command line chess client.
-
-[![Sequence Diagram](10k-architecture.png)](https://sequencediagram.org/index.html#initialData=C4S2BsFMAIGEAtIGckCh0AcCGAnUBjEbAO2DnBElIEZVs8RCSzYKrgAmO3AorU6AGVIOAG4jUAEyzAsAIyxIYAERnzFkdKgrFIuaKlaUa0ALQA+ISPE4AXNABWAexDFoAcywBbTcLEizS1VZBSVbbVc9HGgnADNYiN19QzZSDkCrfztHFzdPH1Q-Gwzg9TDEqJj4iuSjdmoMopF7LywAaxgvJ3FC6wCLaFLQyHCdSriEseSm6NMBurT7AFcMaWAYOSdcSRTjTka+7NaO6C6emZK1YdHI-Qma6N6ss3nU4Gpl1ZkNrZwdhfeByy9hwyBA7mIT2KAyGGhuSWi9wuc0sAI49nyMG6ElQQA)
+The application implements a multiplayer chess server and a command-line chess client.
 
 ## IntelliJ Support
 
@@ -36,5 +34,5 @@ Once you have compiled your project into an uber jar, you can execute it with th
 ```sh
 java -jar client/target/client-jar-with-dependencies.jar
 
-♕ 240 Chess Client: chess.ChessPiece@7852e922
+♕ Chess: chess.ChessPiece@7852e922
 ```
