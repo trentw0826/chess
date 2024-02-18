@@ -1,0 +1,107 @@
+actor Client
+participant Server
+participant Service
+
+participant DataAccess
+
+database db
+
+participant Service
+
+group #navy Registration #white
+Client -> Server: [POST] /user\n{username, password, email}
+Server -> Service: register(username, password, email)
+Service -> DataAccess: getUser(username)
+DataAccess -> db: SELECT username FROM user
+DataAccess --> Service: null
+Service -> DataAccess: createUser(username, password)
+DataAccess -> db: INSERT username, password, email INTO user
+Service -> DataAccess: createAuth(username)
+DataAccess -> db: INSERT username, authToken INTO auth
+DataAccess --> Service: authToken
+Service --> Server: authToken
+Server --> Client: 200\n{authToken}
+end
+
+group #orange Login #white
+Client -> Server: [POST] /session\n{username, password}
+Server -> Service: login(username, password)
+Service ->DataAccess: getUser(username)
+DataAccess -> db: SELECT username FROM user
+DataAccess -->Service: user
+Service ->Service: validatePassword(password, user)
+Service -> DataAccess: createAuth(username)
+DataAccess -> db: INSERT username, authToken INTO auth
+DataAccess --> Service: authToken
+Service --> Server: authToken
+Server --> Client: 200\n{authToken}
+end
+
+group #green Logout #white
+Client -> Server: [DELETE] /session\nauthToken
+Server -> Service: logout(authToken)
+Service -> DataAccess: getAuth(authToken)
+DataAccess ->db: SELECT authToken from AUTH
+Service -> DataAccess: deleteAuth(authToken)
+DataAccess -> db: DELETE authToken FROM auth
+DataAccess --> Service: null
+Service --> Server: null
+Server --> Client: 200
+end
+
+group #red List Games #white
+Client -> Server: [GET] /game\nauthToken
+Server -> Service: listGames(authToken)
+Service -> DataAccess: getAuth(authToken)
+DataAccess ->db: SELECT authToken FROM auth
+Service->DataAccess: listGames()
+DataAccess->db:SELECT * FROM game
+db-->DataAccess: game
+DataAccess-->Service: allGames
+Service-->Server: allGames
+Server-->Client: 200 {allGames}
+
+end
+
+group #purple Create Game #white
+Client -> Server: [POST] /game\nauthToken\n{gameName}
+Server -> Service: createGame(authToken, gameName)
+Service ->DataAccess: getAuth(authToken)
+DataAccess->db: SELECT authToken FROM auth
+Service ->DataAccess: createGame(gameName)
+DataAccess->db: INSERT game INTO game
+DataAccess-->Service: gameID
+Service-->Server: gameID
+Server-->Client: 200 {gameID}
+
+end
+
+group #yellow Join Game #black
+Client -> Server: [PUT] /game\nauthToken\n{ClientColor, gameID}
+Server ->Service:joinGame(color, gameID)
+Service -> DataAccess: getAuth(authToken)
+DataAccess ->db: SELECT authToken FROM auth
+DataAccess -->Service: username
+Service ->DataAccess: getGame(gameID)
+DataAccess -> db: SELECT gameID FROM game
+DataAccess -->Service:game
+Service ->DataAccess: updateGame(username, color)
+DataAccess -> db: UPDATE game SET color WHERE game
+DataAccess -->Service: null
+Service -->Server: null
+Server -->Client: 200
+end
+
+group #gray Clear application #white
+Client -> Server: [DELETE] /db
+Server -> Service: clear()
+Service -> DataAccess: clearAllUsers()
+DataAccess -> db: DELETE FROM user
+Service -> DataAccess: clearAllAuthTokens()
+DataAccess -> db: DELETE FROM auth
+Service -> DataAccess: clearAllGames()
+DataAccess -> db: DELETE FROM game
+DataAccess --> Service: null
+Service --> Server: null
+Server --> Client: 200
+end
