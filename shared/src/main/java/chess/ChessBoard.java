@@ -10,8 +10,6 @@ import static chess.ChessGame.TeamColor.*;
  */
 public class ChessBoard implements Cloneable {
 
-    // TODO: Create a "updateBoard()" like 'makeMove' but no exceptions
-
     private ChessPiece[][] board;
 
     /**
@@ -26,12 +24,8 @@ public class ChessBoard implements Cloneable {
      *
      * @param board ChessBoard object to be cloned
      */
-    public ChessBoard(ChessBoard board) {
-      try {
+    public ChessBoard(ChessBoard board) throws CloneNotSupportedException {
         this.board = board.clone().getBoard();
-      } catch (CloneNotSupportedException e) {
-        throw new RuntimeException(e);
-      }
     }
 
 
@@ -117,7 +111,7 @@ public class ChessBoard implements Cloneable {
             }
             rowIt++;
         }
-        throw new RuntimeException("King not found on board");
+        throw new IllegalStateException("King not found on board");
     }
 
 

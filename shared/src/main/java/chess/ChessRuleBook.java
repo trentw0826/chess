@@ -25,7 +25,14 @@ public interface ChessRuleBook {
     Iterator<ChessMove> iterator = possibleMoves.iterator();
     while (iterator.hasNext()) {
       ChessMove move = iterator.next();
-      ChessBoard boardAfterMove = new ChessBoard(board);
+      ChessBoard boardAfterMove;
+
+      try {
+        boardAfterMove = new ChessBoard(board);
+      }
+      catch (CloneNotSupportedException e){
+        throw new IllegalArgumentException("Board could not be cloned");
+      }
 
       try {
         boardAfterMove.makeMove(move);
