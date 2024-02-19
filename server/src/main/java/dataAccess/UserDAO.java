@@ -2,14 +2,15 @@ package dataAccess;
 
 import model.UserData;
 
-public interface UserDao extends DataAccessObject{
+public interface UserDAO extends DataAccessObject{
 
   /**
    * Create a new user object in the database.
    *
    * @param userData  the user data to be inserted
+   * @throws DataAccessException  user could not be inserted
    */
-  void createUser(UserData userData);
+  void createUser(UserData userData) throws DataAccessException;
 
 
   /**
@@ -17,7 +18,7 @@ public interface UserDao extends DataAccessObject{
    *
    * @param username  the user's username
    * @return          the user object associated with the given username
-   * @throws DataAccessException  if the username is not associated with any user object in the database
+   * @throws DataAccessException  the username is not associated with any user object in the database
    */
   UserData getUser(String username) throws DataAccessException;
 

@@ -43,3 +43,5 @@ U
 %src/main/java/dataAccess/GameDAO.java,6\1\617f044e157f142d8ccbfef4cc97aa186e3572c5
 ^
 .src/main/java/dataAccess/DataAccessObject.java,7\5\75e6bd8be2924f7c6ec3253f802d42b83f5375be
+U
+%src/main/java/dataAccess/UserDAO.java,0\d\0d218636cae875220bfdc56c1352c6e1152f3484
