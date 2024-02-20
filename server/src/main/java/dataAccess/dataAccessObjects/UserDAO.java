@@ -1,8 +1,13 @@
-package dataAccess;
+package dataAccess.dataAccessObjects;
 
+import dataAccess.DataAccessException;
+import dataAccess.DataAccessObject;
 import model.UserData;
 
-public interface UserDAO extends DataAccessObject{
+import java.util.Collections;
+import java.util.Map;
+
+public interface UserDAO extends DataAccessObject {
 
   /**
    * Create a new user object in the database.

@@ -1,5 +1,7 @@
-package dataAccess;
+package dataAccess.dataAccessObjects;
 
+import dataAccess.DataAccessException;
+import dataAccess.DataAccessObject;
 import model.AuthData;
 
 public interface AuthDAO extends DataAccessObject {

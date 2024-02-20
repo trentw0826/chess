@@ -1,11 +1,13 @@
-package dataAccess;
+package dataAccess.dataAccessObjects;
 
-import chess.ChessGame;
+import dataAccess.DataAccessException;
+import dataAccess.DataAccessObject;
 import model.GameData;
 
-import java.util.HashSet;
+import java.util.Collection;
 
-public interface GameDAO extends DataAccessObject{
+
+public interface GameDAO extends DataAccessObject {
 
   /**
    * Creates a new chess game in the game database.
@@ -19,7 +21,7 @@ public interface GameDAO extends DataAccessObject{
   /**
    * @return  a set of all the games in the game database
    */
-  HashSet<GameData> listGames();
+  Collection<GameData> listGames();
 
 
   /**
@@ -39,5 +41,5 @@ public interface GameDAO extends DataAccessObject{
    * @param game    the new chess string for the associated game
    * @throws DataAccessException  no game data is associated with the game ID
    */
-  void updateGame(int gameID, ChessGame game) throws DataAccessException;
+  void updateGame(int gameID, GameData game) throws DataAccessException;
 }
