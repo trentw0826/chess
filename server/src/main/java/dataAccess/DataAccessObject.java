@@ -1,12 +1,17 @@
 package dataAccess;
 
-//TODO: Potentially interface to be generic?
+import java.util.Collection;
 
-public interface DataAccessObject {
-  /**
-   * Clear all data associated with the data access object.
-   *
-   * @throws DataAccessException  data could not be cleared
-   */
-  public void clearData();
+/**
+ * Defines the functionality of a data access object.
+ *
+ * @param <T> data model type
+ * @param <K> key type associated with the data model
+ */
+public interface DataAccessObject<T, K> {
+  void create(T data) throws DataAccessException;
+  T get(K key) throws DataAccessException;
+  void delete(K key) throws DataAccessException;
+  Collection<T> listData();
+  void clear();
 }
