@@ -1,5 +1,6 @@
 package server;
 
+import handler.RegisterHandler;
 import spark.*;
 
 public class Server {
@@ -23,12 +24,12 @@ public class Server {
     }
 
     private static void createRoutes() {
-        Spark.delete("/db", (req, res) -> "TODO: call clear()");                            // clear
-        Spark.post("/user", (req, res) -> "TODO: call register(username, password, email"); // register
-        Spark.post("/session", (req, res) -> "TODO: call login(username, password");        // login
-        Spark.delete("/session", (req, res) -> "TODO: call logout(authToken)");             // logout
-        Spark.get("/game", (req, res) -> "TODO: call listGames(authToken)");                // list games
-        Spark.post("/game", (req, res) -> "TODO: call createGame(authToken, gameName)");    // create game
-        // TODO: Add route to join game
+        Spark.delete("/db", (req, res) -> "TODO: ClearHandler().getInstance().handleRequest(req, res)");                            // clear
+        Spark.post("/user", (req, res) -> RegisterHandler.getInstance().handleRequest(req, res));
+        Spark.post("/session", (req, res) -> "TODO: LoginHandler().getInstance().handleRequest(req, res)");
+        Spark.delete("/session", (req, res) -> "TODO: new LogoutHandler().getInstance().handleRequest(req, res)");
+        Spark.get("/game", (req, res) -> "TODO: ListGameHandler().getInstance().handleRequest(req, res)");
+        Spark.post("/game", (req, res) -> "TODO: CreateGameHandler().getInstance().handleRequest(req, res)");
+        Spark.put("/game", (req, res) -> "TODO: JoinGameHandler().getInstance().handleRequest(req, res)");
     }
 }
