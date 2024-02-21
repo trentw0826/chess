@@ -26,7 +26,7 @@ public class RegisterHandler {
   public String handleRequest(Request req, Response res) {
     UserData request = gson.fromJson(req.body(), UserData.class);
 
-    UserService userService = new UserService();
+    UserService userService = UserService.getInstance();
 
     ServiceResponse result = userService.register(request);
 

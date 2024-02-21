@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-//TODO Make all memory DAO classes singleton
+
 /**
  * Implements the functionality of a local, memory-based data access object.
  * Holds local data in a map.
@@ -21,7 +21,6 @@ public abstract class MemoryDAO<K, T> implements DataAccessObject<K, T> {
   final Map<K, T> localData = new HashMap<>();
 
 
-
   /**
    * Creates a new data entry.
    *
@@ -31,12 +30,12 @@ public abstract class MemoryDAO<K, T> implements DataAccessObject<K, T> {
   @Override
   public K create(T data) throws DataAccessException {
     K key = generateKey(data);
-    if (!dataExists(key)) {
-      localData.put(key, data);
-      return key;
+    if (dataExists(key)) {
+      throw new DataAccessException("Error: already taken");
     }
     else {
-      throw new DataAccessException("Error: already taken");
+      localData.put(key, data);
+      return key;
     }
   }
 
@@ -50,13 +49,14 @@ public abstract class MemoryDAO<K, T> implements DataAccessObject<K, T> {
    */
   @Override
   public T get(K key) throws DataAccessException {
-    if (!dataExists(key)) {
-      throw new DataAccessException("data at key '" + key + "' was not found for retrieval");
-    }
-    else {
+    if (dataExists(key)) {
       return localData.get(key);
     }
+    else {
+      throw new DataAccessException("data at key '" + key + "' was not found for retrieval");
+    }
   }
+
 
   /**
    * Deletes a data entry.
@@ -66,13 +66,14 @@ public abstract class MemoryDAO<K, T> implements DataAccessObject<K, T> {
    */
   @Override
   public void delete(K key) throws DataAccessException {
-    if (!dataExists(key)) {
-      throw new DataAccessException("data at key '" + key + "' was not found for deletion");
-    }
-    else {
+    if (dataExists(key)) {
       localData.remove(key);
     }
+    else {
+      throw new DataAccessException("data at key '" + key + "' was not found for deletion");
+    }
   }
+
 
   /**
    * Lists all existing data.

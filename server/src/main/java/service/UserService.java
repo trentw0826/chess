@@ -10,16 +10,28 @@ import response.ServiceResponse;
 
 import java.util.UUID;
 
-//TODO Make all service classes singleton
 public class UserService {
-  private final MemoryUserDAO memoryUserDAO = new MemoryUserDAO();
-  private final MemoryAuthDAO memoryAuthDAO = new MemoryAuthDAO();
+
+  private final MemoryUserDAO memoryUserDAO;
+  private final MemoryAuthDAO memoryAuthDAO;
+
+  private UserService() {
+    memoryUserDAO = new MemoryUserDAO();
+    memoryAuthDAO = new MemoryAuthDAO();
+  }
+
+  private static final class InstanceHolder {
+    private static final UserService instance = new UserService();
+  }
+
+  public static UserService getInstance() {
+    return InstanceHolder.instance;
+  }
 
   public ServiceResponse register(UserData user) {
     try {
       memoryUserDAO.create(user);
       String authToken = memoryAuthDAO.create(new AuthData(UUID.randomUUID().toString(), user.username()));
-
       return new RegisterResponse(user.username(), authToken);
     }
     catch (DataAccessException e) {
