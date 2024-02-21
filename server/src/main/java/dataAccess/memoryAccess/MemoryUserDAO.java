@@ -5,7 +5,7 @@ import model.UserData;
 /**
  * Defines a data access object that accesses and modifies locally stored user data
  */
-public class MemoryUserDAO extends MemoryDAO<UserData, String> {
+public class MemoryUserDAO extends MemoryDAO<String, UserData> {
 
   /**
    * Returns the username of a user data model as its key

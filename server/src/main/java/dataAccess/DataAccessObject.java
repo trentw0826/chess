@@ -8,8 +8,8 @@ import java.util.Collection;
  * @param <T> data model type
  * @param <K> key type associated with the data model
  */
-public interface DataAccessObject<T, K> {
-  void create(T data) throws DataAccessException;
+public interface DataAccessObject<K, T> {
+  K create(T data) throws DataAccessException;
   T get(K key) throws DataAccessException;
   void delete(K key) throws DataAccessException;
   Collection<T> listData();

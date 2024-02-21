@@ -4,10 +4,10 @@ import dataAccess.DataAccessException;
 import dataAccess.DataAccessObject;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
-
+//TODO Make all memory DAO classes singleton
 /**
  * Implements the functionality of a local, memory-based data access object.
  * Holds local data in a map.
@@ -15,25 +15,28 @@ import java.util.Map;
  * @param <T> data model type
  * @param <K> key type associated with data model type
  */
-public abstract class MemoryDAO<T, K> implements DataAccessObject<T, K> {
+public abstract class MemoryDAO<K, T> implements DataAccessObject<K, T> {
 
   /* Local data structure holding data values*/
-  final Map<K, T> localData = Collections.emptyMap();
+  final Map<K, T> localData = new HashMap<>();
+
+
 
   /**
    * Creates a new data entry.
    *
-   * @param data  data to be inserted
-   * @throws DataAccessException  if data already exists
+   * @param data data to be inserted
+   * @throws DataAccessException if data already exists
    */
   @Override
-  public void create(T data) throws DataAccessException {
+  public K create(T data) throws DataAccessException {
     K key = generateKey(data);
-    if (dataExists(key)) {
-      throw new DataAccessException("inserted data {" + key + ", " + data + "} already exists");
+    if (!dataExists(key)) {
+      localData.put(key, data);
+      return key;
     }
     else {
-      localData.put(key, data);
+      throw new DataAccessException("Error: already taken");
     }
   }
 

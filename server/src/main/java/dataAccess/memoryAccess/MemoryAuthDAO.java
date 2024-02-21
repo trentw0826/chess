@@ -5,7 +5,7 @@ import model.AuthData;
 /**
  * Defines a data access object that accesses and modifies locally stored auth data
  */
-public class MemoryAuthDAO extends MemoryDAO<AuthData, String> {
+public class MemoryAuthDAO extends MemoryDAO<String, AuthData> {
 
   /**
    * Returns the key of an AuthData object.

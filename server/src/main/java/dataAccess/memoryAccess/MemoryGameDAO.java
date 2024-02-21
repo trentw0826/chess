@@ -6,7 +6,7 @@ import model.GameData;
 /**
  * Defines a data access object that accesses and modifies locally stored game data
  */
-public class MemoryGameDAO extends MemoryDAO<GameData, Integer> {
+public class MemoryGameDAO extends MemoryDAO<Integer, GameData> {
 
   /**
    * Returns the key of a GameData object.

@@ -23,6 +23,7 @@ public class Server {
         Spark.awaitStop();
     }
 
+    // TODO Create string constants for the path strings
     private static void createRoutes() {
         Spark.delete("/db", (req, res) -> "TODO: ClearHandler().getInstance().handleRequest(req, res)");                            // clear
         Spark.post("/user", (req, res) -> RegisterHandler.getInstance().handleRequest(req, res));

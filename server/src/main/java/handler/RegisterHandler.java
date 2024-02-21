@@ -1,9 +1,9 @@
 package handler;
 
 import com.google.gson.Gson;
-import request.RegisterRequest;
-import response.RegisterResponse;
-import service.RegisterService;
+import model.UserData;
+import response.ServiceResponse;
+import service.UserService;
 import spark.Request;
 import spark.Response;
 
@@ -13,6 +13,7 @@ public class RegisterHandler {
   // Private constructor for singleton implementation
   private RegisterHandler() {}
 
+  // Singleton implementation
   private static final class InstanceHolder {
     private static final RegisterHandler instance = new RegisterHandler();
   }
@@ -21,11 +22,13 @@ public class RegisterHandler {
     return InstanceHolder.instance;
   }
 
-  public String handleRequest(Request req, Response res) {
-    RegisterRequest request = gson.fromJson(req.body(), RegisterRequest.class);
 
-    RegisterService service = new RegisterService();
-    RegisterResponse result = service.register(request);
+  public String handleRequest(Request req, Response res) {
+    UserData request = gson.fromJson(req.body(), UserData.class);
+
+    UserService userService = new UserService();
+
+    ServiceResponse result = userService.register(request);
 
     return gson.toJson(result);
   }
