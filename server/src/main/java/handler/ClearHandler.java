@@ -1,36 +1,35 @@
 package handler;
 
 import com.google.gson.Gson;
-import model.UserData;
-import response.RegisterResponse;
+import response.ClearResponse;
 import response.ServiceResponse;
-import service.UserService;
+import service.Service;
 import spark.Request;
 import spark.Response;
 
 import java.net.HttpURLConnection;
 import java.util.Map;
 
-public class RegisterHandler {
+public class ClearHandler {
+
   private final Gson gson = new Gson();
-  UserService userService = new UserService();
+  Service service = new Service();
 
   // Private constructor for singleton implementation
-  private RegisterHandler() {}
+  private ClearHandler() {}
 
   // Singleton implementation
   private static final class InstanceHolder {
-    private static final RegisterHandler instance = new RegisterHandler();
+    private static final ClearHandler instance = new ClearHandler();
   }
 
-  public static RegisterHandler getInstance() {
-    return InstanceHolder.instance;
+  public static ClearHandler getInstance() {
+    return ClearHandler.InstanceHolder.instance;
   }
 
 
   public String handleRequest(Request req, Response res) {
-    UserData requestObject = gson.fromJson(req.body(), UserData.class);
-    RegisterResponse responseObject = userService.register(requestObject);
+    ClearResponse responseObject = service.clearAllLocalDatabases();
 
     res.status(getStatusCode(responseObject));
     String responseString = null;
@@ -38,7 +37,7 @@ public class RegisterHandler {
     if (responseObject.isSuccess()) {
       // Registration successful
       res.type("application/json");
-      responseString = gson.toJson(Map.of("username", requestObject.username(), "authToken", responseObject.getAuthToken()));
+      responseString = "";
     }
     else {
       // Registration failed

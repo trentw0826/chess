@@ -1,31 +1,14 @@
 package service;
 
 import dataAccess.DataAccessException;
-import dataAccess.memoryAccess.MemoryAuthDAO;
-import dataAccess.memoryAccess.MemoryUserDAO;
+
 import model.AuthData;
 import model.UserData;
 import response.RegisterResponse;
 
 import java.util.UUID;
 
-public class UserService {
-
-  private final MemoryUserDAO memoryUserDAO;
-  private final MemoryAuthDAO memoryAuthDAO;
-
-  private UserService() {
-    memoryUserDAO = new MemoryUserDAO();
-    memoryAuthDAO = new MemoryAuthDAO();
-  }
-
-  private static final class InstanceHolder {
-    private static final UserService instance = new UserService();
-  }
-
-  public static UserService getInstance() {
-    return InstanceHolder.instance;
-  }
+public class UserService extends Service {
 
   public RegisterResponse register(UserData user) {
     try {
@@ -37,7 +20,4 @@ public class UserService {
       return new RegisterResponse(false, e.toString());
     }
   }
-
-//  public AuthData login(UserData user) {}
-//  public void logout(UserData user) {}
 }

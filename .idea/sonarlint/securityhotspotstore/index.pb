@@ -67,3 +67,13 @@ h
 8src/main/java/dataAccess/memoryAccess/MemoryGameDAO.java,d\4\d4e65cb316431aae8ea1eb458960361d353f35af
 V
 &src/main/java/handler/StatusCodes.java,c\5\c50d7e2aa2fc9fcdff28cc3162baf4fc717df7fc
+R
+"src/main/java/service/Service.java,c\8\c89769fe181d330c440b8bb964f3bd35c8fc8e4e
+V
+&src/main/java/service/AuthService.java,f\5\f577623d535484927fcb9913d4be40aff600b239
+V
+&src/main/java/service/GameService.java,9\f\9fb869ea241e6fca6054397a70142c04b4036d07
+W
+'src/main/java/handler/ClearHandler.java,4\a\4ada5fe153a6bff3c91693a66c2927688a5e762b
+Y
+)src/main/java/response/ClearResponse.java,0\f\0f4ad0bbcfc2d5fa812a172d002733ca904fc39b
