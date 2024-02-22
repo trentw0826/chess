@@ -6,7 +6,6 @@ import dataAccess.memoryAccess.MemoryUserDAO;
 import model.AuthData;
 import model.UserData;
 import response.RegisterResponse;
-import response.ServiceResponse;
 
 import java.util.UUID;
 
@@ -28,14 +27,14 @@ public class UserService {
     return InstanceHolder.instance;
   }
 
-  public ServiceResponse register(UserData user) {
+  public RegisterResponse register(UserData user) {
     try {
       memoryUserDAO.create(user);
       String authToken = memoryAuthDAO.create(new AuthData(UUID.randomUUID().toString(), user.username()));
       return new RegisterResponse(user.username(), authToken);
     }
     catch (DataAccessException e) {
-      return new ServiceResponse(false, e.toString());
+      return new RegisterResponse(false, e.toString());
     }
   }
 

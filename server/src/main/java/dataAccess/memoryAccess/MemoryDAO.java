@@ -53,7 +53,7 @@ public abstract class MemoryDAO<K, T> implements DataAccessObject<K, T> {
       return localData.get(key);
     }
     else {
-      throw new DataAccessException("data at key '" + key + "' was not found for retrieval");
+      throw new DataAccessException("Error: bad request");
     }
   }
 
@@ -70,7 +70,7 @@ public abstract class MemoryDAO<K, T> implements DataAccessObject<K, T> {
       localData.remove(key);
     }
     else {
-      throw new DataAccessException("data at key '" + key + "' was not found for deletion");
+      throw new DataAccessException("Error: bad request");
     }
   }
 

@@ -2,13 +2,18 @@ package handler;
 
 import com.google.gson.Gson;
 import model.UserData;
+import response.RegisterResponse;
 import response.ServiceResponse;
 import service.UserService;
 import spark.Request;
 import spark.Response;
 
+import java.net.HttpURLConnection;
+import java.util.Map;
+
 public class RegisterHandler {
   private final Gson gson = new Gson();
+  UserService userService = UserService.getInstance();
 
   // Private constructor for singleton implementation
   private RegisterHandler() {}
@@ -24,12 +29,36 @@ public class RegisterHandler {
 
 
   public String handleRequest(Request req, Response res) {
-    UserData request = gson.fromJson(req.body(), UserData.class);
+    UserData requestObject = gson.fromJson(req.body(), UserData.class);
+    RegisterResponse responseObject = userService.register(requestObject);
 
-    UserService userService = UserService.getInstance();
+    res.status(getStatusCode(responseObject));
 
-    ServiceResponse result = userService.register(request);
+    if (responseObject.isSuccess()) {
+      // Registration successful
+      res.type("application/json");
+      return gson.toJson(Map.of("username", requestObject.username(), "authToken", responseObject.getAuthToken()));
+    } else {
+      // Registration failed
+      res.type("application/json");
+      return gson.toJson(Map.of("message", responseObject.getMessage()));
+    }  }
 
-    return gson.toJson(result);
+  private static int getStatusCode(ServiceResponse responseObject) {
+    int responseStatus = HttpURLConnection.HTTP_OK;
+    String message = responseObject.getMessage();
+
+    if (!responseObject.isSuccess()) {
+      if (message.contains("bad request")) {
+        responseStatus = HttpURLConnection.HTTP_BAD_REQUEST;
+      }
+      else if (message.contains("already taken")) {
+        responseStatus = HttpURLConnection.HTTP_FORBIDDEN;
+      }
+      else {
+        responseStatus = HttpURLConnection.HTTP_INTERNAL_ERROR;
+      }
+    }
+    return responseStatus;
   }
 }

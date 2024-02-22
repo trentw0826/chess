@@ -65,3 +65,5 @@ h
 8src/main/java/dataAccess/memoryAccess/MemoryAuthDAO.java,0\c\0cd4ff1103b5d99c5c3b3b39f1ada8e4fa2249ea
 h
 8src/main/java/dataAccess/memoryAccess/MemoryGameDAO.java,d\4\d4e65cb316431aae8ea1eb458960361d353f35af
+V
+&src/main/java/handler/StatusCodes.java,c\5\c50d7e2aa2fc9fcdff28cc3162baf4fc717df7fc
