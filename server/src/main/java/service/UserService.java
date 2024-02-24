@@ -4,7 +4,8 @@ import dataAccess.DataAccessException;
 
 import model.AuthData;
 import model.UserData;
-import service.response.RegisterServiceResponse;
+import service.response.ServiceResponse;
+import service.response.userServiceResponse.RegisterServiceResponse;
 
 import java.util.UUID;
 
@@ -28,9 +29,13 @@ public class UserService extends Service {
       return new RegisterServiceResponse(user.username(), authToken);
     }
     catch (DataAccessException e) {
-      return new RegisterServiceResponse(false, e.toString());
+      return new RegisterServiceResponse(ServiceResponse.ERROR_MESSAGE.ERROR_BAD_REQUEST); //TODO this call is wrong
     }
   }
 
-
+  @Override
+  public ServiceResponse clear() {
+    memoryUserDAO.clear();
+    return new ServiceResponse();
+  }
 }

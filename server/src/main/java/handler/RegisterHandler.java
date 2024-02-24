@@ -1,9 +1,10 @@
 package handler;
 
 import model.UserData;
-import service.response.RegisterServiceResponse;
 import service.response.ServiceResponse;
+import service.response.userServiceResponse.RegisterServiceResponse;
 import spark.Request;
+import spark.Response;
 
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public class RegisterHandler extends Handler {
 
 
   /**
-   * Handles a request to register a new user. Deserializes the request, passes the user data to the
+   * Handles a register request. Deserializes the request, passes the user data to the
    * user service, and re-serializes the resulting register response.
    *
    * @param req the Spark-defined request object
@@ -35,7 +36,7 @@ public class RegisterHandler extends Handler {
    * @return    the serialized response object
    */
   @Override
-  public String handleRequest(Request req, spark.Response res) {
+  public String handleRequest(Request req, Response res) {
     UserData hydratedModelData = deserializeRequest(req);
     RegisterServiceResponse serviceResponse = userService.register(hydratedModelData);
 
@@ -74,7 +75,7 @@ public class RegisterHandler extends Handler {
       jsonResponse = gson.toJson(Map.of("username", registerServiceResponse.getUsername(), "authToken", registerServiceResponse.getAuthToken()));
     }
     else {
-      jsonResponse = gson.toJson(Map.of("message", serviceResponse.getMessage()));
+      jsonResponse = gson.toJson(Map.of("message", serviceResponse.getErrorMessage()));
     }
 
     return jsonResponse;

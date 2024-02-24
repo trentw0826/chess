@@ -1,13 +1,14 @@
 package service.response;
 
-
 public class ClearServiceResponse extends ServiceResponse {
 
+  // Successful clear service responses
   public ClearServiceResponse() {
-    super(true, null);
+    super();
   }
 
-  public ClearServiceResponse(String message) {
-    super(false, message);
+  // Unsuccessful user service responses
+  public ClearServiceResponse(ERROR_MESSAGE errorMessage) {
+    super(errorMessage);
   }
 }

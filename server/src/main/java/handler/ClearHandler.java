@@ -1,16 +1,10 @@
 package handler;
 
-import service.Service;
-import service.response.ClearServiceResponse;
 import service.response.ServiceResponse;
 import spark.Request;
-
-import java.util.Map;
+import spark.Response;
 
 public class ClearHandler extends Handler {
-
-  Service service = new Service();
-
   /* Singleton implementation */
   private ClearHandler() {}
   private static final class InstanceHolder {
@@ -21,26 +15,19 @@ public class ClearHandler extends Handler {
   }
 
   @Override
-  public String handleRequest(Request req, spark.Response res) {
-    ClearServiceResponse responseObject = service.clearAllLocalDatabases();
+  public String handleRequest(Request req, Response res) {
+    ServiceResponse userServiceResponse = userService.clear();
+    // ServiceResponse authServiceResponse = authService.clear();
+    // ServiceResponse gameServiceResponse = gameService.clear();
 
-    res.status(getStatusCode(responseObject));
-    String responseString = null;
-
-    if (responseObject.isSuccess()) {
-      // Registration successful
-      res.type("application/json");
-      responseString = "";
-    }
-    else {
-      // Registration failed
-      res.type("application/json");
-      responseString = gson.toJson(Map.of("message", responseObject.getMessage()));
+    if (!(userServiceResponse.isSuccess()/* && authServiceResponse.isSuccess() && authServiceResponse.isSuccess()*/)) {
+      throw new IllegalStateException("databases could not be cleared");
     }
 
-    return responseString;
+    return null;
   }
 
+  // TODO: find out how to not have to override this
   @Override
   protected Object deserializeRequest(Request req) {
     return null;

@@ -1,38 +1,37 @@
-package service.response;
+package service.response.userServiceResponse;
+
+import service.response.ServiceResponse;
 
 import java.util.Objects;
 
-public class RegisterServiceResponse extends ServiceResponse {
-  String username = null;
-  String authToken = null;
+public class LoginServiceResponse extends ServiceResponse {
+  String username;
+  String authToken;
 
-
-  public RegisterServiceResponse(String username, String authToken) {
-    super(true, null);
+  // Successful login service responses
+  public LoginServiceResponse(String username, String authToken) {
+    super();
     this.username = username;
     this.authToken = authToken;
   }
 
+  // Unsuccessful login service responses
+  public LoginServiceResponse(ERROR_MESSAGE errorMessage) {
+    super(errorMessage);
+  }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    RegisterServiceResponse that = (RegisterServiceResponse) o;
+    LoginServiceResponse that = (LoginServiceResponse) o;
     return Objects.equals(username, that.username) && Objects.equals(authToken, that.authToken);
   }
-
 
   @Override
   public int hashCode() {
     return Objects.hash(username, authToken);
   }
-
-
-  public RegisterServiceResponse(boolean success, String message) {
-    super(success, message);
-  }
-
 
   public String getUsername() {
     return username;

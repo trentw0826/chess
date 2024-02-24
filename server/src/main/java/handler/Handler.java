@@ -28,15 +28,18 @@ abstract class Handler {
    * @return                the status code associated with the service response's message
    */
   protected static int getStatusCode(ServiceResponse serviceResponse) {
-    // TODO update the set of status codes to a map
-    int responseStatus = HttpURLConnection.HTTP_OK;
-    String message = serviceResponse.getMessage();
+    int responseStatus;
 
-    if (!serviceResponse.isSuccess()) {
-      if (message.contains("bad request")) {
+    ServiceResponse.ERROR_MESSAGE message = serviceResponse.getErrorMessage();
+
+    if (serviceResponse.isSuccess()) {
+      responseStatus = HttpURLConnection.HTTP_OK;
+    }
+    else {
+      if (message == ServiceResponse.ERROR_MESSAGE.ERROR_BAD_REQUEST) {
         responseStatus = HttpURLConnection.HTTP_BAD_REQUEST;
       }
-      else if (message.contains("already taken")) {
+      else if (message == ServiceResponse.ERROR_MESSAGE.ERROR_ALREADY_TAKEN) {
         responseStatus = HttpURLConnection.HTTP_FORBIDDEN;
       }
       else {

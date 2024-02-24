@@ -1,5 +1,6 @@
 package server;
 
+//import handler.ClearHandler;
 import handler.ClearHandler;
 import handler.RegisterHandler;
 import spark.*;
@@ -13,7 +14,6 @@ public class Server {
 
         // Register endpoints
         createRoutes();
-        // TODO: handle exceptions
 
         Spark.awaitInitialization();
         return Spark.port();
@@ -24,9 +24,8 @@ public class Server {
         Spark.awaitStop();
     }
 
-    // TODO Create string constants for the path strings
     private static void createRoutes() {
-        Spark.delete("/db", (req, res) -> ClearHandler.getInstance().handleRequest(req, res));                            // clear
+        Spark.delete("/db", (req, res) -> ClearHandler.getInstance().handleRequest(req, res));
         Spark.post("/user", (req, res) -> RegisterHandler.getInstance().handleRequest(req, res));
         Spark.post("/session", (req, res) -> "TODO: LoginHandler().getInstance().handleRequest(req, res)");
         Spark.delete("/session", (req, res) -> "TODO: new LogoutHandler().getInstance().handleRequest(req, res)");

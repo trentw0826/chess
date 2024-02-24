@@ -2,7 +2,6 @@ package service;
 
 import model.UserData;
 import org.junit.jupiter.api.*;
-import service.response.RegisterServiceResponse;
 
 import java.util.UUID;
 
@@ -57,7 +56,7 @@ class AuthServiceTest {
     testUserService.register(existingUser);
     actualRegisterResponse = testUserService.register(testUser);
 
-    expectedRegisterResponse = new RegisterServiceResponse(false, "Error: already taken");
+    expectedRegisterResponse = new RegisterServiceResponse( "Error: already taken");
     Assertions.assertEquals(expectedRegisterResponse, actualRegisterResponse);
   }
 }
