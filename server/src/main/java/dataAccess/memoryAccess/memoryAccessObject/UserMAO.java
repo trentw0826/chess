@@ -1,11 +1,12 @@
-package dataAccess.memoryAccess;
+package dataAccess.memoryAccess.memoryAccessObject;
 
+import dataAccess.memoryAccess.MemoryAccessObject;
 import model.UserData;
 
 /**
  * Defines a data access object that accesses and modifies locally stored user data
  */
-public class MemoryUserDAO extends MemoryDAO<String, UserData> {
+public class UserMAO extends MemoryAccessObject<String, UserData> {
 
   /**
    * Returns the username of a user data model as its key
@@ -14,7 +15,7 @@ public class MemoryUserDAO extends MemoryDAO<String, UserData> {
    * @return      key of 'data' (username)
    */
   @Override
-  String generateKey(UserData data) {
+  public String generateKey(UserData data) {
     return data.username();
   }
 }

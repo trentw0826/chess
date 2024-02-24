@@ -1,12 +1,13 @@
-package dataAccess.memoryAccess;
+package dataAccess.memoryAccess.memoryAccessObject;
 
 import dataAccess.DataAccessException;
+import dataAccess.memoryAccess.MemoryAccessObject;
 import model.GameData;
 
 /**
  * Defines a data access object that accesses and modifies locally stored game data
  */
-public class MemoryGameDAO extends MemoryDAO<Integer, GameData> {
+public class GameMAO extends MemoryAccessObject<Integer, GameData> {
 
   /**
    * Returns the key of a GameData object.
@@ -15,7 +16,7 @@ public class MemoryGameDAO extends MemoryDAO<Integer, GameData> {
    * @return      key of 'data' (gameID)
    */
   @Override
-  Integer generateKey(GameData data) {
+  public Integer generateKey(GameData data) {
     return data.gameID();
   }
 

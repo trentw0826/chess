@@ -1,11 +1,12 @@
-package dataAccess.memoryAccess;
+package dataAccess.memoryAccess.memoryAccessObject;
 
+import dataAccess.memoryAccess.MemoryAccessObject;
 import model.AuthData;
 
 /**
  * Defines a data access object that accesses and modifies locally stored auth data
  */
-public class MemoryAuthDAO extends MemoryDAO<String, AuthData> {
+public class AuthMAO extends MemoryAccessObject<String, AuthData> {
 
   /**
    * Returns the key of an AuthData object.
@@ -14,7 +15,7 @@ public class MemoryAuthDAO extends MemoryDAO<String, AuthData> {
    * @return      key of 'data' (auth token)
    */
   @Override
-  String generateKey(AuthData data) {
+  public String generateKey(AuthData data) {
     return data.authToken();
   }
 }

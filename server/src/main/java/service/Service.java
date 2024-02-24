@@ -1,28 +1,42 @@
 package service;
 
-import dataAccess.memoryAccess.*;
-import response.ClearResponse;
+import dataAccess.memoryAccess.memoryAccessObject.AuthMAO;
+import dataAccess.memoryAccess.memoryAccessObject.GameMAO;
+import dataAccess.memoryAccess.memoryAccessObject.UserMAO;
+import service.response.ClearServiceResponse;
 
 public class Service {
-//  private static Service instance;
+  /* singleton instance */
+  private static Service instance;
 
-  protected static final MemoryUserDAO memoryUserDAO = new MemoryUserDAO();
-  protected static final MemoryAuthDAO memoryAuthDAO = new MemoryAuthDAO();
-  protected static final MemoryGameDAO memoryGameDAO = new MemoryGameDAO();
+  /* local databases */
+  protected static final UserMAO memoryUserDAO = new UserMAO();
+  protected static final AuthMAO memoryAuthDAO = new AuthMAO();
+  protected static final GameMAO memoryGameDAO = new GameMAO();
 
-//  public static Service getInstance() {
-//    if (instance == null) {
-//      instance = new Service();
-//    }
-//    return instance;
-//  }
 
-  public ClearResponse clearAllLocalDatabases() {
+  /**
+   * @return singleton instance of Service class
+   */
+  public static Service getInstance() {
+    if (instance == null) {
+      instance = new Service();
+    }
+    return instance;
+  }
+
+
+  /**
+   * Clears all internal databases.
+   *
+   * @return  successful ClearResponse object
+   */
+  public ClearServiceResponse clearAllLocalDatabases() {
     memoryUserDAO.clear();
     memoryAuthDAO.clear();
     memoryGameDAO.clear();
 
-    // Filler clear response object
-    return new ClearResponse();
+    // TODO is ClearResponse object even necessary?
+    return new ClearServiceResponse();
   }
 }

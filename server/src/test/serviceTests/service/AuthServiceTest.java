@@ -2,7 +2,7 @@ package service;
 
 import model.UserData;
 import org.junit.jupiter.api.*;
-import response.RegisterResponse;
+import service.response.RegisterServiceResponse;
 
 import java.util.UUID;
 
@@ -21,8 +21,8 @@ class AuthServiceTest {
 
   UserData testUser;
   String genericAuthToken;
-  RegisterResponse expectedRegisterResponse;
-  RegisterResponse actualRegisterResponse;
+  RegisterServiceResponse expectedRegisterResponse;
+  RegisterServiceResponse actualRegisterResponse;
   UserService testUserService;
 
 
@@ -32,8 +32,8 @@ class AuthServiceTest {
     testUserService = new UserService();
 
     testUser = null;
-    RegisterResponse expectedRegisterResponse = null;
-    RegisterResponse actualRegisterResponse = null;
+    RegisterServiceResponse expectedRegisterResponse = null;
+    RegisterServiceResponse actualRegisterResponse = null;
   }
 
 
@@ -41,7 +41,7 @@ class AuthServiceTest {
   void successfulRegistration() {
     testUser = new UserData("someUsername", "somePassword", "someEmail");
 
-    expectedRegisterResponse = new RegisterResponse("someUsername", genericAuthToken);
+    expectedRegisterResponse = new RegisterServiceResponse("someUsername", genericAuthToken);
     actualRegisterResponse = testUserService.register(testUser);
 
     Assertions.assertEquals(expectedRegisterResponse.getUsername(), actualRegisterResponse.getUsername());
@@ -57,7 +57,7 @@ class AuthServiceTest {
     testUserService.register(existingUser);
     actualRegisterResponse = testUserService.register(testUser);
 
-    expectedRegisterResponse = new RegisterResponse(false, "Error: already taken");
+    expectedRegisterResponse = new RegisterServiceResponse(false, "Error: already taken");
     Assertions.assertEquals(expectedRegisterResponse, actualRegisterResponse);
   }
 }

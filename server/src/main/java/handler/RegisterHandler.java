@@ -1,69 +1,82 @@
 package handler;
 
-import com.google.gson.Gson;
 import model.UserData;
-import response.RegisterResponse;
-import response.ServiceResponse;
-import service.UserService;
+import service.response.RegisterServiceResponse;
+import service.response.ServiceResponse;
 import spark.Request;
-import spark.Response;
 
-import java.net.HttpURLConnection;
 import java.util.Map;
 
-public class RegisterHandler {
-  private final Gson gson = new Gson();
-  UserService userService = new UserService();
 
-  // Private constructor for singleton implementation
+/**
+ * Handler class acts a translator between the server's endpoint-defined HTTP requests and
+ * the java objects that will be processed by the server classes.
+ */
+public class RegisterHandler extends Handler {
+
+  //TODO Does this class need to be singleton?
+
+  /* Singleton implementation */
   private RegisterHandler() {}
-
-  // Singleton implementation
   private static final class InstanceHolder {
     private static final RegisterHandler instance = new RegisterHandler();
   }
-
   public static RegisterHandler getInstance() {
     return InstanceHolder.instance;
   }
 
 
-  public String handleRequest(Request req, Response res) {
-    UserData requestObject = gson.fromJson(req.body(), UserData.class);
-    RegisterResponse responseObject = userService.register(requestObject);
+  /**
+   * Handles a request to register a new user. Deserializes the request, passes the user data to the
+   * user service, and re-serializes the resulting register response.
+   *
+   * @param req the Spark-defined request object
+   * @param res the Spark-defined response object
+   * @return    the serialized response object
+   */
+  @Override
+  public String handleRequest(Request req, spark.Response res) {
+    UserData hydratedModelData = deserializeRequest(req);
+    RegisterServiceResponse serviceResponse = userService.register(hydratedModelData);
 
-    res.status(getStatusCode(responseObject));
-    String responseString = null;
+    res.status(getStatusCode(serviceResponse));
 
-    if (responseObject.isSuccess()) {
-      // Registration successful
-      res.type("application/json");
-      responseString = gson.toJson(Map.of("username", requestObject.username(), "authToken", responseObject.getAuthToken()));
-    }
-    else {
-      // Registration failed
-      res.type("application/json");
-      responseString = gson.toJson(Map.of("message", responseObject.getMessage()));
-    }
-
-    return responseString;
+    res.type("application/json"); //TODO is this line necessary?
+    return serializeResponse(serviceResponse);
   }
 
-  private static int getStatusCode(ServiceResponse responseObject) {
-    int responseStatus = HttpURLConnection.HTTP_OK;
-    String message = responseObject.getMessage();
 
-    if (!responseObject.isSuccess()) {
-      if (message.contains("bad request")) {
-        responseStatus = HttpURLConnection.HTTP_BAD_REQUEST;
-      }
-      else if (message.contains("already taken")) {
-        responseStatus = HttpURLConnection.HTTP_FORBIDDEN;
-      }
-      else {
-        responseStatus = HttpURLConnection.HTTP_INTERNAL_ERROR;
-      }
+  /**
+   * Deserialize the Spark request object into a UserData object.
+   *
+   * @param req the Spark request object
+   * @return    the hydrated UserData object
+   */
+  @Override
+  protected UserData deserializeRequest(Request req) {
+    return gson.fromJson(req.body(), UserData.class);
+  }
+
+
+  /**
+   * Serialize the service's response.
+   *
+   * @param serviceResponse service response
+   * @return                the serialized service response
+   */
+  @Override
+  protected String serializeResponse(ServiceResponse serviceResponse) {
+    String jsonResponse;
+
+    RegisterServiceResponse registerServiceResponse = (RegisterServiceResponse)serviceResponse;
+
+    if (serviceResponse.isSuccess()) {
+      jsonResponse = gson.toJson(Map.of("username", registerServiceResponse.getUsername(), "authToken", registerServiceResponse.getAuthToken()));
     }
-    return responseStatus;
+    else {
+      jsonResponse = gson.toJson(Map.of("message", serviceResponse.getMessage()));
+    }
+
+    return jsonResponse;
   }
 }

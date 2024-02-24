@@ -15,7 +15,7 @@ import java.util.Map;
  * @param <T> data model type
  * @param <K> key type associated with data model type
  */
-public abstract class MemoryDAO<K, T> implements DataAccessObject<K, T> {
+public abstract class MemoryAccessObject<K, T> implements DataAccessObject<K, T> {
 
   /* Local data structure holding data values*/
   final Map<K, T> localData = new HashMap<>();
@@ -111,5 +111,5 @@ public abstract class MemoryDAO<K, T> implements DataAccessObject<K, T> {
    * @param data  data model
    * @return      the key associated with given data model
    */
-  abstract K generateKey(T data);
+  protected abstract K generateKey(T data);
 }
