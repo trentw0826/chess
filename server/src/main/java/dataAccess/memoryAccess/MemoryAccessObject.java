@@ -2,7 +2,6 @@ package dataAccess.memoryAccess;
 
 import dataAccess.DataAccessException;
 import dataAccess.DataAccessObject;
-import service.response.ServiceResponse;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -54,7 +53,7 @@ public abstract class MemoryAccessObject<K, T> implements DataAccessObject<K, T>
       return localData.get(key);
     }
     else {
-      throw new DataAccessException("Error: bad request");
+      throw new DataAccessException("Error: unauthorized");
     }
   }
 

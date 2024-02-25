@@ -2,7 +2,6 @@ package handler;
 
 import com.google.gson.Gson;
 import service.response.ServiceResponse;
-import spark.Request;
 
 import java.net.HttpURLConnection;
 
@@ -11,12 +10,6 @@ import java.net.HttpURLConnection;
  */
 abstract class Handler {
   protected final Gson gson = new Gson();
-
-//  protected final UserService userService = new UserService();
-//  protected final AuthService authService = new AuthService();
-//  protected final GameService gameService = new GameService();
-
-  protected abstract String handleRequest(Request req, spark.Response res);
 
 
   /**
@@ -36,6 +29,9 @@ abstract class Handler {
     else {
       if (message.contains("bad request")) {
         responseStatus = HttpURLConnection.HTTP_BAD_REQUEST;
+      }
+      else if (message.contains("unauthorized")) {
+        responseStatus = HttpURLConnection.HTTP_UNAUTHORIZED;
       }
       else if (message.contains("already taken")) {
         responseStatus = HttpURLConnection.HTTP_FORBIDDEN;

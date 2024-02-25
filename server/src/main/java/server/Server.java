@@ -1,7 +1,6 @@
 package server;
 
-import handler.LoginHandler;
-import handler.RegisterHandler;
+import handler.*;
 import spark.*;
 
 /**
@@ -38,7 +37,7 @@ public class Server {
      * Defines the spark server's routes
      */
     private static void createRoutes() {
-        Spark.delete("/db", (req, res) -> "TODO: ClearHandler.getInstance().handleRequest(req, res)");
+        Spark.delete("/db", (req, res) -> ClearHandler.getInstance().handleRequest(req, res));
         Spark.post("/user", (req, res) -> RegisterHandler.getInstance().handleRequest(req, res));
         Spark.post("/session", (req, res) -> LoginHandler.getInstance().handleRequest(req, res));
         Spark.delete("/session", (req, res) -> "TODO: new LogoutHandler.getInstance().handleRequest(req, res)");

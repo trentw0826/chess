@@ -8,14 +8,14 @@ public class RegisterResponse extends ServiceResponse {
   String username;
   AuthToken authToken;
 
-  // Successful user service responses
+  // Successful
   public RegisterResponse(String username, AuthToken authToken) {
     super();
     this.username = username;
     this.authToken = authToken;
   }
 
-  // Unsuccessful user service responses
+  // Unsuccessful
   public RegisterResponse(String errorMessage) {
     super(errorMessage);
   }

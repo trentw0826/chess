@@ -8,14 +8,14 @@ public class LoginResponse extends ServiceResponse {
   String username;
   AuthToken authToken;
 
-  // Successful user service responses
+  // Successful
   public LoginResponse(String username, AuthToken authToken) {
     super();
     this.username = username;
     this.authToken = authToken;
   }
 
-  // Unsuccessful user service responses
+  // Unsuccessful
   public LoginResponse(String errorMessage) {
     super(errorMessage);
   }

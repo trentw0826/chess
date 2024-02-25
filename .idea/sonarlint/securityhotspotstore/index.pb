@@ -85,3 +85,11 @@ _
 /src/main/java/service/request/LoginRequest.java,b\0\b0a38bb6bc92d1d45b50bcb6713ff20077c12f63
 a
 1src/main/java/service/response/LoginResponse.java,2\5\2507e694b113172f00615fbe28a49cbd78b96345
+_
+/src/main/java/service/request/ClearRequest.java,2\3\23ca7ac0018e7802ce33e8b5252aea90e0e26456
+a
+1src/main/java/service/response/ClearResponse.java,2\3\23849964d8d47d857858d6c74d5faf7e4ef21933
+W
+'src/main/java/service/ClearService.java,b\0\b0e319af87b7e33e2bfd88f0d061d2b1deaeeee6
+_
+/src/test/java/serverTests/StandardAPITests.java,6\d\6d24502e653d3df62d0945d2db96de28b1f23ced
