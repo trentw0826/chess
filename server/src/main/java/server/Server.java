@@ -1,31 +1,43 @@
 package server;
 
-//import handler.ClearHandler;
-import handler.ClearHandler;
 import handler.RegisterHandler;
 import spark.*;
 
+/**
+ * Server class to define and run basic Spark server
+ */
 public class Server {
 
-    public int run(int desiredPort) {
-        Spark.port(desiredPort);
+    /**
+     * Runs the spark server.
+     *
+     * @param port  the port on which to run the spark server
+     * @return      the port on which initialized
+     */
+    public int run(int port) {
+        Spark.port(port);
 
         Spark.staticFiles.location("web");
 
-        // Register endpoints
         createRoutes();
 
         Spark.awaitInitialization();
         return Spark.port();
     }
 
+    /**
+     * Stops the spark server
+     */
     public void stop() {
         Spark.stop();
         Spark.awaitStop();
     }
 
+    /**
+     * Defines the spark server's routes
+     */
     private static void createRoutes() {
-        Spark.delete("/db", (req, res) -> ClearHandler.getInstance().handleRequest(req, res));
+        Spark.delete("/db", (req, res) -> "TODO: ClearHandler.getInstance().handleRequest(req, res)");
         Spark.post("/user", (req, res) -> RegisterHandler.getInstance().handleRequest(req, res));
         Spark.post("/session", (req, res) -> "TODO: LoginHandler().getInstance().handleRequest(req, res)");
         Spark.delete("/session", (req, res) -> "TODO: new LogoutHandler().getInstance().handleRequest(req, res)");

@@ -2,6 +2,7 @@ package service;
 
 import model.UserData;
 import org.junit.jupiter.api.*;
+import service.response.RegisterResponse;
 
 import java.util.UUID;
 
@@ -20,8 +21,8 @@ class AuthServiceTest {
 
   UserData testUser;
   String genericAuthToken;
-  RegisterServiceResponse expectedRegisterResponse;
-  RegisterServiceResponse actualRegisterResponse;
+  RegisterResponse expectedRegisterResponse;
+  RegisterResponse actualRegisterResponse;
   UserService testUserService;
 
 

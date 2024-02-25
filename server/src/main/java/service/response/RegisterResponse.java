@@ -1,22 +1,22 @@
-package service.response.userServiceResponse;
+package service.response;
 
-import service.response.ServiceResponse;
+import model.AuthToken;
 
 import java.util.Objects;
 
-public class LoginServiceResponse extends ServiceResponse {
+public class RegisterResponse extends ServiceResponse {
   String username;
-  String authToken;
+  AuthToken authToken;
 
-  // Successful login service responses
-  public LoginServiceResponse(String username, String authToken) {
+  // Successful user service responses
+  public RegisterResponse(String username, AuthToken authToken) {
     super();
     this.username = username;
     this.authToken = authToken;
   }
 
-  // Unsuccessful login service responses
-  public LoginServiceResponse(ERROR_MESSAGE errorMessage) {
+  // Unsuccessful user service responses
+  public RegisterResponse(String errorMessage) {
     super(errorMessage);
   }
 
@@ -24,7 +24,7 @@ public class LoginServiceResponse extends ServiceResponse {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    LoginServiceResponse that = (LoginServiceResponse) o;
+    RegisterResponse that = (RegisterResponse) o;
     return Objects.equals(username, that.username) && Objects.equals(authToken, that.authToken);
   }
 
@@ -37,7 +37,7 @@ public class LoginServiceResponse extends ServiceResponse {
     return username;
   }
 
-  public String getAuthToken() {
+  public AuthToken getAuthToken() {
     return authToken;
   }
 }

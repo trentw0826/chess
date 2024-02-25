@@ -1,8 +1,9 @@
 package handler;
 
-import model.UserData;
-import service.response.ServiceResponse;
-import service.response.userServiceResponse.RegisterServiceResponse;
+
+import service.RegisterService;
+import service.request.RegisterRequest;
+import service.response.RegisterResponse;
 import spark.Request;
 import spark.Response;
 
@@ -14,6 +15,8 @@ import java.util.Map;
  * the java objects that will be processed by the server classes.
  */
 public class RegisterHandler extends Handler {
+
+  private final RegisterService registerService = new RegisterService();
 
   //TODO Does this class need to be singleton?
 
@@ -31,18 +34,17 @@ public class RegisterHandler extends Handler {
    * Handles a register request. Deserializes the request, passes the user data to the
    * user service, and re-serializes the resulting register response.
    *
-   * @param req the Spark-defined request object
-   * @param res the Spark-defined response object
+   * @param sparkRequest the Spark-defined request object
+   * @param sparkResponse the Spark-defined response object
    * @return    the serialized response object
    */
-  @Override
-  public String handleRequest(Request req, Response res) {
-    UserData hydratedModelData = deserializeRequest(req);
-    RegisterServiceResponse serviceResponse = userService.register(hydratedModelData);
+  public String handleRequest(Request sparkRequest, Response sparkResponse) {
+    RegisterRequest hydratedRegisterRequest = deserializeRequest(sparkRequest);
+    // TODO should an error by handled here for faulty hydration?
+    RegisterResponse serviceResponse = registerService.register(hydratedRegisterRequest);
 
-    res.status(getStatusCode(serviceResponse));
+    sparkResponse.status(getStatusCode(serviceResponse));
 
-    res.type("application/json"); //TODO is this line necessary?
     return serializeResponse(serviceResponse);
   }
 
@@ -53,29 +55,25 @@ public class RegisterHandler extends Handler {
    * @param req the Spark request object
    * @return    the hydrated UserData object
    */
-  @Override
-  protected UserData deserializeRequest(Request req) {
-    return gson.fromJson(req.body(), UserData.class);
+  protected RegisterRequest deserializeRequest(Request req) {
+    return gson.fromJson(req.body(), RegisterRequest.class);
   }
 
 
   /**
    * Serialize the service's response.
    *
-   * @param serviceResponse service response
+   * @param registerResponse service response
    * @return                the serialized service response
    */
-  @Override
-  protected String serializeResponse(ServiceResponse serviceResponse) {
+  protected String serializeResponse(RegisterResponse registerResponse) {
     String jsonResponse;
 
-    RegisterServiceResponse registerServiceResponse = (RegisterServiceResponse)serviceResponse;
-
-    if (serviceResponse.isSuccess()) {
-      jsonResponse = gson.toJson(Map.of("username", registerServiceResponse.getUsername(), "authToken", registerServiceResponse.getAuthToken()));
+    if (registerResponse.isSuccess()) {
+      jsonResponse = gson.toJson(Map.of("username", registerResponse.getUsername(), "authToken", registerResponse.getAuthToken().authToken()));
     }
     else {
-      jsonResponse = gson.toJson(Map.of("message", serviceResponse.getErrorMessage()));
+      jsonResponse = gson.toJson(Map.of("message", registerResponse.getErrorMessage()));
     }
 
     return jsonResponse;

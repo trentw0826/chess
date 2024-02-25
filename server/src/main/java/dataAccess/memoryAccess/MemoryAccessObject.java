@@ -32,7 +32,7 @@ public abstract class MemoryAccessObject<K, T> implements DataAccessObject<K, T>
   public K create(T data) throws DataAccessException {
     K key = generateKey(data);
     if (dataExists(key)) {
-      throw new DataAccessException(ServiceResponse.ERROR_MESSAGE.ERROR_ALREADY_TAKEN);
+      throw new DataAccessException("Error: already taken");
     }
     else {
       localData.put(key, data);
@@ -54,7 +54,7 @@ public abstract class MemoryAccessObject<K, T> implements DataAccessObject<K, T>
       return localData.get(key);
     }
     else {
-      throw new DataAccessException(ServiceResponse.ERROR_MESSAGE.ERROR_BAD_REQUEST);
+      throw new DataAccessException("Error: bad request");
     }
   }
 
@@ -71,7 +71,7 @@ public abstract class MemoryAccessObject<K, T> implements DataAccessObject<K, T>
       localData.remove(key);
     }
     else {
-      throw new DataAccessException(ServiceResponse.ERROR_MESSAGE.ERROR_BAD_REQUEST);
+      throw new DataAccessException("Error: bad request");
     }
   }
 
