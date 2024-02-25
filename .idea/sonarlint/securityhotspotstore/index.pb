@@ -79,3 +79,9 @@ Esrc/main/java/dataAccess/memoryAccess/memoryAccessObject/AuthMAO.java,6\a\6afc
 .src/main/java/dataAccess/DataAccessObject.java,7\5\75e6bd8be2924f7c6ec3253f802d42b83f5375be
 G
 src/main/java/Main.java,e\4\e44a8606ce010ad9b89aafdfcee2ab49afbf6d10
+W
+'src/main/java/handler/LoginHandler.java,9\9\994cb57cb5e431c6e5c58ddf632cdfec542c5821
+_
+/src/main/java/service/request/LoginRequest.java,b\0\b0a38bb6bc92d1d45b50bcb6713ff20077c12f63
+a
+1src/main/java/service/response/LoginResponse.java,2\5\2507e694b113172f00615fbe28a49cbd78b96345

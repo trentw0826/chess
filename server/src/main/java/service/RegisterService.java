@@ -33,9 +33,9 @@ public class RegisterService extends Service {
 
     try {
       memoryUserDAO.create(newUsersData);  // Block will break if user couldn't be registered
-      AuthToken authToken = new AuthToken();
-      memoryAuthDAO.create(new AuthData(authToken, registerRequest.username()));
-      registerResponse = new RegisterResponse(newUsersData.username(), authToken); // Successful register
+      AuthToken newAuthToken = new AuthToken();
+      memoryAuthDAO.create(new AuthData(newAuthToken, registerRequest.username()));
+      registerResponse = new RegisterResponse(newUsersData.username(), newAuthToken); // Successful register
     }
     catch (DataAccessException e) {
       registerResponse = new RegisterResponse(e.getMessage()); // Unsuccessful register
