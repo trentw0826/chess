@@ -1,6 +1,7 @@
 package handler;
 
 import com.google.gson.Gson;
+import service.request.ServiceRequest;
 import service.response.ServiceResponse;
 import spark.Request;
 import spark.Response;
@@ -11,16 +12,15 @@ import java.net.HttpURLConnection;
  * Defines the functionality of the handler classes.
  * Said functionality includes receiving HTTP requests, deserializing them, passing them to corresponding
  * service classes, and re-serializing the subsequent service responses
- * @param <REQUEST_TYPE>  child of ServiceRequest object
- * @param <RESPONSE_TYPE> child of ServiceResponse object
+ * @param <U>  ServiceRequest request type
+ * @param <T> ServiceResponse response type
  */
-//TODO Update requests to be a set of classes with a parent so that REQUEST_TYPE can extend the parent. Then refractor out clear request
-//TODO Rename generic types to be more conventional
-abstract class Handler<REQUEST_TYPE, RESPONSE_TYPE extends ServiceResponse> {
+abstract class Handler<U extends ServiceRequest, T extends ServiceResponse> {
+
   protected final Gson gson = new Gson();
 
-  protected abstract RESPONSE_TYPE processRequest(REQUEST_TYPE request);
-  protected abstract REQUEST_TYPE deserializeRequest(Request req);
+  protected abstract T processRequest(U request);
+  protected abstract U deserializeRequest(Request req);
 
 
   /**
@@ -29,7 +29,7 @@ abstract class Handler<REQUEST_TYPE, RESPONSE_TYPE extends ServiceResponse> {
    * @param serviceResponse service response
    * @return                the serialized service response
    */
-  protected String serializeResponse(RESPONSE_TYPE serviceResponse) {
+  protected String serializeResponse(T serviceResponse) {
     return gson.toJson(serviceResponse);
   }
 
@@ -40,15 +40,10 @@ abstract class Handler<REQUEST_TYPE, RESPONSE_TYPE extends ServiceResponse> {
    * @param serviceResponse service response object
    * @return                the status code associated with the service response's message
    */
-  protected int getStatusCode(RESPONSE_TYPE serviceResponse) {
-
-    if (serviceResponse instanceof ServiceResponse response) {
-      return response.isSuccess() ? HttpURLConnection.HTTP_OK : getErrorCode(response.getMessage());
-    }
-    else {
-      throw new IllegalArgumentException("Non-Service object passed");
-    }
+  protected int getStatusCode(T serviceResponse) {
+    return serviceResponse.isSuccess() ? HttpURLConnection.HTTP_OK : getErrorCode(serviceResponse.getMessage());
   }
+
 
   /**
    * Returns error code based on the given error message.
@@ -81,8 +76,8 @@ abstract class Handler<REQUEST_TYPE, RESPONSE_TYPE extends ServiceResponse> {
    * @return    the serialized response object
    */
   public String handleRequest(Request req, Response res) {
-    REQUEST_TYPE hydratedRequest = deserializeRequest(req);
-    RESPONSE_TYPE serviceResponse = processRequest(hydratedRequest);
+    U hydratedRequest = deserializeRequest(req);
+    T serviceResponse = processRequest(hydratedRequest);
     res.status(getStatusCode(serviceResponse));
     return serializeResponse(serviceResponse);
   }

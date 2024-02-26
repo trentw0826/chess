@@ -2,8 +2,8 @@ package handler;
 
 
 import service.ClearService;
-import service.request.ClearRequest;
-import service.response.ClearResponse;
+import service.request.ServiceRequest;
+import service.response.ServiceResponse;
 import spark.Request;
 
 
@@ -11,7 +11,7 @@ import spark.Request;
  * Handler class acts a translator between the server's endpoint-defined HTTP requests and
  * the java objects that will be processed by the server classes.
  */
-public class ClearHandler extends Handler<ClearRequest, ClearResponse> {
+public class ClearHandler extends Handler<ServiceRequest, ServiceResponse> {
 
   private final ClearService clearService = new ClearService();
 
@@ -33,12 +33,12 @@ public class ClearHandler extends Handler<ClearRequest, ClearResponse> {
    * @return    the hydrated UserData object
    */
   @Override
-  protected ClearRequest deserializeRequest(Request req) {
-    return gson.fromJson(req.body(), ClearRequest.class);
+  protected ServiceRequest deserializeRequest(Request req) {
+    return gson.fromJson(req.body(), ServiceRequest.class);
   }
 
   @Override
-  protected ClearResponse processRequest(ClearRequest request) {
+  protected ServiceResponse processRequest(ServiceRequest request) {
     return clearService.clear(request);
   }
 }

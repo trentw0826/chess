@@ -75,3 +75,5 @@ m
 =src/main/java/dataAccess/memoryAccess/MemoryAccessObject.java,7\7\77eb3955ee6bcd6f2ea26bf700224f383406c5fc
 d
 4src/main/java/service/response/RegisterResponse.java,6\d\6d777601c7e849b8f19a5c2e8821cfee9dc4306c
+a
+1src/main/java/service/request/ServiceRequest.java,c\0\c0cf08358cf4fd460f5e507bae6c9b9471de4765

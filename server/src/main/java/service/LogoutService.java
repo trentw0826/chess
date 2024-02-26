@@ -25,7 +25,7 @@ public class LogoutService extends Service {
     LogoutResponse logoutResponse;
 
     try {
-      memoryAuthDAO.delete(logoutRequest.authorization());
+      memoryAuthDAO.delete(logoutRequest.authToken());
       logoutResponse = new LogoutResponse();
     }
     catch (DataAccessException e) {

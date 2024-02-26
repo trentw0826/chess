@@ -1,7 +1,7 @@
 package service;
 
-import service.request.ClearRequest;
-import service.response.ClearResponse;
+import service.request.ServiceRequest;
+import service.response.ServiceResponse;
 
 /**
  * Clear service handles clear requests from the clear handler
@@ -19,14 +19,15 @@ public class ClearService extends Service {
   /**
    * Clears all the databases
    *
-   * @param clearRequest  TODO this request isn't really necessary.
-   * @return              clear response TODO this also isn't really necessary
+   * @param clearRequest  generic service request
+   * @return              generic service response
    */
-  public ClearResponse clear(ClearRequest clearRequest) {
+  //TODO Completely remove this request?
+  public ServiceResponse clear(ServiceRequest clearRequest) {
     memoryUserDAO.clear();
     memoryAuthDAO.clear();
     memoryGameDAO.clear();
 
-    return new ClearResponse();
+    return new ServiceResponse();
   }
 }
