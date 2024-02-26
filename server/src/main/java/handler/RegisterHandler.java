@@ -7,8 +7,6 @@ import service.response.RegisterResponse;
 import spark.Request;
 import spark.Response;
 
-import java.util.Map;
-
 
 /**
  * Handler class acts a translator between the server's endpoint-defined HTTP requests and
@@ -17,8 +15,6 @@ import java.util.Map;
 public class RegisterHandler extends Handler {
 
   private final RegisterService registerService = new RegisterService();
-
-  //TODO Does this class need to be singleton?
 
   /* Singleton implementation */
   private RegisterHandler() {}
@@ -38,6 +34,7 @@ public class RegisterHandler extends Handler {
    * @param sparkResponse the Spark-defined response object
    * @return    the serialized response object
    */
+  @Override
   public String handleRequest(Request sparkRequest, Response sparkResponse) {
     RegisterRequest hydratedRegisterRequest = deserializeRequest(sparkRequest);
     // TODO should an error by handled here for faulty hydration?
@@ -67,15 +64,6 @@ public class RegisterHandler extends Handler {
    * @return                the serialized service response
    */
   protected String serializeResponse(RegisterResponse registerResponse) {
-    String jsonResponse;
-
-    if (registerResponse.isSuccess()) {
-      jsonResponse = gson.toJson(Map.of("username", registerResponse.getUsername(), "authToken", registerResponse.getAuthToken().authToken()));
-    }
-    else {
-      jsonResponse = gson.toJson(Map.of("message", registerResponse.getErrorMessage()));
-    }
-
-    return jsonResponse;
+    return gson.toJson(registerResponse);
   }
 }

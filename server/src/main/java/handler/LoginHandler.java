@@ -7,8 +7,6 @@ import service.response.LoginResponse;
 import spark.Request;
 import spark.Response;
 
-import java.util.Map;
-
 
 /**
  * Handler class acts a translator between the server's endpoint-defined HTTP requests and
@@ -16,12 +14,16 @@ import java.util.Map;
  */
 public class LoginHandler extends Handler {
 
-  private final LoginService loginService = new LoginService();
+  private final LoginService loginService;
 
-  //TODO Does this class need to be singleton?
+  /**
+   * Constructs a LoginHandler object
+   */
+  private LoginHandler() {
+    loginService  = new LoginService();
+  }
 
   /* Singleton implementation */
-  private LoginHandler() {}
   private static final class InstanceHolder {
     private static final LoginHandler instance = new LoginHandler();
   }
@@ -38,24 +40,24 @@ public class LoginHandler extends Handler {
    * @param sparkResponse the Spark-defined response object
    * @return    the serialized response object
    */
+  @Override
   public String handleRequest(Request sparkRequest, Response sparkResponse) {
-    LoginRequest hydratedLoginRequest = deserializeRequest(sparkRequest);
-    // TODO should an error by handled here for faulty hydration?
-    LoginResponse serviceResponse = loginService.login(hydratedLoginRequest);
+    LoginRequest hydratedLoginRequest = deserializeRequest(sparkRequest);  // TODO should an error by handled here for faulty hydration?
+    LoginResponse loginResponse = loginService.login(hydratedLoginRequest);
 
-    sparkResponse.status(getStatusCode(serviceResponse));
+    sparkResponse.status(getStatusCode(loginResponse));
 
-    return serializeResponse(serviceResponse);
+    return serializeResponse(loginResponse);
   }
 
 
   /**
-   * Deserialize the Spark request object into a UserData object.
+   * Deserialize the Spark request object into a LoginRequest object.
    *
    * @param req the Spark request object
-   * @return    the hydrated UserData object
+   * @return    the hydrated LoginRequest object
    */
-  protected LoginRequest deserializeRequest(Request req) {
+  private LoginRequest deserializeRequest(Request req) {
     return gson.fromJson(req.body(), LoginRequest.class);
   }
 
@@ -64,18 +66,9 @@ public class LoginHandler extends Handler {
    * Serialize the service's response.
    *
    * @param loginResponse service response
-   * @return                the serialized service response
+   * @return              the serialized service response
    */
-  protected String serializeResponse(LoginResponse loginResponse) {
-    String jsonResponse;
-
-    if (loginResponse.isSuccess()) {
-      jsonResponse = gson.toJson(Map.of("username", loginResponse.getUsername(),  "authToken", loginResponse.getAuthToken().authToken()));
-    }
-    else {
-      jsonResponse = gson.toJson(Map.of("message", loginResponse.getErrorMessage()));
-    }
-
-    return jsonResponse;
+  private String serializeResponse(LoginResponse loginResponse) {
+    return gson.toJson(loginResponse);
   }
 }

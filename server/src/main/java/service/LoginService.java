@@ -2,7 +2,6 @@ package service;
 
 import dataAccess.DataAccessException;
 import model.AuthData;
-import model.AuthToken;
 import model.UserData;
 import service.request.LoginRequest;
 import service.response.LoginResponse;
@@ -31,12 +30,17 @@ public class LoginService extends Service {
 
     try {
       UserData retrievedUserData = memoryUserDAO.get(loginRequest.username());
+
+      if (dataHasNullFields(retrievedUserData)) {
+        throw new DataAccessException("Error: bad request");
+      }
+
       if (!memoryUserDAO.attemptPassword(retrievedUserData.username(), loginRequest.password())) {
         throw new DataAccessException("Error: unauthorized");
       }
 
       // Successful login
-      AuthData newAuthData = new AuthData(new AuthToken(), retrievedUserData.username());
+      AuthData newAuthData = new AuthData(generateNewAuthToken(), retrievedUserData.username());
       memoryAuthDAO.create(newAuthData);
 
       loginResponse = new LoginResponse(newAuthData.username(), newAuthData.authToken());
@@ -47,5 +51,9 @@ public class LoginService extends Service {
     }
 
     return loginResponse;
+  }
+
+  private static boolean dataHasNullFields(UserData userData) {
+    return userData.username() == null || userData.password() == null || userData.email() == null;
   }
 }

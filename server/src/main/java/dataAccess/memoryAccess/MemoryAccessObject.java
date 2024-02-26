@@ -70,7 +70,7 @@ public abstract class MemoryAccessObject<K, T> implements DataAccessObject<K, T>
       localData.remove(key);
     }
     else {
-      throw new DataAccessException("Error: bad request");
+      throw new DataAccessException("Error: unauthorized");
     }
   }
 

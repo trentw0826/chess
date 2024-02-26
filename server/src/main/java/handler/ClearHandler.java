@@ -7,8 +7,6 @@ import service.response.ClearResponse;
 import spark.Request;
 import spark.Response;
 
-import java.util.Map;
-
 
 /**
  * Handler class acts a translator between the server's endpoint-defined HTTP requests and
@@ -17,8 +15,6 @@ import java.util.Map;
 public class ClearHandler extends Handler {
 
   private final ClearService clearService = new ClearService();
-
-  //TODO Does this class need to be singleton?
 
   /* Singleton implementation */
   private ClearHandler() {}
@@ -31,13 +27,14 @@ public class ClearHandler extends Handler {
 
 
   /**
-   * Handles a clear request. Deserializes the request, passes the user data to the
-   * user service, and re-serializes the resulting clear response.
+   * Handles a clear request. Deserializes the request into a ClearRequest object
+   * passes the ClearRequest to the user service, and re-serializes the resulting clear response.
    *
    * @param sparkRequest the Spark-defined request object
    * @param sparkResponse the Spark-defined response object
    * @return    the serialized response object
    */
+  @Override
   public String handleRequest(Request sparkRequest, Response sparkResponse) {
     ClearRequest hydratedClearRequest = deserializeRequest(sparkRequest);
     // TODO should an error by handled here for faulty hydration?
@@ -50,7 +47,7 @@ public class ClearHandler extends Handler {
 
 
   /**
-   * Deserialize the Spark request object into a UserData object.
+   * Deserialize the Spark request object into a ClearRequest object.
    *
    * @param req the Spark request object
    * @return    the hydrated UserData object
@@ -67,15 +64,6 @@ public class ClearHandler extends Handler {
    * @return                the serialized service response
    */
   protected String serializeResponse(ClearResponse clearResponse) {
-    String jsonResponse;
-
-    if (clearResponse.isSuccess()) {
-      jsonResponse = "";
-    }
-    else {
-      jsonResponse = gson.toJson(Map.of("message", clearResponse.getErrorMessage()));
-    }
-
-    return jsonResponse;
+    return gson.toJson(clearResponse);
   }
 }

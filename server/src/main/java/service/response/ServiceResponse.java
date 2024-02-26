@@ -5,27 +5,26 @@ package service.response;
  */
 public class ServiceResponse {
 
-  boolean success;
-  String errorMessage;
+  Boolean success;
+  String message;
 
   // Constructor for positive service responses
   public ServiceResponse() {
-    this.success = true;
-    this.errorMessage = null;
+
   }
 
   // Constructor for negative service responses
-  public ServiceResponse(String errorMessage) {
+  public ServiceResponse(String message) {
     this.success = false;
-    this.errorMessage = errorMessage;
+    this.message = message;
   }
 
   /* Getters */
   public boolean isSuccess() {
-    return success;
+    return (success == null || Boolean.TRUE.equals(success));
   }
 
-  public String getErrorMessage() {
-    return errorMessage;
+  public String getMessage() {
+    return message;
   }
 }

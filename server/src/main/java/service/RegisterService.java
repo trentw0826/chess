@@ -2,7 +2,6 @@ package service;
 
 import dataAccess.DataAccessException;
 import model.AuthData;
-import model.AuthToken;
 import model.UserData;
 import service.request.RegisterRequest;
 import service.response.RegisterResponse;
@@ -32,8 +31,11 @@ public class RegisterService extends Service {
     UserData newUsersData = new UserData(registerRequest.username(), registerRequest.password(), registerRequest.email());
 
     try {
+      if (dataHasNullFields(newUsersData)) {
+        throw new DataAccessException("Error: bad request");
+      }
       memoryUserDAO.create(newUsersData);  // Block will break if user couldn't be registered
-      AuthToken newAuthToken = new AuthToken();
+      String newAuthToken = generateNewAuthToken();
       memoryAuthDAO.create(new AuthData(newAuthToken, registerRequest.username()));
       registerResponse = new RegisterResponse(newUsersData.username(), newAuthToken); // Successful register
     }
@@ -42,5 +44,9 @@ public class RegisterService extends Service {
     }
 
     return registerResponse;
+  }
+
+  private static boolean dataHasNullFields(UserData newUsersData) {
+    return newUsersData.username() == null || newUsersData.password() == null || newUsersData.email() == null;
   }
 }
