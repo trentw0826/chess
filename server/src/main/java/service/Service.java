@@ -40,7 +40,7 @@ public abstract class Service <REQUEST_TYPE extends ServiceRequest, RESPONSE_TYP
   }
 
   /**
-   * @return  a newly generated auth token using random UUID
+   * @return  a newly generated auth token from random UUID
    */
   public static String generateNewAuthToken() {
     return UUID.randomUUID().toString();

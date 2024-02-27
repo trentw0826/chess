@@ -95,3 +95,15 @@ h
 .src/main/java/dataAccess/DataAccessObject.java,7\5\75e6bd8be2924f7c6ec3253f802d42b83f5375be
 u
 Esrc/main/java/dataAccess/memoryAccess/memoryAccessObject/GameMAO.java,c\9\c9d648e0ddeea111e1f44184999f311769663c87
+[
++src/test/java/service/LoginServiceTest.java,9\7\97af259c51e5b8b305030e34d126f2b05c11cb4b
+a
+1src/test/java/serviceTests/ServiceTestHelper.java,3\a\3ab75dce99f791a885e9116fc68b6028d7f86b5b
+c
+3src/test/java/serviceTests/RegisterServiceTest.java,d\c\dc1f8f486b7b40b654950412520b4c63d0678be3
+a
+1src/test/java/serviceTests/LogoutServiceTest.java,8\f\8f44b8983ea65fbd0a92bcea2accacea513f9502
+Y
+)src/test/java/serviceTests/ClearTest.java,b\3\b352bc7d77abcc50061620c9a23681baf8adfaf6
+`
+0src/test/java/serviceTests/ClearServiceTest.java,7\4\744d8b894216e8053dc23b1179349213dafc1fdc
