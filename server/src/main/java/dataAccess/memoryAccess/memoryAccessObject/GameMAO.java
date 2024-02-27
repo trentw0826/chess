@@ -1,5 +1,6 @@
 package dataAccess.memoryAccess.memoryAccessObject;
 
+
 import dataAccess.DataAccessException;
 import dataAccess.memoryAccess.MemoryAccessObject;
 import model.GameData;
@@ -51,11 +52,5 @@ public class GameMAO extends MemoryAccessObject<Integer, GameData> {
       }
     }
     return false;
-  }
-
-  void updateGame() throws DataAccessException {
-    /*
-    TODO Implement (should it take a string, chess game object, or gamedata object?)
-     */
   }
 }

@@ -6,6 +6,8 @@ import model.UserData;
 import service.request.LoginRequest;
 import service.response.LoginResponse;
 
+import service.ServiceConstants;
+
 
 public class LoginService extends Service <LoginRequest, LoginResponse> {
 
@@ -27,7 +29,7 @@ public class LoginService extends Service <LoginRequest, LoginResponse> {
       return new LoginResponse(newAuthData.username(), newAuthData.authToken());
     }
     catch (DataAccessException e) {
-      return new LoginResponse(e.getMessage());
+      return new LoginResponse(ServiceConstants.ERROR_MESSAGES.UNAUTHORIZED.message());
     }
   }
 

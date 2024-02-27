@@ -4,7 +4,6 @@ import model.GameData;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 public class ListGamesResponse extends ServiceResponse {
   private Collection<GameData> games = new HashSet<>();

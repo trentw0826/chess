@@ -131,3 +131,11 @@ e
 +src/main/java/service/ListGamesService.java,2\7\27ed50501c2f8127f73b32f0f0f4dd9197a64853
 d
 4src/test/java/serviceTests/ListGamesServiceTest.java,4\5\45a4cff0e1a63d3c3a116aebd5acd65fa17e550f
+Z
+*src/main/java/handler/JoinGameHandler.java,c\7\c7e065848d71453436b5e221e5339e3b62367cf5
+b
+2src/main/java/service/request/JoinGameRequest.java,7\2\72312df11395d144273d33ecf3097bda46e9f54d
+d
+4src/main/java/service/response/JoinGameResponse.java,9\8\98f8b6ff11b0e8f9738db1043d5df52a9aef28e7
+Z
+*src/main/java/service/JoinGameService.java,4\7\471feb62ed0a86fa14c36e4a9d4ab92a15fecaf8

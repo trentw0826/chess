@@ -54,7 +54,8 @@ public abstract class MemoryAccessObject<K, T> implements DataAccessObject<K, T>
       return localData.get(key);
     }
     else {
-      throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.UNAUTHORIZED);
+      // TODO should throw bad request?
+      throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.BAD_REQUEST);
     }
   }
 

@@ -34,7 +34,7 @@ public class ListGamesHandler extends Handler<ListGamesRequest, ListGamesRespons
    */
   @Override
   protected ListGamesRequest deserializeRequest(Request req) {
-    return gson.fromJson(req.body(), ListGamesRequest.class);
+    return new ListGamesRequest(req.headers("authorization"));
   }
 
   @Override

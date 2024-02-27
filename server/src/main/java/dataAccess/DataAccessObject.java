@@ -11,6 +11,7 @@ import java.util.Collection;
 public interface DataAccessObject<K, T> {
   K create(T data) throws DataAccessException;
   T get(K key) throws DataAccessException;
+//  T update(T newData) throws DataAccessException;
   void delete(K key) throws DataAccessException;
   Collection<T> listData();
   void clear();
