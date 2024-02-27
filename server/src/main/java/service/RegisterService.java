@@ -26,7 +26,7 @@ public class RegisterService extends Service <RegisterRequest, RegisterResponse>
 
     try {
       if (newUsersData.hasNullFields()) {
-        throw new DataAccessException("Error: bad request");
+        throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.BAD_REQUEST);
       }
       USER_DAO.create(newUsersData);  // Block will break if user couldn't be registered
       String newAuthToken = generateNewAuthToken();

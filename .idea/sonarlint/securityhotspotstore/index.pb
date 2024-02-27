@@ -107,3 +107,11 @@ Y
 )src/test/java/serviceTests/ClearTest.java,b\3\b352bc7d77abcc50061620c9a23681baf8adfaf6
 `
 0src/test/java/serviceTests/ClearServiceTest.java,7\4\744d8b894216e8053dc23b1179349213dafc1fdc
+\
+,src/main/java/handler/CreateGameHandler.java,5\f\5fcb941bf363de9d797e9faa67ce05d948be5b6b
+d
+4src/main/java/service/request/CreateGameRequest.java,e\1\e129fe219eb4d3e3b853fa7f4e7ec7e2d4015e77
+f
+6src/main/java/service/response/CreateGameResponse.java,0\5\056b4dd40570c4576edc94db8f66255ad616a404
+[
++src/main/java/service/ServiceConstants.java,7\7\776ddd888933216ad2b8480c2d60979b026c6aa9

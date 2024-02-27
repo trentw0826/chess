@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.RegisterService;
+import service.ServiceConstants;
 import service.request.RegisterRequest;
 import service.response.RegisterResponse;
 
@@ -41,7 +42,7 @@ class RegisterServiceTest {
   @Test
   void alreadyExistsRegisterTest() {
     testRegisterRequest = new RegisterRequest(USERNAME1, PASSWORD1, EMAIL1);
-    expectedResponse = new RegisterResponse("Error: already taken");
+    expectedResponse = new RegisterResponse(ServiceConstants.ERROR_MESSAGES.ALREADY_TAKEN.message());
 
     testRegisterService.processHandlerRequest(testRegisterRequest);
     actualResponse = testRegisterService.processHandlerRequest(testRegisterRequest);

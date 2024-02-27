@@ -42,7 +42,7 @@ public class LoginService extends Service <LoginRequest, LoginResponse> {
   private UserData getUserData(String username) throws DataAccessException {
     UserData userData = USER_DAO.get(username);
     if (userData == null || userData.hasNullFields()) {
-      throw new DataAccessException("Error: bad request");
+      throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.BAD_REQUEST);
     }
     return userData;
   }
@@ -50,7 +50,7 @@ public class LoginService extends Service <LoginRequest, LoginResponse> {
 
   private void validateUserAndPassword(UserData userData, String password) throws DataAccessException {
     if (!USER_DAO.attemptPassword(userData.username(), password)) {
-      throw new DataAccessException("Error: unauthorized");
+      throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.UNAUTHORIZED);
     }
   }
 

@@ -10,9 +10,7 @@ public class ServiceResponse {
   String message;
 
   // Constructor for positive service responses
-  public ServiceResponse() {
-
-  }
+  public ServiceResponse() {}
 
   // Constructor for negative service responses
   public ServiceResponse(String message) {

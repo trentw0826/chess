@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.LogoutService;
 import service.RegisterService;
+import service.ServiceConstants;
 import service.request.LogoutRequest;
 import service.request.RegisterRequest;
 import service.response.LogoutResponse;
@@ -45,7 +46,7 @@ class LogoutServiceTest {
   @Test
   void invalidLogout() {
     testLogoutRequest = new LogoutRequest(FILLERTEXT);
-    expectedResponse = new LogoutResponse("Error: unauthorized");
+    expectedResponse = new LogoutResponse(ServiceConstants.ERROR_MESSAGES.UNAUTHORIZED.message());
 
     actualResponse = testLogoutService.processHandlerRequest(testLogoutRequest);
 
