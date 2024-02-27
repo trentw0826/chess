@@ -4,7 +4,6 @@ package dataAccess.memoryAccess.memoryAccessObject;
 import dataAccess.DataAccessException;
 import dataAccess.memoryAccess.MemoryAccessObject;
 import model.GameData;
-import service.ServiceConstants;
 
 import java.util.Map;
 
@@ -40,11 +39,11 @@ public class GameMao extends MemoryAccessObject<Integer, GameData> {
 
     if (dataExists(gameID)) {
       // a game under given gameID already exists
-      throw new DataAccessException(ServiceConstants.ErrorMessages.ALREADY_TAKEN);
+      throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN);
     }
     else if (nameAlreadyExists(data.getGameName())) {
       // a game under given name already exists
-      throw new DataAccessException(ServiceConstants.ErrorMessages.ALREADY_TAKEN);
+      throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN);
     }
     else {
       // Successful creation

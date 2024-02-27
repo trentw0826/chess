@@ -3,7 +3,6 @@ package dataAccess.memoryAccess.memoryAccessObject;
 import dataAccess.DataAccessException;
 import dataAccess.memoryAccess.MemoryAccessObject;
 import model.AuthData;
-import service.ServiceConstants;
 
 /**
  * Defines a data access object that accesses and modifies locally stored auth data.
@@ -33,7 +32,7 @@ public class AuthMao extends MemoryAccessObject<String, AuthData> {
     try {
       return get(authToken).username();
     } catch (DataAccessException e) {
-      throw new DataAccessException(ServiceConstants.ErrorMessages.UNAUTHORIZED);
+      throw new DataAccessException(DataAccessException.ErrorMessages.UNAUTHORIZED);
     }
   }
 }

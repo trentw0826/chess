@@ -12,7 +12,6 @@ import java.util.UUID;
  * Parent class for Service classes.
  */
 // migrate all request and response objects to their respective classes?
-// Define some list of common error messages
 public abstract class Service <U extends ServiceRequest, T extends ServiceResponse> {
 
   /* local databases */
@@ -20,7 +19,6 @@ public abstract class Service <U extends ServiceRequest, T extends ServiceRespon
   protected static final UserMao USER_DAO = new UserMao();
   protected static final AuthMao AUTH_DAO = new AuthMao();
   protected static final GameMao GAME_DAO = new GameMao();
-
 
   protected Service() {}
 

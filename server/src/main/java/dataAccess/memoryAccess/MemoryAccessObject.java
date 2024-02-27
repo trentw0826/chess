@@ -2,7 +2,6 @@ package dataAccess.memoryAccess;
 
 import dataAccess.DataAccessException;
 import dataAccess.DataAccessObject;
-import service.ServiceConstants;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,7 +31,7 @@ public abstract class MemoryAccessObject<K, T> implements DataAccessObject<K, T>
   public K create(T data) throws DataAccessException {
     K key = generateKey(data);
     if (dataExists(key)) {
-      throw new DataAccessException(ServiceConstants.ErrorMessages.ALREADY_TAKEN);
+      throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN);
     }
     else {
       localData.put(key, data);
@@ -54,7 +53,7 @@ public abstract class MemoryAccessObject<K, T> implements DataAccessObject<K, T>
       return localData.get(key);
     }
     else {
-      throw new DataAccessException(ServiceConstants.ErrorMessages.BAD_REQUEST);
+      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST);
     }
   }
 
@@ -71,7 +70,7 @@ public abstract class MemoryAccessObject<K, T> implements DataAccessObject<K, T>
       localData.remove(key);
     }
     else {
-      throw new DataAccessException(ServiceConstants.ErrorMessages.UNAUTHORIZED);
+      throw new DataAccessException(DataAccessException.ErrorMessages.UNAUTHORIZED);
     }
   }
 

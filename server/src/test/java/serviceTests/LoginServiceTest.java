@@ -1,11 +1,11 @@
 package serviceTests;
 
+import dataAccess.DataAccessException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.LoginService;
 import service.RegisterService;
-import service.ServiceConstants;
 import service.request.LoginRequest;
 import service.request.RegisterRequest;
 import service.response.LoginResponse;
@@ -47,7 +47,7 @@ class LoginServiceTest {
   @Test
   void nonExistingLoginTest() {
     testLoginRequest = new LoginRequest(USERNAME1, PASSWORD1);
-    expectedResponse = new LoginResponse(ServiceConstants.ErrorMessages.UNAUTHORIZED.message());
+    expectedResponse = new LoginResponse(DataAccessException.ErrorMessages.UNAUTHORIZED.message());
 
     actualResponse = testLoginService.processHandlerRequest(testLoginRequest);
 

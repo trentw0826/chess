@@ -1,11 +1,11 @@
 package serviceTests;
 
+import dataAccess.DataAccessException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.LogoutService;
 import service.RegisterService;
-import service.ServiceConstants;
 import service.request.LogoutRequest;
 import service.request.RegisterRequest;
 import service.response.LogoutResponse;
@@ -19,6 +19,7 @@ class LogoutServiceTest {
   LogoutResponse expectedResponse;
   LogoutResponse actualResponse;
 
+
   @BeforeEach
   void setUp() {
     testLogoutService = new LogoutService();
@@ -27,6 +28,7 @@ class LogoutServiceTest {
     expectedResponse = null;
     actualResponse = null;
   }
+
 
   @Test
   void normalLogout() {
@@ -45,7 +47,7 @@ class LogoutServiceTest {
   @Test
   void invalidLogout() {
     testLogoutRequest = new LogoutRequest(FILLERTEXT);
-    expectedResponse = new LogoutResponse(ServiceConstants.ErrorMessages.UNAUTHORIZED.message());
+    expectedResponse = new LogoutResponse(DataAccessException.ErrorMessages.UNAUTHORIZED.message());
 
     actualResponse = testLogoutService.processHandlerRequest(testLogoutRequest);
 

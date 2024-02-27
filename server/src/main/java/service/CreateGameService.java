@@ -25,7 +25,7 @@ public class CreateGameService extends Service <CreateGameRequest, CreateGameRes
     try {
 
       if (!authTokenExists(createGameRequest.authToken())) {
-        throw new DataAccessException(ServiceConstants.ErrorMessages.UNAUTHORIZED);
+        throw new DataAccessException(DataAccessException.ErrorMessages.UNAUTHORIZED);
       }
 
       int gameID = GAME_DAO.create(newGame);

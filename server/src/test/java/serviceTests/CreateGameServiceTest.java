@@ -1,12 +1,12 @@
 package serviceTests;
 
+import dataAccess.DataAccessException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.CreateGameService;
 import service.RegisterService;
-import service.ServiceConstants;
 import service.request.CreateGameRequest;
 import service.request.RegisterRequest;
 import service.response.CreateGameResponse;
@@ -56,7 +56,7 @@ class CreateGameServiceTest {
   @Test
   void alreadyExistingNameCreateGameTest() {
     testCreateGameRequest = new CreateGameRequest(GAMENAME1, existingAuthToken);
-    expectedResponse = new CreateGameResponse(ServiceConstants.ErrorMessages.ALREADY_TAKEN.message());
+    expectedResponse = new CreateGameResponse(DataAccessException.ErrorMessages.ALREADY_TAKEN.message());
 
     CreateGameResponse throwawayResponse = testCreateGameService.processHandlerRequest(testCreateGameRequest);
     actualResponse = testCreateGameService.processHandlerRequest(testCreateGameRequest);
