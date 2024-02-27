@@ -119,3 +119,15 @@ f
 ,src/main/java/service/CreateGameService.java,0\1\019916f26f0c598ff737e3a43193ff003c569de0
 e
 5src/test/java/serviceTests/CreateGameServiceTest.java,d\b\dbeef3a8e543610cd6e6d4282ec37e14edc24786
+Z
+*src/main/java/handler/ListGameHandler.java,8\0\80ed9a652f7ecd718e079b5e5a022cbd648c9cba
+[
++src/main/java/handler/ListGamesHandler.java,7\a\7aa00ca5cbc9d172a513919cc58c90b0be75b6a0
+c
+3src/main/java/service/request/ListGamesRequest.java,d\9\d95126242242c94f0ca15abd04b8e88e0e502031
+e
+5src/main/java/service/response/ListGamesResponse.java,a\6\a65b5334e6694755c3e8268aaa752596eae431bf
+[
++src/main/java/service/ListGamesService.java,2\7\27ed50501c2f8127f73b32f0f0f4dd9197a64853
+d
+4src/test/java/serviceTests/ListGamesServiceTest.java,4\5\45a4cff0e1a63d3c3a116aebd5acd65fa17e550f

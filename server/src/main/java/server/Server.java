@@ -42,7 +42,7 @@ public class Server {
         Spark.post("/session", (req, res) -> LoginHandler.getInstance().handleHttpRequest(req, res));
         Spark.delete("/session", (req, res) -> LogoutHandler.getInstance().handleHttpRequest(req, res));
         Spark.post("/game", (req, res) -> CreateGameHandler.getInstance().handleHttpRequest(req, res));
-        Spark.get("/game", (req, res) -> "TODO: ListGameHandler.getInstance().handleRequest(req, res)");
-        Spark.put("/game", (req, res) -> "TODO: JoinGameHandler.getInstance().handleRequest(req, res)");
+        Spark.get("/game", (req, res) -> ListGamesHandler.getInstance().handleHttpRequest(req, res));
+        Spark.put("/game", (req, res) -> "TODO: JoinGameHandler.getInstance().handleHttpRequest(req, res)");
     }
 }
