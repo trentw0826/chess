@@ -56,7 +56,7 @@ class CreateGameServiceTest {
   @Test
   void alreadyExistingNameCreateGameTest() {
     testCreateGameRequest = new CreateGameRequest(GAMENAME1, existingAuthToken);
-    expectedResponse = new CreateGameResponse(ServiceConstants.ERROR_MESSAGES.ALREADY_TAKEN.message());
+    expectedResponse = new CreateGameResponse(ServiceConstants.ErrorMessages.ALREADY_TAKEN.message());
 
     CreateGameResponse throwawayResponse = testCreateGameService.processHandlerRequest(testCreateGameRequest);
     actualResponse = testCreateGameService.processHandlerRequest(testCreateGameRequest);

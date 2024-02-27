@@ -50,10 +50,6 @@ public class Server {
             PATHS(String path) {
                 this.path = path;
             }
-
-            public String path() {
-                return path;
-            }
         }
 
         Spark.delete(PATHS.DB.path, (req, res) -> ClearHandler.instance().handleRequest(req, res));

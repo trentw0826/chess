@@ -43,7 +43,7 @@ public class JoinGameService extends Service <JoinGameRequest, JoinGameResponse>
         }
         else {
           // Player wants to be added as white player, but it is unavailable
-          throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.ALREADY_TAKEN);
+          throw new DataAccessException(ServiceConstants.ErrorMessages.ALREADY_TAKEN);
         }
       }
       else if (desiredColor.equalsIgnoreCase("black")) {
@@ -53,12 +53,12 @@ public class JoinGameService extends Service <JoinGameRequest, JoinGameResponse>
         }
         else {
           // Player wants to be added as black player, but it is unavailable
-          throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.ALREADY_TAKEN);
+          throw new DataAccessException(ServiceConstants.ErrorMessages.ALREADY_TAKEN);
         }
       }
       else {
         // player's desired player color could not be recognized as white, black, or observer
-        throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.BAD_REQUEST);
+        throw new DataAccessException(ServiceConstants.ErrorMessages.BAD_REQUEST);
       }
 
       joinGameResponse = new JoinGameResponse();

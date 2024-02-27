@@ -40,11 +40,11 @@ public class GameMao extends MemoryAccessObject<Integer, GameData> {
 
     if (dataExists(gameID)) {
       // a game under given gameID already exists
-      throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.ALREADY_TAKEN);
+      throw new DataAccessException(ServiceConstants.ErrorMessages.ALREADY_TAKEN);
     }
     else if (nameAlreadyExists(data.getGameName())) {
       // a game under given name already exists
-      throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.ALREADY_TAKEN);
+      throw new DataAccessException(ServiceConstants.ErrorMessages.ALREADY_TAKEN);
     }
     else {
       // Successful creation

@@ -13,7 +13,7 @@ import java.util.UUID;
  */
 // migrate all request and response objects to their respective classes?
 // Define some list of common error messages
-public abstract class Service <REQUEST_TYPE extends ServiceRequest, RESPONSE_TYPE extends ServiceResponse> {
+public abstract class Service <U extends ServiceRequest, T extends ServiceResponse> {
 
   /* local databases */
   // Update from new MemoryAccessObject to new DatabaseAccessObject next phase
@@ -24,7 +24,7 @@ public abstract class Service <REQUEST_TYPE extends ServiceRequest, RESPONSE_TYP
 
   protected Service() {}
 
-  protected abstract RESPONSE_TYPE processHandlerRequest(REQUEST_TYPE serviceRequest);
+  protected abstract T processHandlerRequest(U serviceRequest);
 
   /**
    * Clear all databases.

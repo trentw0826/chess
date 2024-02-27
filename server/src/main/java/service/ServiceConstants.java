@@ -1,14 +1,14 @@
 package service;
 
 public class ServiceConstants {
-  public enum ERROR_MESSAGES {
+  public enum ErrorMessages {
     BAD_REQUEST("Error: bad request"),
     UNAUTHORIZED("Error: unauthorized"),
     ALREADY_TAKEN("Error: already taken");
 
     private final String message;
 
-    ERROR_MESSAGES(String message) {
+    ErrorMessages(String message) {
       this.message = message;
     }
 

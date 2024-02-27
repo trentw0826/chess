@@ -10,7 +10,6 @@ import service.request.LogoutRequest;
 import service.request.RegisterRequest;
 import service.response.LogoutResponse;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static serviceTests.ServiceTestHelper.*;
 
 class LogoutServiceTest {
@@ -46,7 +45,7 @@ class LogoutServiceTest {
   @Test
   void invalidLogout() {
     testLogoutRequest = new LogoutRequest(FILLERTEXT);
-    expectedResponse = new LogoutResponse(ServiceConstants.ERROR_MESSAGES.UNAUTHORIZED.message());
+    expectedResponse = new LogoutResponse(ServiceConstants.ErrorMessages.UNAUTHORIZED.message());
 
     actualResponse = testLogoutService.processHandlerRequest(testLogoutRequest);
 

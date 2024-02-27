@@ -1,6 +1,5 @@
 package serviceTests;
 
-import org.eclipse.jetty.util.log.Log;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,6 @@ import service.request.LoginRequest;
 import service.request.RegisterRequest;
 import service.response.LoginResponse;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static serviceTests.ServiceTestHelper.*;
 
 class LoginServiceTest {
@@ -49,7 +47,7 @@ class LoginServiceTest {
   @Test
   void nonExistingLoginTest() {
     testLoginRequest = new LoginRequest(USERNAME1, PASSWORD1);
-    expectedResponse = new LoginResponse(ServiceConstants.ERROR_MESSAGES.UNAUTHORIZED.message());
+    expectedResponse = new LoginResponse(ServiceConstants.ErrorMessages.UNAUTHORIZED.message());
 
     actualResponse = testLoginService.processHandlerRequest(testLoginRequest);
 

@@ -27,14 +27,14 @@ public class LoginService extends Service <LoginRequest, LoginResponse> {
       return new LoginResponse(newAuthData.username(), newAuthData.authToken());
     }
     catch (DataAccessException e) {
-      return new LoginResponse(ServiceConstants.ERROR_MESSAGES.UNAUTHORIZED.message());
+      return new LoginResponse(ServiceConstants.ErrorMessages.UNAUTHORIZED.message());
     }
   }
 
 
   private void checkPassword(UserData userData, String password) throws DataAccessException {
     if (!USER_DAO.attemptPassword(userData.username(), password)) {
-      throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.UNAUTHORIZED);
+      throw new DataAccessException(ServiceConstants.ErrorMessages.UNAUTHORIZED);
     }
   }
 

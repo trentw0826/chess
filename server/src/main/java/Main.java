@@ -10,5 +10,3 @@ public class Main {
         myServer.run(8080);
     }
 }
-
-//TODO auth token class/record?

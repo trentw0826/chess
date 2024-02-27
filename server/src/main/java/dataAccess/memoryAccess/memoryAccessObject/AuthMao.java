@@ -33,7 +33,7 @@ public class AuthMao extends MemoryAccessObject<String, AuthData> {
     try {
       return get(authToken).username();
     } catch (DataAccessException e) {
-      throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.UNAUTHORIZED);
+      throw new DataAccessException(ServiceConstants.ErrorMessages.UNAUTHORIZED);
     }
   }
 }
