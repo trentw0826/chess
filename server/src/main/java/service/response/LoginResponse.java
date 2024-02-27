@@ -1,8 +1,8 @@
 package service.response;
 
 public class LoginResponse extends ServiceResponse {
-  String username;
-  String authToken;
+  private String username;
+  private String authToken;
 
   // Successful
   public LoginResponse(String username, String authToken) {

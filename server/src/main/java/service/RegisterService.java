@@ -28,9 +28,12 @@ public class RegisterService extends Service <RegisterRequest, RegisterResponse>
       if (newUsersData.hasNullFields()) {
         throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.BAD_REQUEST);
       }
+
       USER_DAO.create(newUsersData);  // Block will break if user couldn't be registered
+
       String newAuthToken = generateNewAuthToken();
       AUTH_DAO.create(new AuthData(newAuthToken, registerRequest.username()));
+
       registerResponse = new RegisterResponse(newUsersData.username(), newAuthToken); // Successful register
     }
     catch (DataAccessException e) {

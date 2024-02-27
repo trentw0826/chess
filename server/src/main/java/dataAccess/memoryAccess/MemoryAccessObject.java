@@ -19,7 +19,7 @@ import java.util.Map;
 public abstract class MemoryAccessObject<K, T> implements DataAccessObject<K, T> {
 
   /* Local data structure holding data values*/
-  final Map<K, T> localData = new HashMap<>();
+  protected final Map<K, T> localData = new HashMap<>();
 
 
   /**
@@ -102,7 +102,7 @@ public abstract class MemoryAccessObject<K, T> implements DataAccessObject<K, T>
    * @param key key to check for existence
    * @return    if 'key' exists in the local data
    */
-  private boolean dataExists(K key) {
+  protected boolean dataExists(K key) {
     return localData.containsKey(key);
   }
 

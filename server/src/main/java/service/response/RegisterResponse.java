@@ -1,8 +1,8 @@
 package service.response;
 
 public class RegisterResponse extends ServiceResponse {
-  String username;
-  String authToken;
+  private String username;
+  private String authToken;
 
   // Successful
   public RegisterResponse(String username, String authToken) {

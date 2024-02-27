@@ -1,6 +1,7 @@
 package service;
 
 
+import dataAccess.DataAccessException;
 import dataAccess.memoryAccess.memoryAccessObject.*;
 import service.request.ServiceRequest;
 import service.response.ServiceResponse;
@@ -44,5 +45,23 @@ public abstract class Service <REQUEST_TYPE extends ServiceRequest, RESPONSE_TYP
    */
   public static String generateNewAuthToken() {
     return UUID.randomUUID().toString();
+  }
+
+
+  /**
+   * Checks if an auth token currently exists.
+   *
+   * @param authToken auth token
+   * @return          true if given auth token exists in Auth database
+   */
+  // TODO Find where else this logic should be replaced
+  protected boolean authTokenExists(String authToken) {
+    try {
+      AUTH_DAO.get(authToken);
+    }
+    catch (DataAccessException e) {
+      return false;
+    }
+    return true;
   }
 }

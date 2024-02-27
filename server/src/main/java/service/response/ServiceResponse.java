@@ -5,9 +5,8 @@ package service.response;
  */
 public class ServiceResponse {
 
-  //TODO understand and optimize the logic of 'success' Boolean
-  Boolean success;
-  String message;
+  private Boolean success;
+  private String message;
 
   // Constructor for positive service responses
   public ServiceResponse() {}
