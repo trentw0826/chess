@@ -38,6 +38,6 @@ public class LoginHandler extends Handler<LoginRequest, LoginResponse> {
 
   @Override
   protected LoginResponse processRequest(LoginRequest request) {
-    return loginService.login(request);
+    return loginService.processHandlerRequest(request);
   }
 }

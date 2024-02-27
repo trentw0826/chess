@@ -7,15 +7,7 @@ import service.request.LoginRequest;
 import service.response.LoginResponse;
 
 
-public class LoginService extends Service {
-
-  /**
-   * Default constructor
-   */
-  public LoginService() {
-    super();
-  }
-
+public class LoginService extends Service <LoginRequest, LoginResponse> {
 
   /**
    * Handles the login service for a given login request. If the login request
@@ -25,35 +17,47 @@ public class LoginService extends Service {
    * @param loginRequest  login request
    * @return              login response
    */
-  public LoginResponse login(LoginRequest loginRequest) {
-    LoginResponse loginResponse;
-
+  @Override
+  public LoginResponse processHandlerRequest(LoginRequest loginRequest) {
     try {
-      UserData retrievedUserData = memoryUserDAO.get(loginRequest.username());
+      UserData retrievedUserData = getUserData(loginRequest.username());  // Get user data
+      validateUserAndPassword(retrievedUserData, loginRequest.password()); // Validate user data
 
-      if (dataHasNullFields(retrievedUserData)) {
-        throw new DataAccessException("Error: bad request");
-      }
-
-      if (!memoryUserDAO.attemptPassword(retrievedUserData.username(), loginRequest.password())) {
-        throw new DataAccessException("Error: unauthorized");
-      }
-
-      // Successful login
-      AuthData newAuthData = new AuthData(generateNewAuthToken(), retrievedUserData.username());
-      memoryAuthDAO.create(newAuthData);
-
-      loginResponse = new LoginResponse(newAuthData.username(), newAuthData.authToken());
+      AuthData newAuthData = generateAuthData(retrievedUserData);
+      return new LoginResponse(newAuthData.username(), newAuthData.authToken());
     }
     catch (DataAccessException e) {
-      // Unsuccessful login
-      loginResponse = new LoginResponse(e.getMessage());
+      return new LoginResponse(e.getMessage());
     }
-
-    return loginResponse;
   }
 
-  private static boolean dataHasNullFields(UserData userData) {
-    return userData.username() == null || userData.password() == null || userData.email() == null;
+
+  /**
+   * Helper method that retrieves a user's data.
+   *
+   * @param username  username at which to retrieve data
+   * @return          retrieved user data
+   * @throws DataAccessException  if userdata under 'username' doesn't exist
+   */
+  private UserData getUserData(String username) throws DataAccessException {
+    UserData userData = USER_DAO.get(username);
+    if (userData == null || userData.hasNullFields()) {
+      throw new DataAccessException("Error: bad request");
+    }
+    return userData;
+  }
+
+
+  private void validateUserAndPassword(UserData userData, String password) throws DataAccessException {
+    if (!USER_DAO.attemptPassword(userData.username(), password)) {
+      throw new DataAccessException("Error: unauthorized");
+    }
+  }
+
+
+  private AuthData generateAuthData(UserData userData) throws DataAccessException {
+    String authToken = generateNewAuthToken();
+    AUTH_DAO.create(new AuthData(authToken, userData.username()));
+    return new AuthData(authToken, userData.username());
   }
 }

@@ -1,7 +1,7 @@
 package handler;
 
 
-import service.ClearService;
+import service.Service;
 import service.request.ServiceRequest;
 import service.response.ServiceResponse;
 import spark.Request;
@@ -13,7 +13,12 @@ import spark.Request;
  */
 public class ClearHandler extends Handler<ServiceRequest, ServiceResponse> {
 
-  private final ClearService clearService = new ClearService();
+  private final Service<ServiceRequest, ServiceResponse> service = new Service() {
+    @Override
+    protected ServiceResponse processHandlerRequest(ServiceRequest serviceRequest) {
+      return processRequest(serviceRequest);
+    }
+  };
 
   private ClearHandler() {}
 
@@ -39,6 +44,6 @@ public class ClearHandler extends Handler<ServiceRequest, ServiceResponse> {
 
   @Override
   protected ServiceResponse processRequest(ServiceRequest request) {
-    return clearService.clear(request);
+    return service.clear();
   }
 }

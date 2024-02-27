@@ -5,15 +5,7 @@ import service.request.LogoutRequest;
 import service.response.LogoutResponse;
 
 
-public class LogoutService extends Service {
-
-  /**
-   * Default constructor
-   */
-  public LogoutService() {
-    super();
-  }
-
+public class LogoutService extends Service <LogoutRequest, LogoutResponse> {
 
   /**
    * Handles the logout service for a given logout request.
@@ -21,11 +13,12 @@ public class LogoutService extends Service {
    * @param logoutRequest logout request
    * @return              logout response
    */
-  public LogoutResponse logout(LogoutRequest logoutRequest) {
+  @Override
+  public LogoutResponse processHandlerRequest(LogoutRequest logoutRequest) {
     LogoutResponse logoutResponse;
 
     try {
-      memoryAuthDAO.delete(logoutRequest.authToken());
+      AUTH_DAO.delete(logoutRequest.authToken());
       logoutResponse = new LogoutResponse();
     }
     catch (DataAccessException e) {

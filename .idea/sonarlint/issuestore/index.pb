@@ -77,3 +77,21 @@ d
 4src/main/java/service/response/RegisterResponse.java,6\d\6d777601c7e849b8f19a5c2e8821cfee9dc4306c
 a
 1src/main/java/service/request/ServiceRequest.java,c\0\c0cf08358cf4fd460f5e507bae6c9b9471de4765
+`
+0src/test/java/serviceTests/LoginServiceTest.java,4\7\470231192dc43eb7263184b850cab3d6c2d25436
+a
+1src/main/java/dataAccess/DataAccessException.java,6\e\6eb5d3ed21c9df98a86e3c1b8de2bcdc464b3e0e
+O
+src/main/java/ErrorMessage.java,5\7\57e012fa62b2749aae47d144f65687d6d2c2c0f3
+Q
+!src/main/java/model/UserData.java,3\8\38719670ec0261570896dcf7e398500f4b350234
+Q
+!src/main/java/model/GameData.java,6\7\67153312f42cfc25e918e7241d99ff3d32f0ce01
+R
+"src/main/java/model/DataModel.java,d\e\de72e5e924d5234ac39b03a0bb49f7fae8256788
+h
+8src/main/java/dataAccess/memoryAccess/LocalDatabase.java,1\3\13a79c123ec974df9ad1181a4eff965c34a51533
+^
+.src/main/java/dataAccess/DataAccessObject.java,7\5\75e6bd8be2924f7c6ec3253f802d42b83f5375be
+u
+Esrc/main/java/dataAccess/memoryAccess/memoryAccessObject/GameMAO.java,c\9\c9d648e0ddeea111e1f44184999f311769663c87

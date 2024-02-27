@@ -2,18 +2,47 @@ package service;
 
 
 import dataAccess.memoryAccess.memoryAccessObject.*;
+import service.request.ServiceRequest;
+import service.response.ServiceResponse;
 
 import java.util.UUID;
 
-public abstract class Service {
-  /* local databases */
-  protected static final UserMAO memoryUserDAO = new UserMAO();
-  protected static final AuthMAO memoryAuthDAO = new AuthMAO();
-  protected static final GameMAO memoryGameDAO = new GameMAO();
+/**
+ * Parent class for Service classes.
+ */
+//TODO Using generics, extract common functionality
+//TODO migrate all request and response objects to their respective classes?
+//TODO Define some list of common error messages
+public abstract class Service <REQUEST_TYPE extends ServiceRequest, RESPONSE_TYPE extends ServiceResponse> {
 
+  /* local databases */
+  // Update from new MemoryAccessObject to new DatabaseAccessObject next phase
+  protected static final UserMAO USER_DAO = new UserMAO();
+  protected static final AuthMAO AUTH_DAO = new AuthMAO();
+  protected static final GameMAO GAME_DAO = new GameMAO();
+
+
+  protected Service() {}
+
+  protected abstract RESPONSE_TYPE processHandlerRequest(REQUEST_TYPE serviceRequest);
+
+  /**
+   * Clear all databases.
+   *
+   * @return  successful service response
+   */
+  public ServiceResponse clear() {
+    USER_DAO.clear();
+    AUTH_DAO.clear();
+    GAME_DAO.clear();
+
+    return new ServiceResponse();
+  }
+
+  /**
+   * @return  a newly generated auth token using random UUID
+   */
   public static String generateNewAuthToken() {
     return UUID.randomUUID().toString();
   }
-
-  Service() {}
 }

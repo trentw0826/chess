@@ -38,6 +38,6 @@ public class LogoutHandler extends Handler<LogoutRequest, LogoutResponse> {
 
   @Override
   protected LogoutResponse processRequest(LogoutRequest request) {
-    return logoutService.logout(request);
+    return logoutService.processHandlerRequest(request);
   }
 }

@@ -39,6 +39,6 @@ public class RegisterHandler extends Handler<RegisterRequest, RegisterResponse> 
 
   @Override
   protected RegisterResponse processRequest(RegisterRequest request) {
-    return registerService.register(request);
+    return registerService.processHandlerRequest(request);
   }
 }
