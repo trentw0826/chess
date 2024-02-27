@@ -5,11 +5,13 @@ package service.response;
  */
 public class ServiceResponse {
 
-  private Boolean success;
+  private final Boolean success;
   private String message;
 
   // Constructor for positive service responses
-  public ServiceResponse() {}
+  public ServiceResponse() {
+    success = true;
+  }
 
   // Constructor for negative service responses
   public ServiceResponse(String message) {

@@ -25,15 +25,32 @@ public class GameMAO extends MemoryAccessObject<Integer, GameData> {
 
   @Override
   public Integer create(GameData data) throws DataAccessException {
-    int gameID = ++numGames;
+    int gameID = getNextID();
+    numGames++;
 
     if (dataExists(gameID)) {
+      throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.ALREADY_TAKEN);
+    }
+    else if (nameAlreadyExists(data.gameName())) {
       throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.ALREADY_TAKEN);
     }
     else {
       localData.put(gameID, data);
       return gameID;
     }
+  }
+
+  protected Integer getNextID() {
+    return numGames + 1;
+  }
+
+  protected boolean nameAlreadyExists(String name) {
+    for (int gameID : localData.keySet()) {
+      if (localData.get(gameID).gameName().equals(name)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   void updateGame() throws DataAccessException {

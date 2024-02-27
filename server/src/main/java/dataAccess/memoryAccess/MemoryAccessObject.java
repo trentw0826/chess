@@ -102,7 +102,7 @@ public abstract class MemoryAccessObject<K, T> implements DataAccessObject<K, T>
    * @param key key to check for existence
    * @return    if 'key' exists in the local data
    */
-  protected boolean dataExists(K key) {
+  public boolean dataExists(K key) {
     return localData.containsKey(key);
   }
 

@@ -24,6 +24,7 @@ class LoginServiceTest {
   @BeforeEach
   void setUp() {
     testLoginService = new LoginService();
+    testLoginService.clear();
     testLoginRequest = null;
     expectedResponse = null;
     actualResponse = null;

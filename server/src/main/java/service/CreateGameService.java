@@ -34,7 +34,6 @@ public class CreateGameService extends Service <CreateGameRequest, CreateGameRes
       }
 
       int gameID = GAME_DAO.create(newGame);
-
       createGameResponse = new CreateGameResponse(gameID);
     }
     catch (DataAccessException e) {

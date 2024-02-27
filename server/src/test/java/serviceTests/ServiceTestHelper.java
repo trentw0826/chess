@@ -20,5 +20,7 @@ public class ServiceTestHelper {
   public static final String PASSWORD2 = "somepassword2";
   public static final String EMAIL2 = "someemail2";
   public static final String FILLERTEXT = "fillertext123";
+  public static final String GAMENAME1 = "gamename1";
+  public static final String GAMENAME2 = "gamename2";
 
 }
