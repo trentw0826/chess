@@ -75,7 +75,7 @@ abstract class Handler<U extends ServiceRequest, T extends ServiceResponse> {
    * @param res the Spark-defined response object
    * @return    the serialized response object
    */
-  public String handleHttpRequest(Request req, Response res) {
+  public String handleRequest(Request req, Response res) {
     U hydratedRequest = deserializeRequest(req);
     T serviceResponse = processRequest(hydratedRequest);
     res.status(getStatusCode(serviceResponse));

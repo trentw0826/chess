@@ -10,8 +10,8 @@ import service.response.RegisterResponse;
 public class RegisterService extends Service <RegisterRequest, RegisterResponse> {
 
   /**
-   * Takes a register request, converts it into a UserData object,
-   * and attempts to register that user data in the local user memory database.
+   * Handles a register request.
+   * Attempts to register the provided user in the local user memory database.
    * Returns a RegisterResponse object (successful if properly added, unsuccessful if exception
    * thrown during adding)
    *

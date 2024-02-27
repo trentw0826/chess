@@ -21,7 +21,7 @@ public class LogoutHandler extends Handler<LogoutRequest, LogoutResponse> {
   private static final class InstanceHolder {
     private static final LogoutHandler instance = new LogoutHandler();
   }
-  public static LogoutHandler getInstance() {
+  public static LogoutHandler instance() {
     return InstanceHolder.instance;
   }
 

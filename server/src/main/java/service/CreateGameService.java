@@ -9,10 +9,9 @@ import service.response.CreateGameResponse;
 public class CreateGameService extends Service <CreateGameRequest, CreateGameResponse> {
 
   /**
-   * Takes a createGame request, converts it into a GameData object,
-   * and attempts to insert that game data into the game database.
-   * Returns a CreateGameResponse object (successful if properly added, unsuccessful if exception
-   * thrown during adding)
+   * Handles a create game request.
+   * Returns a negative CreateGameResponse if the data couldn't be created and inserted into the database,
+   * otherwise returns a positive one.
    *
    * @param createGameRequest create game request
    * @return                  create game response
@@ -29,10 +28,6 @@ public class CreateGameService extends Service <CreateGameRequest, CreateGameRes
         throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.UNAUTHORIZED);
       }
 
-      if (!newGame.hasGameName()) {
-        throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.BAD_REQUEST);
-      }
-
       int gameID = GAME_DAO.create(newGame);
       createGameResponse = new CreateGameResponse(gameID);
     }
@@ -43,3 +38,4 @@ public class CreateGameService extends Service <CreateGameRequest, CreateGameRes
     return createGameResponse;
   }
 }
+

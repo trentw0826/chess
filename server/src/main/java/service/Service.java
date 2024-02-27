@@ -11,16 +11,15 @@ import java.util.UUID;
 /**
  * Parent class for Service classes.
  */
-//TODO Using generics, extract common functionality
-//TODO migrate all request and response objects to their respective classes?
-//TODO Define some list of common error messages
+// migrate all request and response objects to their respective classes?
+// Define some list of common error messages
 public abstract class Service <REQUEST_TYPE extends ServiceRequest, RESPONSE_TYPE extends ServiceResponse> {
 
   /* local databases */
   // Update from new MemoryAccessObject to new DatabaseAccessObject next phase
-  protected static final UserMAO USER_DAO = new UserMAO();
-  protected static final AuthMAO AUTH_DAO = new AuthMAO();
-  protected static final GameMAO GAME_DAO = new GameMAO();
+  protected static final UserMao USER_DAO = new UserMao();
+  protected static final AuthMao AUTH_DAO = new AuthMao();
+  protected static final GameMao GAME_DAO = new GameMao();
 
 
   protected Service() {}
@@ -54,7 +53,6 @@ public abstract class Service <REQUEST_TYPE extends ServiceRequest, RESPONSE_TYP
    * @param authToken auth token
    * @return          true if given auth token exists in Auth database
    */
-  // TODO Find where else this logic should be replaced
   protected boolean authTokenExists(String authToken) {
     try {
       AUTH_DAO.get(authToken);

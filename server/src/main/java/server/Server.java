@@ -4,7 +4,7 @@ import handler.*;
 import spark.*;
 
 /**
- * Server class to define and run basic Spark server
+ * Server class to define and run basic Spark server.
  */
 public class Server {
 
@@ -26,7 +26,7 @@ public class Server {
     }
 
     /**
-     * Stops the spark server
+     * Stops the spark server.
      */
     public void stop() {
         Spark.stop();
@@ -34,15 +34,34 @@ public class Server {
     }
 
     /**
-     * Defines the spark server's routes
+     * Defines the spark server's routes.
      */
     private static void createRoutes() {
-        Spark.delete("/db", (req, res) -> ClearHandler.getInstance().handleHttpRequest(req, res));
-        Spark.post("/user", (req, res) -> RegisterHandler.getInstance().handleHttpRequest(req, res));
-        Spark.post("/session", (req, res) -> LoginHandler.getInstance().handleHttpRequest(req, res));
-        Spark.delete("/session", (req, res) -> LogoutHandler.getInstance().handleHttpRequest(req, res));
-        Spark.post("/game", (req, res) -> CreateGameHandler.getInstance().handleHttpRequest(req, res));
-        Spark.get("/game", (req, res) -> ListGamesHandler.getInstance().handleHttpRequest(req, res));
-        Spark.put("/game", (req, res) -> "JoinGameHandler.getInstance().handleHttpRequest(req, res)");
+
+        // Contains enum values associated with needed path strings
+        enum PATHS {
+            DB("/db"),
+            USER("/user"),
+            SESSION("/session"),
+            GAME("/game");
+
+            private final String path;
+
+            PATHS(String path) {
+                this.path = path;
+            }
+
+            public String path() {
+                return path;
+            }
+        }
+
+        Spark.delete(PATHS.DB.path, (req, res) -> ClearHandler.instance().handleRequest(req, res));
+        Spark.post(PATHS.USER.path, (req, res) -> RegisterHandler.instance().handleRequest(req, res));
+        Spark.post(PATHS.SESSION.path, (req, res) -> LoginHandler.instance().handleRequest(req, res));
+        Spark.delete(PATHS.SESSION.path, (req, res) -> LogoutHandler.instance().handleRequest(req, res));
+        Spark.post(PATHS.GAME.path, (req, res) -> CreateGameHandler.instance().handleRequest(req, res));
+        Spark.get(PATHS.GAME.path, (req, res) -> ListGamesHandler.instance().handleRequest(req, res));
+        Spark.put(PATHS.GAME.path, (req, res) -> JoinGameHandler.instance().handleRequest(req, res));
     }
 }

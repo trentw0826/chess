@@ -6,15 +6,13 @@ import model.UserData;
 import service.request.LoginRequest;
 import service.response.LoginResponse;
 
-import service.ServiceConstants;
-
 
 public class LoginService extends Service <LoginRequest, LoginResponse> {
 
   /**
    * Handles the login service for a given login request. If the login request
    * contains an existing username with its matching password, returns a login response
-   * with newly generated auth data.
+   * with newly generated auth data. Otherwise, returns a negative login response.
    *
    * @param loginRequest  login request
    * @return              login response
@@ -22,8 +20,8 @@ public class LoginService extends Service <LoginRequest, LoginResponse> {
   @Override
   public LoginResponse processHandlerRequest(LoginRequest loginRequest) {
     try {
-      UserData retrievedUserData = getUserData(loginRequest.username());  // Get user data
-      validateUserAndPassword(retrievedUserData, loginRequest.password()); // Validate user data
+      UserData retrievedUserData = USER_DAO.get(loginRequest.username());  // Try to get user data
+      checkPassword(retrievedUserData, loginRequest.password()); // Try to validate password
 
       AuthData newAuthData = generateAuthData(retrievedUserData);
       return new LoginResponse(newAuthData.username(), newAuthData.authToken());
@@ -34,23 +32,7 @@ public class LoginService extends Service <LoginRequest, LoginResponse> {
   }
 
 
-  /**
-   * Helper method that retrieves a user's data.
-   *
-   * @param username  username at which to retrieve data
-   * @return          retrieved user data
-   * @throws DataAccessException  if userdata under 'username' doesn't exist
-   */
-  private UserData getUserData(String username) throws DataAccessException {
-    UserData userData = USER_DAO.get(username);
-    if (userData == null || userData.hasNullFields()) {
-      throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.BAD_REQUEST);
-    }
-    return userData;
-  }
-
-
-  private void validateUserAndPassword(UserData userData, String password) throws DataAccessException {
+  private void checkPassword(UserData userData, String password) throws DataAccessException {
     if (!USER_DAO.attemptPassword(userData.username(), password)) {
       throw new DataAccessException(ServiceConstants.ERROR_MESSAGES.UNAUTHORIZED);
     }

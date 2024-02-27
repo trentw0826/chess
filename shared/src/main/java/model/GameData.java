@@ -2,29 +2,63 @@ package model;
 
 import chess.ChessGame;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Holds data representing a chess game on the server.
- *
- * @param gameID        the game's ID
- * @param whiteUsername the white player's username (may be null)
- * @param blackUsername the black player's username (may be null)
- * @param gameName      the game's name
- * @param game          the game object representing the game itself
  */
-public record GameData(Integer gameID, String whiteUsername, String blackUsername,
-                       String gameName, ChessGame game) implements DataModel {
+public class GameData implements DataModel {
+
+  private Integer gameID;
+  private String whiteUsername;
+  private String blackUsername;
+  private final Set<String> observers = new HashSet<>();
+  private final String gameName;
+  private ChessGame game;
 
   public GameData(String gameName) {
-    this(-1, null, null, gameName, null);
+    gameID = null;
+    whiteUsername = null;
+    blackUsername = null;
+
+    this.gameName = gameName;
+  }
+
+  public String getWhiteUsername() {
+    return whiteUsername;
+  }
+
+  public void setWhiteUsername(String whiteUsername) {
+    this.whiteUsername = whiteUsername;
+  }
+
+  public String getBlackUsername() {
+    return blackUsername;
+  }
+
+  public void setBlackUsername(String blackUsername) {
+    this.blackUsername = blackUsername;
+  }
+
+  public Integer getGameID() {
+    return gameID;
+  }
+
+  public void setGameID(Integer gameID) {
+    this.gameID = gameID;
+  }
+
+  public String getGameName() {
+    return gameName;
+  }
+
+  public void addObserver(String newObserverUsername) {
+    observers.add(newObserverUsername);
   }
 
   @Override
   public boolean hasNullFields() {
-    return (gameID == null || whiteUsername == null ||
-            blackUsername == null || gameName == null || game == null);
-  }
-
-  public boolean hasGameName() {
-    return gameName != null;
+    return (gameName == null || game == null);
   }
 }

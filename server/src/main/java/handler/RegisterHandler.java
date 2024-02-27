@@ -21,7 +21,7 @@ public class RegisterHandler extends Handler<RegisterRequest, RegisterResponse> 
   private static final class InstanceHolder {
     private static final RegisterHandler instance = new RegisterHandler();
   }
-  public static RegisterHandler getInstance() {
+  public static RegisterHandler instance() {
     return InstanceHolder.instance;
   }
 

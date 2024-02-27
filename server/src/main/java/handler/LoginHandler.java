@@ -21,7 +21,7 @@ public class LoginHandler extends Handler<LoginRequest, LoginResponse> {
   private static final class InstanceHolder {
     private static final LoginHandler instance = new LoginHandler();
   }
-  public static LoginHandler getInstance() {
+  public static LoginHandler instance() {
     return InstanceHolder.instance;
   }
 

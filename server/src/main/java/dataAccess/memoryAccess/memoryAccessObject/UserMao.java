@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * Defines a data access object that accesses and modifies locally stored user data
  */
-public class UserMAO extends MemoryAccessObject<String, UserData> {
+public class UserMao extends MemoryAccessObject<String, UserData> {
 
   /**
    * Returns the username of a user data model as its key

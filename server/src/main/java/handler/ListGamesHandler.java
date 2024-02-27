@@ -21,7 +21,7 @@ public class ListGamesHandler extends Handler<ListGamesRequest, ListGamesRespons
   private static final class InstanceHolder {
     private static final ListGamesHandler instance = new ListGamesHandler();
   }
-  public static ListGamesHandler getInstance() {
+  public static ListGamesHandler instance() {
     return InstanceHolder.instance;
   }
 

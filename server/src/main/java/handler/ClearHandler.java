@@ -26,7 +26,7 @@ public class ClearHandler extends Handler<ServiceRequest, ServiceResponse> {
   private static final class InstanceHolder {
     private static final ClearHandler instance = new ClearHandler();
   }
-  public static ClearHandler getInstance() {
+  public static ClearHandler instance() {
     return InstanceHolder.instance;
   }
 

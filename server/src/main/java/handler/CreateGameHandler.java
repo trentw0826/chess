@@ -1,6 +1,7 @@
 package handler;
 
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import service.CreateGameService;
 import service.request.CreateGameRequest;
@@ -22,7 +23,7 @@ public class CreateGameHandler extends Handler<CreateGameRequest, CreateGameResp
   private static final class InstanceHolder {
     private static final CreateGameHandler instance = new CreateGameHandler();
   }
-  public static CreateGameHandler getInstance() {
+  public static CreateGameHandler instance() {
     return InstanceHolder.instance;
   }
 
@@ -35,7 +36,9 @@ public class CreateGameHandler extends Handler<CreateGameRequest, CreateGameResp
    */
   @Override
   protected CreateGameRequest deserializeRequest(Request req) {
-    String gameName = gson.fromJson(req.body(), JsonObject.class).get("gameName").getAsString();
+    JsonElement gameNameElement = gson.fromJson(req.body(), JsonObject.class).get("gameName");
+
+    String gameName = (gameNameElement == null) ? null : gameNameElement.getAsString();
     String authToken = req.headers("authorization");
 
     return new CreateGameRequest(gameName, authToken);
