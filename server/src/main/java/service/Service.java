@@ -15,7 +15,6 @@ import java.util.UUID;
 public abstract class Service <U extends ServiceRequest, T extends ServiceResponse> {
 
   /* local databases */
-  // Update from new MemoryAccessObject to new DatabaseAccessObject next phase
   protected static final UserMao USER_DAO = new UserMao();
   protected static final AuthMao AUTH_DAO = new AuthMao();
   protected static final GameMao GAME_DAO = new GameMao();
@@ -23,6 +22,7 @@ public abstract class Service <U extends ServiceRequest, T extends ServiceRespon
   protected Service() {}
 
   protected abstract T processHandlerRequest(U serviceRequest);
+
 
   /**
    * Clear all databases.
@@ -37,10 +37,11 @@ public abstract class Service <U extends ServiceRequest, T extends ServiceRespon
     return new ServiceResponse();
   }
 
+
   /**
    * @return  a newly generated auth token from random UUID
    */
-  public static String generateNewAuthToken() {
+  protected static String generateNewAuthToken() {
     return UUID.randomUUID().toString();
   }
 
@@ -51,13 +52,13 @@ public abstract class Service <U extends ServiceRequest, T extends ServiceRespon
    * @param authToken auth token
    * @return          true if given auth token exists in Auth database
    */
-  protected boolean authTokenExists(String authToken) {
+  protected boolean invalidAuthToken(String authToken) {
     try {
       AUTH_DAO.get(authToken);
     }
     catch (DataAccessException e) {
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 }

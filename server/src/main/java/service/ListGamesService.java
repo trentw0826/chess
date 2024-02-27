@@ -19,7 +19,7 @@ public class ListGamesService extends Service <ListGamesRequest, ListGamesRespon
     ListGamesResponse listGamesResponse;
 
     try {
-      if (!authTokenExists(listGamesRequest.authToken())) {
+      if (invalidAuthToken(listGamesRequest.authToken())) {
         throw new DataAccessException(DataAccessException.ErrorMessages.UNAUTHORIZED);
       }
 

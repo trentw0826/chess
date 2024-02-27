@@ -56,7 +56,19 @@ class ListGamesServiceTest {
 
     Assertions.assertEquals(expectedResponse.getGames().size(), actualResponse.getGames().size());
   }
-  
+
+
+  @Test
+  void invalidTokenListGamesTest() {
+    testListGamesRequest = new ListGamesRequest("invalidtoken123");
+    expectedResponse = new ListGamesResponse("Error: unauthorized");
+
+    actualResponse = testListGamesService.processHandlerRequest(testListGamesRequest);
+
+    Assertions.assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
+  }
+
+
   @Test
   void listOneGameTest() {
     CreateGameRequest testCreateGameRequest = new CreateGameRequest("someGameName", existingAuthToken);

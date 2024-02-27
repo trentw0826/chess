@@ -54,6 +54,17 @@ class CreateGameServiceTest {
 
 
   @Test
+  void invalidAuthTokenCreateGameTest() {
+    testCreateGameRequest = new CreateGameRequest(GAMENAME1, "someinvalidtoken123");
+    expectedResponse = new CreateGameResponse("Error: unauthorized");
+
+    actualResponse = testCreateGameService.processHandlerRequest(testCreateGameRequest);
+
+    Assertions.assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
+  }
+
+
+  @Test
   void alreadyExistingNameCreateGameTest() {
     testCreateGameRequest = new CreateGameRequest(GAMENAME1, existingAuthToken);
     expectedResponse = new CreateGameResponse(DataAccessException.ErrorMessages.ALREADY_TAKEN.message());
