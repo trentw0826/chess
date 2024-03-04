@@ -8,6 +8,10 @@ public class DataAccessException extends Exception{
         super(errorMessage.message());
     }
 
+    public DataAccessException(String errorMessage) {
+        super(errorMessage);
+    }
+
     public enum ErrorMessages {
         BAD_REQUEST("Error: bad request"),
         UNAUTHORIZED("Error: unauthorized"),
