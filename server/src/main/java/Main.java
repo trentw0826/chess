@@ -1,4 +1,5 @@
 import chess.*;
+import dataAccess.DatabaseManager;
 import server.Server;
 
 public class Main {

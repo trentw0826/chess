@@ -19,6 +19,8 @@
     <orderEntry type="library" name="google.code.gson" level="project" />
     <orderEntry type="library" name="sparkjava.spark.core" level="project" />
     <orderEntry type="library" name="slf4j.simple" level="project" />
+    <orderEntry type="library" name="mysql.connector.j" level="project" />
+    <orderEntry type="library" name="springframework.security.spring.core" level="project" />
   </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="1e84644a-7683-4aab-b51a-f6a2af0118fb" />
