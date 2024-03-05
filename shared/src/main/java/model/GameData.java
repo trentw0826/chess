@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Holds data representing a chess game on the server.
  */
-public class GameData implements DataModel {
+public class GameData implements DataModel<Integer> {
 
   private Integer gameID;
   private String whiteUsername;
@@ -60,5 +60,10 @@ public class GameData implements DataModel {
   @Override
   public boolean hasNullFields() {
     return (gameName == null || game == null);
+  }
+
+  @Override
+  public Integer generateKey() {
+    return gameID;
   }
 }

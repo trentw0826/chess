@@ -12,18 +12,6 @@ import java.util.Objects;
 public class UserMao extends MemoryAccessObject<String, UserData> {
 
   /**
-   * Returns the username of a user data model as its key
-   *
-   * @param data  user data model
-   * @return      key of 'data' (username)
-   */
-  @Override
-  public String generateKey(UserData data) {
-    return data.username();
-  }
-
-
-  /**
    * Returns if a password attempt is valid for the given username.
    *
    * @param username        username to attempt password for

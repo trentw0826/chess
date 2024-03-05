@@ -15,18 +15,6 @@ public class GameMao extends MemoryAccessObject<Integer, GameData> {
   private static int numGames;
 
   /**
-   * Returns the key of a GameData object.
-   *
-   * @param data  game data model
-   * @return      key of 'data' (gameID)
-   */
-  @Override
-  public Integer generateKey(GameData data) {
-    return data.getGameID();
-  }
-
-
-  /**
    * Creates a new game in the game database.
    *
    * @param data  game to be created

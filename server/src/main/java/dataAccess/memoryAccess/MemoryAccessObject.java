@@ -2,6 +2,7 @@ package dataAccess.memoryAccess;
 
 import dataAccess.DataAccessException;
 import dataAccess.DataAccessObject;
+import model.DataModel;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ import java.util.Map;
  * @param <T> data model type
  * @param <K> key type associated with data model type
  */
-public abstract class MemoryAccessObject<K, T> implements DataAccessObject<K, T> {
+public abstract class MemoryAccessObject<K, T extends DataModel<K>> implements DataAccessObject<K, T> {
 
   /* Local data structure holding data values*/
   protected final Map<K, T> localData = new HashMap<>();
@@ -29,7 +30,7 @@ public abstract class MemoryAccessObject<K, T> implements DataAccessObject<K, T>
    */
   @Override
   public K create(T data) throws DataAccessException {
-    K key = generateKey(data);
+    K key = data.generateKey();
     if (dataExists(key)) {
       throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN);
     }
@@ -104,12 +105,4 @@ public abstract class MemoryAccessObject<K, T> implements DataAccessObject<K, T>
   public boolean dataExists(K key) {
     return localData.containsKey(key);
   }
-
-  /**
-   * Generates a key based on a data model.
-   *
-   * @param data  data model
-   * @return      the key associated with given data model
-   */
-  protected abstract K generateKey(T data);
 }

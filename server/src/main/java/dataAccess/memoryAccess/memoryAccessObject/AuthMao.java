@@ -10,18 +10,6 @@ import model.AuthData;
 public class AuthMao extends MemoryAccessObject<String, AuthData> {
 
   /**
-   * Returns the key of an AuthData object.
-   *
-   * @param data auth data model
-   * @return key of 'data' (auth token)
-   */
-  @Override
-  public String generateKey(AuthData data) {
-    return data.authToken();
-  }
-
-
-  /**
    * Gets a username based on a provided auth token.
    *
    * @param authToken auth token

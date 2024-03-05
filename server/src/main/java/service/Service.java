@@ -11,7 +11,6 @@ import java.util.UUID;
 /**
  * Parent class for Service classes.
  */
-// migrate all request and response objects to their respective classes?
 public abstract class Service <U extends ServiceRequest, T extends ServiceResponse> {
 
   /* local databases */
