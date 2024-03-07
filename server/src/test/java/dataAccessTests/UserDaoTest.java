@@ -9,6 +9,9 @@ import org.junit.jupiter.api.*;
 import server.Server;
 import spark.utils.Assert;
 
+import javax.xml.crypto.Data;
+import java.util.Collection;
+
 class UserDaoTest extends DaoTest {
 
   static UserDao testUserDao;
@@ -50,21 +53,27 @@ class UserDaoTest extends DaoTest {
 
   @Test
   void listDataEmptyTest() {
-    var listedData = testUserDao.listData();
-    int expectedSize = 0;
+    Collection<UserData> listedData;
+    try {
+      listedData = testUserDao.listData();
+    } catch (DataAccessException e) {
+      throw new RuntimeException(e);
+    }
 
+    int expectedSize = 0;
     Assertions.assertEquals(expectedSize, listedData.size());
   }
 
   @Test
   void ListDataOneUserTest() {
+    Collection<UserData> listedData;
     try {
       testUserDao.create(TEST_USER_1);
+      listedData = testUserDao.listData();
     } catch (DataAccessException e) {
       throw new RuntimeException(e);
     }
 
-    var listedData = testUserDao.listData();
     int expectedSize = 1;
 
     Assertions.assertEquals(expectedSize, listedData.size());
@@ -73,18 +82,22 @@ class UserDaoTest extends DaoTest {
 
   @Test
   void createOneUserTest() {
+    Collection<UserData> listedData;
+    UserData actualUser;
+
     try {
       testUserDao.create(TEST_USER_1);
+      listedData = testUserDao.listData();
+      actualUser = testUserDao.listData().iterator().next();
     }
+
     catch (DataAccessException e) {
       throw new RuntimeException(e);
     }
 
-    var listedData = testUserDao.listData();
     int expectedSize = 1;
     Assertions.assertEquals(expectedSize, listedData.size());
 
-    UserData actualUser = testUserDao.listData().iterator().next();
     Assertions.assertEquals(TEST_USER_1, actualUser);
   }
 
@@ -144,17 +157,20 @@ class UserDaoTest extends DaoTest {
 
   @Test
   void clearTest() {
+    Collection<UserData> listedData;
+
     try {
       testUserDao.create(TEST_USER_1);
       testUserDao.create(TEST_USER_2);
       testUserDao.clear();
+      listedData = testUserDao.listData();
     }
     catch (DataAccessException e) {
       throw new RuntimeException(e);
     }
 
     int expectedSize = 0;
-    Assertions.assertEquals(expectedSize, testUserDao.listData().size());
+    Assertions.assertEquals(expectedSize, listedData.size());
   }
 
   @Test

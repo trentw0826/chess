@@ -6,8 +6,8 @@ import model.UserData;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 
 public class UserDao extends DatabaseAccessObject<String, UserData> {
@@ -29,9 +29,10 @@ public class UserDao extends DatabaseAccessObject<String, UserData> {
   @Override
   public String create(UserData data) throws DataAccessException {
     try {
-      executeUpdate("INSERT INTO " + USER_DATABASE_NAME +
-              " (username, password, email) VALUES(?, ?, ?)",
-              data.username(), data.password(), data.email());
+      executeUpdate(
+              "INSERT INTO " + USER_DATABASE_NAME + " (username, password, email) VALUES(?, ?, ?)",
+              data.username(), data.password(), data.email()
+      );
 
       return data.username();
     }
@@ -51,7 +52,8 @@ public class UserDao extends DatabaseAccessObject<String, UserData> {
   @Override
   public UserData get(String key) throws DataAccessException {
     try (var preparedStatement = connection.prepareStatement(
-            "SELECT * FROM " + USER_DATABASE_NAME + " WHERE username=?")) {
+            "SELECT * FROM " + USER_DATABASE_NAME + " WHERE username=?"
+    )) {
       preparedStatement.setString(1, key);
       ResultSet rs = preparedStatement.executeQuery();
       return readUserData(rs);
@@ -68,20 +70,43 @@ public class UserDao extends DatabaseAccessObject<String, UserData> {
    * @return  collection of user data objects representing all the user data entries
    */
   @Override
-  public Collection<UserData> listData() {
-    return Collections.emptyList();
+  public Collection<UserData> listData() throws DataAccessException {
+    try (var preparedStatement = connection.prepareStatement(
+            "SELECT * FROM " + USER_DATABASE_NAME
+    )) {
+      Collection<UserData> users = new ArrayList<>();
+
+      try (ResultSet rs = preparedStatement.executeQuery()) {
+        while (rs.next()) {
+          users.add(readUserData(rs));
+        }
+        return users;
+      }
+    }
+    catch (SQLException e) {
+      throw new DataAccessException("Game data could not be retrieved: " + e.getMessage());
+    }
   }
 
 
   /**
-   * Drops a user data entry at the given username key from the user table.
+   * Deletes a user data entry at the given username key from the user table.
    *
-   * @param key username of user data to be dropped
-   * @throws DataAccessException  if SQL error thrown during dropping
+   * @param key username of user data to be deleted
+   * @throws DataAccessException  if SQL error thrown during deletion
    */
   @Override
   public void delete(String key) throws DataAccessException {
-
+    try (var preparedStatement = connection.prepareStatement("DELETE FROM " + USER_DATABASE_NAME + " WHERE username=?")) {
+      preparedStatement.setString(1, key);
+      int rowsAffected = preparedStatement.executeUpdate();
+      if (rowsAffected == 0) {
+        throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST);
+      }
+    }
+    catch (SQLException e) {
+      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": " + e.getMessage());
+    }
   }
 
 
