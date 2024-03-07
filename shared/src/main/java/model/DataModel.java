@@ -11,5 +11,5 @@ public interface DataModel<K> {
   /**
    * @return the unique identifier key defined by the inheriting class
    */
-  public K generateKey();
+  K generateKey();
 }

@@ -1,13 +1,23 @@
 package dataAccess.databaseAccess;
 
+import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import dataAccess.DataAccessObject;
 import dataAccess.DatabaseManager;
 import model.DataModel;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
-public abstract class DatabaseAccessObject<K, T extends DataModel> implements DataAccessObject<K, T> {
+public abstract class DatabaseAccessObject<K, T extends DataModel<K>> implements DataAccessObject<K, T> {
+
+  protected final Connection connection;
+  protected final Gson gson;
+
+  protected DatabaseAccessObject() throws DataAccessException {
+    this.connection = DatabaseManager.getConnection();
+    gson = new Gson();
+  }
 
   /*
    * Initializing statements for the database table creations

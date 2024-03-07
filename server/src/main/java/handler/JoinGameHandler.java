@@ -38,10 +38,20 @@ public class JoinGameHandler extends Handler<JoinGameRequest, JoinGameResponse> 
   protected JoinGameRequest deserializeRequest(Request req) {
     String authToken = req.headers("authorization");
 
+    if (authToken == null) {
+      throw new IllegalArgumentException("No auth token passed with request body");
+    }
+
     JsonElement playerColorElement = gson.fromJson(req.body(), JsonObject.class).get("playerColor");
     String playerColor = (playerColorElement == null) ? null : playerColorElement.getAsString();
 
-    Integer gameID = gson.fromJson(req.body(), JsonObject.class).get("gameID").getAsInt();
+    JsonElement gameIdElement = gson.fromJson(req.body(), JsonObject.class).get("gameID");
+
+    if (gameIdElement == null) {
+      throw new IllegalStateException("No game ID associated with requested game");
+    }
+
+    Integer gameID = gameIdElement.getAsInt();
 
     return new JoinGameRequest(authToken, playerColor, gameID);
   }

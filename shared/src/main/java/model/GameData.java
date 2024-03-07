@@ -17,12 +17,16 @@ public class GameData implements DataModel<Integer> {
   private final String gameName;
   private ChessGame game;
 
-  public GameData(String gameName) {
-    gameID = null;
-    whiteUsername = null;
-    blackUsername = null;
-
+  public GameData(Integer gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game) {
+    this.gameID = gameID;
+    this.whiteUsername = whiteUsername;
+    this.blackUsername = blackUsername;
     this.gameName = gameName;
+    this.game = game;
+  }
+
+  public GameData(String gameName) {
+    this(null, null, null, gameName, null);
   }
 
   public String getWhiteUsername() {
@@ -51,6 +55,14 @@ public class GameData implements DataModel<Integer> {
 
   public String getGameName() {
     return gameName;
+  }
+
+  public ChessGame getGame() {
+    return game;
+  }
+
+  public void initializeEmptyGame() {
+    game = new ChessGame();
   }
 
   public void addObserver(String newObserverUsername) {

@@ -27,6 +27,9 @@ public class JoinGameService extends Service <JoinGameRequest, JoinGameResponse>
 
       // Tries to get desired game from provided ID
       GameData desiredGame = GAME_DAO.get(joinGameRequest.gameID());
+      if (desiredGame == null) {
+        throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST);
+      }
 
       String desiredGamesWhitePlayer = desiredGame.getWhiteUsername();
       String desiredGamesBlackPlayer = desiredGame.getBlackUsername();

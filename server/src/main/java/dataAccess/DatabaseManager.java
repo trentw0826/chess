@@ -1,13 +1,17 @@
 package dataAccess;
 
+import java.nio.file.FileSystemException;
 import java.sql.*;
 import java.util.Properties;
 
 public class DatabaseManager {
+
     private static final String DATABASE_NAME;
     private static final String USER;
     private static final String PASSWORD;
     private static final String CONNECTION_URL;
+
+    public DatabaseManager() {}
 
     /*
      * Load the database information for the db.properties file.
@@ -15,7 +19,7 @@ public class DatabaseManager {
     static {
         try {
             try (var propStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("db.properties")) {
-                if (propStream == null) throw new Exception("Unable to load db.properties");
+                if (propStream == null) throw new FileSystemException("Unable to load db.properties");
                 Properties props = new Properties();
                 props.load(propStream);
                 DATABASE_NAME = props.getProperty("db.name");
@@ -34,7 +38,7 @@ public class DatabaseManager {
     /**
      * Creates the database if it does not already exist.
      */
-    static void createDatabase() throws DataAccessException {
+    public static void createDatabase() throws DataAccessException {
         try {
             var statement = "CREATE DATABASE IF NOT EXISTS " + DATABASE_NAME;
             var conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSWORD);
@@ -58,11 +62,12 @@ public class DatabaseManager {
      * }
      * </code>
      */
-    static Connection getConnection() throws DataAccessException {
-        try (var conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSWORD);) {
+    public static Connection getConnection() throws DataAccessException {
+        try (var conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSWORD);){
             conn.setCatalog(DATABASE_NAME);
             return conn;
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }
     }
