@@ -61,8 +61,8 @@ public class GameData implements DataModel<Integer> {
     return game;
   }
 
-  public void initializeEmptyGame() {
-    game = new ChessGame();
+  public static ChessGame getEmptyGame() {
+    return new ChessGame();
   }
 
   public void addObserver(String newObserverUsername) {

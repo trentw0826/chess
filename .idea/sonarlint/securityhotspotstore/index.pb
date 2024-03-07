@@ -47,3 +47,13 @@ Z
 -src/main/java/dataAccess/DatabaseManager.java,c\a\ca8e537e22592e882e6b882e3dc07228f03d6960
 G
 src/main/java/Main.java,e\4\e44a8606ce010ad9b89aafdfcee2ab49afbf6d10
+u
+Esrc/main/java/dataAccess/memoryAccess/memoryAccessObject/AuthMao.java,7\8\7867e091d849bf389bdcb92654b50e811e74a509
+W
+'src/main/java/service/LoginService.java,7\b\7b11053eb434333bf8717d76ee6f3b9769fbf853
+[
++src/main/java/handler/ListGamesHandler.java,7\a\7aa00ca5cbc9d172a513919cc58c90b0be75b6a0
+\
+,src/main/java/handler/CreateGameHandler.java,5\f\5fcb941bf363de9d797e9faa67ce05d948be5b6b
+b
+2src/main/java/service/request/JoinGameRequest.java,7\2\72312df11395d144273d33ecf3097bda46e9f54d

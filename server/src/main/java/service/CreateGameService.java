@@ -23,7 +23,6 @@ public class CreateGameService extends Service <CreateGameRequest, CreateGameRes
     GameData newGame = new GameData(createGameRequest.gameName());
 
     try {
-
       if (invalidAuthToken(createGameRequest.authToken())) {
         throw new DataAccessException(DataAccessException.ErrorMessages.UNAUTHORIZED);
       }

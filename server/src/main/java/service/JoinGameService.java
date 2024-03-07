@@ -37,6 +37,7 @@ public class JoinGameService extends Service <JoinGameRequest, JoinGameResponse>
 
       if (desiredColor == null) {
         // Add the user as an observer
+        //TODO The service class shouldn't directly alter the data but rather pass the job to a DAO
         desiredGame.addObserver(currentUsername);
       }
       else if (desiredColor.equalsIgnoreCase("white")) {

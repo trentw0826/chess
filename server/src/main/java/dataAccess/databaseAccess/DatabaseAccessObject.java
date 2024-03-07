@@ -1,5 +1,6 @@
 package dataAccess.databaseAccess;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import dataAccess.DataAccessObject;
@@ -7,7 +8,12 @@ import dataAccess.DatabaseManager;
 import model.DataModel;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
+import static java.sql.Types.NULL;
 
 public abstract class DatabaseAccessObject<K, T extends DataModel<K>> implements DataAccessObject<K, T> {
 
@@ -67,15 +73,48 @@ public abstract class DatabaseAccessObject<K, T extends DataModel<K>> implements
    */
   private void configureDatabase() throws DataAccessException {
     DatabaseManager.createDatabase();
-    try (var conn = DatabaseManager.getConnection()) {
+    try {
       for (var statement : CREATE_STATEMENTS) {
-        try (var preparedStatement = conn.prepareStatement(statement)) {
-          preparedStatement.executeUpdate();
-        }
+        executeUpdate(statement);
       }
     }
     catch (SQLException ex) {
       throw new RuntimeException("Unable to configure database: " + ex.getMessage());
     }
   }
+
+
+  /**
+   * Executes a SQL query in the form of a string.
+   *
+   * @param statement       SQL query string that includes wildcards
+   * @param statementParams a vararg of parameters to fill the wildcard parameters in the given statement
+   * @return                the generated auto key, if applicable ('-1' otherwise)
+   * @throws SQLException   if SQL error thrown during query processing
+   */
+  protected int executeUpdate(String statement, Object... statementParams) throws SQLException {
+    try (PreparedStatement preparedStatement = connection.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
+      for (var i = 0; i < statementParams.length; i++) {
+        var param = statementParams[i];
+        switch (param) {
+          case String p -> preparedStatement.setString(i + 1, p);
+          case Integer p -> preparedStatement.setInt(i + 1, p);
+          case ChessGame p -> preparedStatement.setString(i + 1, gson.toJson(p));
+          case null -> preparedStatement.setNull(i + 1, NULL);
+          default -> { throw new IllegalArgumentException("Illegal parameter include in SQL statement"); }
+        }
+      }
+      preparedStatement.executeUpdate();
+
+      var rs = preparedStatement.getGeneratedKeys();
+
+      if (rs.next()) {
+        return rs.getInt(1);
+      }
+
+      return -1;
+    }
+  }
+
+  //TODO executeQuery method
 }
