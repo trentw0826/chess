@@ -35,8 +35,8 @@ public class AuthDao extends DatabaseAccessObject<String, AuthData> {
               " (authToken, username) VALUES(?, ?)", data.authToken(), data.username());
       return data.authToken();
     }
-    catch (SQLException ex) {
-      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": " + ex.getMessage());
+    catch (SQLException e) {
+      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": " + e.getMessage());
     }
   }
 
@@ -50,10 +50,10 @@ public class AuthDao extends DatabaseAccessObject<String, AuthData> {
    */
   @Override
   public AuthData get(String key) throws DataAccessException {
-    try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT authToken, username FROM " + AUTH_DATABASE_NAME + " WHERE authtoken=?")) {
+    try (PreparedStatement preparedStatement = connection.prepareStatement(
+            "SELECT authToken, username FROM " + AUTH_DATABASE_NAME + " WHERE authtoken=?")) {
       preparedStatement.setString(1, key);
       ResultSet resultSet = preparedStatement.executeQuery();
-
       return readAuthData(resultSet);
     }
     catch (SQLException e) {
@@ -95,8 +95,8 @@ public class AuthDao extends DatabaseAccessObject<String, AuthData> {
     try {
       executeUpdate("TRUNCATE TABLE " + AUTH_DATABASE_NAME);
     }
-    catch (SQLException ex) {
-      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": " + ex.getMessage());
+    catch (SQLException e) {
+      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": " + e.getMessage());
     }
   }
 
@@ -115,8 +115,9 @@ public class AuthDao extends DatabaseAccessObject<String, AuthData> {
       String username = rs.getString(2);
       return new AuthData(authToken, username);
     }
-
-    throw new IllegalArgumentException("Empty result set passed to readAuthData");
+    else {
+      throw new IllegalArgumentException("Empty result set passed to readAuthData");
+    }
   }
 
 

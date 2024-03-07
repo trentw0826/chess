@@ -35,8 +35,8 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
                     " (whiteUsername, blackUsername, gameName, game) VALUES(?, ?, ?, ?)",
                     data.getWhiteUsername(), data.getBlackUsername(), data.getGameName(), GameData.getEmptyGame());
     }
-    catch (SQLException ex) {
-      throw new DataAccessException("Game data couldn't be inserted: " + ex.getMessage());
+    catch (SQLException e) {
+      throw new DataAccessException("Game data couldn't be inserted: " + e.getMessage());
     }
   }
 
@@ -51,26 +51,16 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
   @Override
   public GameData get(Integer key) throws DataAccessException {
     //TODO add observers to sql query
-    try (var preparedStatement = connection.prepareStatement("SELECT gameID, whiteUsername, blackUsername, gameName, game FROM gamedata WHERE gameID=?")) {
+    //TODO update to 'SELECT *'
+    try (var preparedStatement = connection.prepareStatement(
+            "SELECT gameID, whiteUsername, blackUsername, gameName, game FROM " +
+            GAME_DATABASE_NAME + " WHERE gameID=?")) {
       preparedStatement.setInt(1, key);
-
-      try (ResultSet rs = preparedStatement.executeQuery()) {
-        if (rs.next()) {
-          int gameID = rs.getInt(1);
-          String whiteUsername = rs.getString(2);
-          String blackUsername = rs.getString(3);
-          String gameName = rs.getString(4);
-          ChessGame game = gson.fromJson(rs.getString(5), ChessGame.class);
-
-          return new GameData(gameID, whiteUsername, blackUsername, gameName, game);
-        }
-        else {
-          throw new IllegalStateException("Result set with no rows detected");
-        }
-      }
+      ResultSet rs = preparedStatement.executeQuery();
+      return readGameData(rs);
     }
-    catch (SQLException ex) {
-      throw new DataAccessException("Game data could not be retrieved: " + ex.getMessage());
+    catch (SQLException e) {
+      throw new DataAccessException("Game data could not be retrieved: " + e.getMessage());
     }
   }
 
@@ -95,8 +85,8 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
       }
 
     }
-    catch (SQLException ex) {
-      throw new DataAccessException("Game data could not be retrieved: " + ex.getMessage());
+    catch (SQLException e) {
+      throw new DataAccessException("Game data could not be retrieved: " + e.getMessage());
     }
   }
 
@@ -126,8 +116,8 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
       executeUpdate("TRUNCATE TABLE " + GAME_DATABASE_NAME);
       executeUpdate("SET foreign_key_checks = 1");
     }
-    catch (SQLException ex) {
-      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": " + ex.getMessage());
+    catch (SQLException e) {
+      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": " + e.getMessage());
     }
   }
 
@@ -141,13 +131,18 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
    * @throws SQLException if sql error is thrown during reading
    */
   private GameData readGameData(ResultSet rs) throws SQLException {
-    int gameID = rs.getInt(1);
-    String whiteUsername = rs.getString(2);
-    String blackUsername = rs.getString(3);
-    String gameName = rs.getString(4);
-    String chessGameJson = rs.getString(5);
-    ChessGame game = gson.fromJson(chessGameJson, ChessGame.class);
+    if (rs.next()) {
+      int gameID = rs.getInt(1);
+      String whiteUsername = rs.getString(2);
+      String blackUsername = rs.getString(3);
+      String gameName = rs.getString(4);
+      String chessGameJson = rs.getString(5);
+      ChessGame game = gson.fromJson(chessGameJson, ChessGame.class);
 
-    return new GameData(gameID, whiteUsername, blackUsername, gameName, game);
+      return new GameData(gameID, whiteUsername, blackUsername, gameName, game);
+    }
+    else {
+      throw new IllegalArgumentException("Empty result set passed to readGameData");
+    }
   }
 }

@@ -57,3 +57,7 @@ W
 ,src/main/java/handler/CreateGameHandler.java,5\f\5fcb941bf363de9d797e9faa67ce05d948be5b6b
 b
 2src/main/java/service/request/JoinGameRequest.java,7\2\72312df11395d144273d33ecf3097bda46e9f54d
+^
+.src/test/java/dataAccessTests/UserDaoTest.java,4\6\46dd0eaf4e235e1ced3f7564369eb7bfe29b71bf
+Z
+*src/test/java/dataAccessTests/DaoTest.java,6\d\6d50b6d1de6358e937f5fcc46ff0448b13862e2b

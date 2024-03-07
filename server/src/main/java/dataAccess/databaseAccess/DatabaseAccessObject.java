@@ -15,15 +15,20 @@ import java.sql.SQLException;
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import static java.sql.Types.NULL;
 
+// TODO Should all data access objects be static classes?
 public abstract class DatabaseAccessObject<K, T extends DataModel<K>> implements DataAccessObject<K, T> {
+  protected static final Connection connection;
+  protected static final Gson gson = new Gson();
 
-  protected final Connection connection;
-  protected final Gson gson;
-
-  protected DatabaseAccessObject() throws DataAccessException {
-    this.connection = DatabaseManager.getConnection();
-    gson = new Gson();
+  static {
+    try {
+      connection = DatabaseManager.getConnection();
+    } 
+    catch (DataAccessException e) {
+      throw new IllegalStateException(e.getMessage());
+    }
   }
+
 
   /*
    * Initializing statements for the database table creations
@@ -78,8 +83,8 @@ public abstract class DatabaseAccessObject<K, T extends DataModel<K>> implements
         executeUpdate(statement);
       }
     }
-    catch (SQLException ex) {
-      throw new RuntimeException("Unable to configure database: " + ex.getMessage());
+    catch (SQLException e) {
+      throw new RuntimeException("Unable to configure database: " + e.getMessage());
     }
   }
 

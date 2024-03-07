@@ -4,6 +4,7 @@ import dataAccess.DataAccessException;
 import dataAccess.databaseAccess.DatabaseAccessObject;
 import model.UserData;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,8 +35,8 @@ public class UserDao extends DatabaseAccessObject<String, UserData> {
 
       return data.username();
     }
-    catch (SQLException ex) {
-      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": " + ex.getMessage());
+    catch (SQLException e) {
+      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": " + e.getMessage());
     }
   }
 
@@ -49,7 +50,15 @@ public class UserDao extends DatabaseAccessObject<String, UserData> {
    */
   @Override
   public UserData get(String key) throws DataAccessException {
-    return null;
+    try (var preparedStatement = connection.prepareStatement(
+            "SELECT * FROM " + USER_DATABASE_NAME + " WHERE username=?")) {
+      preparedStatement.setString(1, key);
+      ResultSet rs = preparedStatement.executeQuery();
+      return readUserData(rs);
+    }
+    catch (SQLException e) {
+      throw new DataAccessException("User data could not be retrieved: " + e.getMessage());
+    }
   }
 
 
@@ -86,12 +95,25 @@ public class UserDao extends DatabaseAccessObject<String, UserData> {
     try {
       executeUpdate("TRUNCATE TABLE " + USER_DATABASE_NAME);
     }
-    catch (SQLException ex) {
-      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": " + ex.getMessage());
+    catch (SQLException e) {
+      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": " + e.getMessage());
     }
   }
 
   public boolean attemptPassword(String username, String password) {
     return false;
+  }
+
+  private UserData readUserData(ResultSet rs) throws SQLException {
+    if (rs.next()) {
+      String username = rs.getString(1);
+      String password = rs.getString(2);
+      String email = rs.getString(3);
+
+      return new UserData(username, password, email);
+    }
+    else {
+      throw new IllegalArgumentException("Empty result set passed to readUserData");
+    }
   }
 }

@@ -5,7 +5,6 @@ import dataAccess.DataAccessException;
 import dataAccess.databaseAccess.databaseAccessObject.AuthDao;
 import dataAccess.databaseAccess.databaseAccessObject.GameDao;
 import dataAccess.databaseAccess.databaseAccessObject.UserDao;
-import dataAccess.memoryAccess.memoryAccessObject.*;
 import service.request.ServiceRequest;
 import service.response.ServiceResponse;
 
@@ -57,8 +56,8 @@ public abstract class Service <U extends ServiceRequest, T extends ServiceRespon
       AUTH_DAO.clear();
       GAME_DAO.clear();
     }
-    catch (DataAccessException ex) {
-      return new ServiceResponse(ex.getMessage());
+    catch (DataAccessException e) {
+      return new ServiceResponse(e.getMessage());
     }
 
     return new ServiceResponse();
