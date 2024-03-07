@@ -56,7 +56,13 @@ public class UserDao extends DatabaseAccessObject<String, UserData> {
     )) {
       preparedStatement.setString(1, key);
       ResultSet rs = preparedStatement.executeQuery();
-      return readUserData(rs);
+      rs.next();
+      try {
+        return readUserData(rs);
+      }
+      catch (IllegalArgumentException e) {
+        throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": user doesn't exist");
+      }
     }
     catch (SQLException e) {
       throw new DataAccessException("User data could not be retrieved: " + e.getMessage());
@@ -129,16 +135,17 @@ public class UserDao extends DatabaseAccessObject<String, UserData> {
     return false;
   }
 
+
   private UserData readUserData(ResultSet rs) throws SQLException {
-    if (rs.next()) {
+    try {
       String username = rs.getString(1);
       String password = rs.getString(2);
       String email = rs.getString(3);
 
       return new UserData(username, password, email);
     }
-    else {
-      throw new IllegalArgumentException("Empty result set passed to readUserData");
+    catch (SQLException e) {
+      throw new IllegalArgumentException("Bad result set passed to readUserData: " + e.getMessage());
     }
   }
 }

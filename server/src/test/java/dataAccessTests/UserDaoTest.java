@@ -7,9 +7,7 @@ import dataAccess.databaseAccess.databaseAccessObject.UserDao;
 import model.UserData;
 import org.junit.jupiter.api.*;
 import server.Server;
-import spark.utils.Assert;
 
-import javax.xml.crypto.Data;
 import java.util.Collection;
 
 class UserDaoTest extends DaoTest {
@@ -69,7 +67,7 @@ class UserDaoTest extends DaoTest {
     Collection<UserData> listedData;
     try {
       testUserDao.create(TEST_USER_1);
-      listedData = testUserDao.listData();
+        listedData = testUserDao.listData();
     } catch (DataAccessException e) {
       throw new RuntimeException(e);
     }

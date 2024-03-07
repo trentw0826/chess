@@ -57,6 +57,7 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
             GAME_DATABASE_NAME + " WHERE gameID=?")) {
       preparedStatement.setInt(1, key);
       ResultSet rs = preparedStatement.executeQuery();
+      rs.next();
       return readGameData(rs);
     }
     catch (SQLException e) {
@@ -131,7 +132,7 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
    * @throws SQLException if sql error is thrown during reading
    */
   private GameData readGameData(ResultSet rs) throws SQLException {
-    if (rs.next()) {
+    try {
       int gameID = rs.getInt(1);
       String whiteUsername = rs.getString(2);
       String blackUsername = rs.getString(3);
@@ -141,8 +142,8 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
 
       return new GameData(gameID, whiteUsername, blackUsername, gameName, game);
     }
-    else {
-      throw new IllegalArgumentException("Empty result set passed to readGameData");
+    catch (SQLException e) {
+      throw new IllegalArgumentException("Bad result set passed to readGameData: " + e.getMessage());
     }
   }
 }
