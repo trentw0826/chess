@@ -36,16 +36,17 @@ public class JoinGameService extends Service <JoinGameRequest, JoinGameResponse>
       int currGameID = desiredGame.getGameID();
       String desiredColor = joinGameRequest.playerColor();
 
-
-      if (desiredColor.equalsIgnoreCase("white")) {
+      if (desiredColor == null) {
+        GAME_DAO.addObserver(currGameID, currentUsername);
+      }
+      else if (desiredColor.equalsIgnoreCase("white")) {
         GAME_DAO.setPlayer(currGameID, "white", currentUsername);
       }
       else if (desiredColor.equalsIgnoreCase("black")) {
         GAME_DAO.setPlayer(currGameID, "black", currentUsername);
       }
       else {
-        // Add player as observer
-        GAME_DAO.addObserver(currGameID, currentUsername);
+        throw new IllegalArgumentException("Bad color passed to join game service");
       }
 
       joinGameResponse = new JoinGameResponse();

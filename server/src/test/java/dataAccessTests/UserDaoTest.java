@@ -167,6 +167,6 @@ class UserDaoTest extends DaoTest {
   }
 
   @Test
-  void attemptPassword() {
+  void attemptPasswordTest() {
   }
 }

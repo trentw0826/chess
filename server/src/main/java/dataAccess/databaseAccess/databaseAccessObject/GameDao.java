@@ -57,8 +57,12 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
                     GAME_TABLE + " WHERE gameID=?")) {
       preparedStatement.setInt(1, key);
       ResultSet rs = preparedStatement.executeQuery();
-      rs.next();
-      return readGameData(rs);
+      if(rs.next()) {
+        return readGameData(rs);
+      }
+      else {
+        throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST.message());
+      }
     }
     catch (SQLException e) {
       throw new DataAccessException("Game data could not be retrieved: " + e.getMessage());
@@ -191,6 +195,14 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
   }
 
   public void addObserver (int gameID, String observerUsername) throws DataAccessException {
-    //TODO Implement
+    try {
+      executeUpdate(
+              "INSERT INTO observers (username, gameID) VALUES (?, ?)",
+              observerUsername, gameID
+      );
+    }
+    catch (SQLException e) {
+      throw new DataAccessException("Observer could not be added: " + e.getMessage());
+    }
   }
 }

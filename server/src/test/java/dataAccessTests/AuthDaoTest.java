@@ -5,7 +5,6 @@ import dataAccess.databaseAccess.databaseAccessObject.AuthDao;
 import dataAccess.databaseAccess.databaseAccessObject.GameDao;
 import dataAccess.databaseAccess.databaseAccessObject.UserDao;
 import model.AuthData;
-import model.UserData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
