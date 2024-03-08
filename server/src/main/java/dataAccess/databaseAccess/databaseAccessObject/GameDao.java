@@ -16,11 +16,6 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
   private static final String GAME_TABLE = "gamedata";
 
 
-  public GameDao() throws DataAccessException {
-    super();
-  }
-
-
   /**
    * Creates a new game in the game table.
    *

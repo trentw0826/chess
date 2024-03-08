@@ -14,10 +14,6 @@ public class AuthDao extends DatabaseAccessObject<String, AuthData> {
 
   private static final String AUTH_TABLE = "authdata";
 
-  public AuthDao() throws DataAccessException {
-    super();
-  }
-
 
   /**
    * Inserts a new AuthData entry into the auth table.

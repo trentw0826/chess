@@ -14,10 +14,6 @@ public class UserDao extends DatabaseAccessObject<String, UserData> {
 
   private static final String USER_TABLE = "userdata";
 
-  public UserDao() throws DataAccessException {
-    super();
-  }
-
 
   /**
    * Inserts a new user data entry in the user table.

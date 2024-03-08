@@ -18,23 +18,17 @@ public abstract class Service <U extends ServiceRequest, T extends ServiceRespon
   /*
    * Attempt to load local database access objects
    */
-  protected static final UserDao USER_DAO;
-  protected static final GameDao GAME_DAO;
-  protected static final AuthDao AUTH_DAO;
+  protected final UserDao USER_DAO;
+  protected final GameDao GAME_DAO;
+  protected final AuthDao AUTH_DAO;
 
-  static {
-    try {
-      USER_DAO = new UserDao();
-      AUTH_DAO = new AuthDao();
-      GAME_DAO = new GameDao();
-    }
-    catch (DataAccessException ex) {
-      throw new IllegalStateException(ex);
-    }
+
+
+  protected Service() {
+    USER_DAO = new UserDao();
+    AUTH_DAO = new AuthDao();
+    GAME_DAO = new GameDao();
   }
-
-
-  protected Service() {}
 
   /**
    * Handle the given service request.

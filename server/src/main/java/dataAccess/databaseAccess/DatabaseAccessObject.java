@@ -7,6 +7,7 @@ import dataAccess.DataAccessObject;
 import dataAccess.DatabaseManager;
 import model.DataModel;
 
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,17 +17,9 @@ import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import static java.sql.Types.NULL;
 
 public abstract class DatabaseAccessObject<K, T extends DataModel<K>> implements DataAccessObject<K, T> {
-  protected static final Connection connection;
-  protected static final Gson gson = new Gson();
 
-  static {
-    try {
-      connection = DatabaseManager.getConnection();
-    }
-    catch (DataAccessException e) {
-      throw new IllegalStateException(e.getMessage());
-    }
-  }
+  protected static final Gson gson = new Gson();
+  protected static Connection connection = null;
 
   protected DatabaseAccessObject() {
     try {
@@ -105,6 +98,13 @@ public abstract class DatabaseAccessObject<K, T extends DataModel<K>> implements
    * @throws SQLException   if SQL error thrown during query processing
    */
   protected static int executeUpdate(String statement, Object... statementParams) throws SQLException {
+    if (connection == null) {
+      try {
+        connection = DatabaseManager.getConnection();
+      } catch (DataAccessException e) {
+        throw new IllegalAccessError("Connection couldn't be established with database");
+      }
+    }
     try (PreparedStatement preparedStatement = connection.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
       for (var i = 0; i < statementParams.length; i++) {
         var param = statementParams[i];
