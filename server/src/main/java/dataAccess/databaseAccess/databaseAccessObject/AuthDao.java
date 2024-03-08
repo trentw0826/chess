@@ -50,7 +50,7 @@ public class AuthDao extends DatabaseAccessObject<String, AuthData> {
   @Override
   public AuthData get(String key) throws DataAccessException {
     try (var preparedStatement = connection.prepareStatement(
-            "SELECT * FROM " + AUTH_TABLE + " WHERE authtoken=?"
+            "SELECT * FROM " + AUTH_TABLE + " WHERE authToken=?"
     )) {
       preparedStatement.setString(1, key);
       ResultSet rs = preparedStatement.executeQuery();
@@ -101,7 +101,7 @@ public class AuthDao extends DatabaseAccessObject<String, AuthData> {
    */
   @Override
   public void delete(String key) throws DataAccessException {
-    try (var preparedStatement = connection.prepareStatement("DELETE FROM " + AUTH_TABLE + " WHERE authtoken=?")) {
+    try (var preparedStatement = connection.prepareStatement("DELETE FROM " + AUTH_TABLE + " WHERE authToken=?")) {
       preparedStatement.setString(1, key);
       int rowsAffected = preparedStatement.executeUpdate();
       if (rowsAffected == 0) {
