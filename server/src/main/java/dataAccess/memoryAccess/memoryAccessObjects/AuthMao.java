@@ -1,6 +1,6 @@
-package dataAccess.memoryAccess.memoryAccessObject;
+package dataAccess.memoryAccess.memoryAccessObjects;
 
-import dataAccess.AuthDao;
+import dataAccess.dataAccessObject.AuthDao;
 import dataAccess.DataAccessException;
 import dataAccess.memoryAccess.MemoryAccessObject;
 import model.AuthData;

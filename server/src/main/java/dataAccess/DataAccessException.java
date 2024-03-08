@@ -4,7 +4,7 @@ package dataAccess;
  * Indicates there was an error connecting to the database
  */
 public class DataAccessException extends Exception{
-    // TODO why are some of these messages coming back in all caps when called with this constructor?
+
     public DataAccessException(ErrorMessages errorMessage) {
         super(errorMessage.message());
     }
@@ -13,6 +13,9 @@ public class DataAccessException extends Exception{
         super(errorMessage);
     }
 
+    /*
+     * Custom error messages defining the nature of data access exceptions
+     */
     public enum ErrorMessages {
         BAD_REQUEST("Error: bad request"),
         UNAUTHORIZED("Error: unauthorized"),

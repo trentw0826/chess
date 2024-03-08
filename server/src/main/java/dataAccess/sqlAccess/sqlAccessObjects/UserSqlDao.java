@@ -1,8 +1,8 @@
-package dataAccess.databaseAccess.sqlAccessObject;
+package dataAccess.sqlAccess.sqlAccessObjects;
 
 import dataAccess.DataAccessException;
-import dataAccess.UserDao;
-import dataAccess.databaseAccess.SqlAccessObject;
+import dataAccess.dataAccessObject.UserDao;
+import dataAccess.sqlAccess.SqlAccessObject;
 import model.UserData;
 
 import java.sql.ResultSet;

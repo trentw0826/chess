@@ -1,9 +1,9 @@
-package dataAccess.databaseAccess.sqlAccessObject;
+package dataAccess.sqlAccess.sqlAccessObjects;
 
 import chess.ChessGame;
 import dataAccess.DataAccessException;
-import dataAccess.GameDao;
-import dataAccess.databaseAccess.SqlAccessObject;
+import dataAccess.dataAccessObject.GameDao;
+import dataAccess.sqlAccess.SqlAccessObject;
 import model.GameData;
 
 import java.sql.ResultSet;
@@ -62,7 +62,7 @@ public class GameSqlDao extends SqlAccessObject<Integer, GameData> implements Ga
         return readGameData(rs);
       }
       else {
-        throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST.message());
+        throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST);
       }
     }
     catch (SQLException e) {

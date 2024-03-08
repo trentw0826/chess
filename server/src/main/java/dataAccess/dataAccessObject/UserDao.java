@@ -1,5 +1,6 @@
-package dataAccess;
+package dataAccess.dataAccessObject;
 
+import dataAccess.DataAccessObject;
 import model.UserData;
 
 public interface UserDao extends DataAccessObject<String, UserData> {

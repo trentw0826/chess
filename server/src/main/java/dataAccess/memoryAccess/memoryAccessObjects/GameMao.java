@@ -1,8 +1,8 @@
-package dataAccess.memoryAccess.memoryAccessObject;
+package dataAccess.memoryAccess.memoryAccessObjects;
 
 
 import dataAccess.DataAccessException;
-import dataAccess.GameDao;
+import dataAccess.dataAccessObject.GameDao;
 import dataAccess.memoryAccess.MemoryAccessObject;
 import model.GameData;
 
@@ -114,7 +114,7 @@ public class GameMao extends MemoryAccessObject<Integer, GameData> implements Ga
         retrievedGame.setWhiteUsername(username);
       }
       else {
-        throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN.message());
+        throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN);
       }
     }
     else if (color.equalsIgnoreCase("black")) {
@@ -122,12 +122,12 @@ public class GameMao extends MemoryAccessObject<Integer, GameData> implements Ga
         retrievedGame.setBlackUsername(username);
       }
       else {
-        throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN.message());
+        throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN);
       }
     }
     else {
       // Color couldn't be recognized as white, black, or an observer
-      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST.message());
+      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST);
     }
 
     localData.put(gameID, retrievedGame);

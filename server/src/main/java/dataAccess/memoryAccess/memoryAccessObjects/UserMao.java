@@ -1,7 +1,7 @@
-package dataAccess.memoryAccess.memoryAccessObject;
+package dataAccess.memoryAccess.memoryAccessObjects;
 
 import dataAccess.DataAccessException;
-import dataAccess.UserDao;
+import dataAccess.dataAccessObject.UserDao;
 import dataAccess.memoryAccess.MemoryAccessObject;
 import model.UserData;
 

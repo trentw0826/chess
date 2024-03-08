@@ -2,12 +2,12 @@ package service;
 
 
 import dataAccess.*;
-import dataAccess.databaseAccess.sqlAccessObject.AuthSqlDao;
-import dataAccess.databaseAccess.sqlAccessObject.GameSqlDao;
-import dataAccess.databaseAccess.sqlAccessObject.UserSqlDao;
-import dataAccess.memoryAccess.memoryAccessObject.AuthMao;
-import dataAccess.memoryAccess.memoryAccessObject.GameMao;
-import dataAccess.memoryAccess.memoryAccessObject.UserMao;
+import dataAccess.dataAccessObject.AuthDao;
+import dataAccess.dataAccessObject.GameDao;
+import dataAccess.dataAccessObject.UserDao;
+import dataAccess.sqlAccess.sqlAccessObjects.AuthSqlDao;
+import dataAccess.sqlAccess.sqlAccessObjects.GameSqlDao;
+import dataAccess.sqlAccess.sqlAccessObjects.UserSqlDao;
 import service.request.ServiceRequest;
 import service.response.ServiceResponse;
 

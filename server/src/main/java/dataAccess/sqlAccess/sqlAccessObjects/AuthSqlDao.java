@@ -1,8 +1,8 @@
-package dataAccess.databaseAccess.sqlAccessObject;
+package dataAccess.sqlAccess.sqlAccessObjects;
 
-import dataAccess.AuthDao;
+import dataAccess.dataAccessObject.AuthDao;
 import dataAccess.DataAccessException;
-import dataAccess.databaseAccess.SqlAccessObject;
+import dataAccess.sqlAccess.SqlAccessObject;
 import model.AuthData;
 
 import java.sql.ResultSet;
@@ -31,8 +31,10 @@ public class AuthSqlDao extends SqlAccessObject<String, AuthData> implements Aut
   public String create(AuthData data) throws DataAccessException {
 
     try {
-      executeUpdate("INSERT INTO " + AUTH_TABLE
-              + " (authToken, username) VALUES(?, ?)", data.authToken(), data.username());
+      executeUpdate(
+              "INSERT INTO " + AUTH_TABLE + " (authToken, username) VALUES(?, ?)",
+              data.authToken(), data.username()
+      );
       return data.authToken();
     }
     catch (SQLException e) {
