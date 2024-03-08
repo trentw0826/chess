@@ -17,8 +17,7 @@ public class JoinGameService extends Service <JoinGameRequest, JoinGameResponse>
    * @param joinGameRequest joinGame request
    * @return                joinGame response
    */
-  //TODO Make compatible with memory access by rearranging inheritance hierarchy such that
-  // AuthDao and AuthMao necessarily implement the same interface
+
   @Override
   public JoinGameResponse processHandlerRequest(JoinGameRequest joinGameRequest) {
     JoinGameResponse joinGameResponse;

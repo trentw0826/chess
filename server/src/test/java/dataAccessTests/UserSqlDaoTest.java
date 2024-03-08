@@ -1,31 +1,31 @@
 package dataAccessTests;
 
 import dataAccess.DataAccessException;
-import dataAccess.databaseAccess.databaseAccessObject.AuthDao;
-import dataAccess.databaseAccess.databaseAccessObject.GameDao;
-import dataAccess.databaseAccess.databaseAccessObject.UserDao;
+import dataAccess.databaseAccess.sqlAccessObject.AuthSqlDao;
+import dataAccess.databaseAccess.sqlAccessObject.GameSqlDao;
+import dataAccess.databaseAccess.sqlAccessObject.UserSqlDao;
 import model.UserData;
 import org.junit.jupiter.api.*;
 
 import java.util.Collection;
 
-class UserDaoTest extends DaoTest {
+class UserSqlDaoTest extends SqlaoTest {
 
-  static UserDao testUserDao;
-  static AuthDao testAuthDao;
-  static GameDao testGameDao;
+  static UserSqlDao testUserSqlDao;
+  static AuthSqlDao testAuthSqlDao;
+  static GameSqlDao testGameSqlDao;
 
 
   @BeforeEach
   void setUp() {
     try {
-      testUserDao = new UserDao();
-      testAuthDao = new AuthDao();
-      testGameDao = new GameDao();
+      testUserSqlDao = new UserSqlDao();
+      testAuthSqlDao = new AuthSqlDao();
+      testGameSqlDao = new GameSqlDao();
 
-      testUserDao.clear();
-      testAuthDao.clear();
-      testGameDao.clear();
+      testUserSqlDao.clear();
+      testAuthSqlDao.clear();
+      testGameSqlDao.clear();
     }
     catch (DataAccessException e) {
       throw new RuntimeException("Data access objects could not be initialized for testing");
@@ -35,9 +35,9 @@ class UserDaoTest extends DaoTest {
   @AfterEach
   void tearDown() {
     try {
-      testUserDao.clear();
-      testAuthDao.clear();
-      testGameDao.clear();
+      testUserSqlDao.clear();
+      testAuthSqlDao.clear();
+      testGameSqlDao.clear();
     }
     catch (DataAccessException e) {
       throw new RuntimeException("Data access objects could not be initialized for testing");
@@ -48,7 +48,7 @@ class UserDaoTest extends DaoTest {
   void listDataEmptyTest() {
     Collection<UserData> listedData;
     try {
-      listedData = testUserDao.listData();
+      listedData = testUserSqlDao.list();
     } catch (DataAccessException e) {
       throw new RuntimeException(e);
     }
@@ -61,8 +61,8 @@ class UserDaoTest extends DaoTest {
   void ListDataOneUserTest() {
     Collection<UserData> listedData;
     try {
-      testUserDao.create(TEST_USER_1);
-        listedData = testUserDao.listData();
+      testUserSqlDao.create(TEST_USER_1);
+        listedData = testUserSqlDao.list();
     } catch (DataAccessException e) {
       throw new RuntimeException(e);
     }
@@ -79,9 +79,9 @@ class UserDaoTest extends DaoTest {
     UserData actualUser;
 
     try {
-      testUserDao.create(TEST_USER_1);
-      listedData = testUserDao.listData();
-      actualUser = testUserDao.listData().iterator().next();
+      testUserSqlDao.create(TEST_USER_1);
+      listedData = testUserSqlDao.list();
+      actualUser = testUserSqlDao.list().iterator().next();
     }
 
     catch (DataAccessException e) {
@@ -97,13 +97,14 @@ class UserDaoTest extends DaoTest {
   @Test
   void createAlreadyExistingUserTest() {
     try {
-      testUserDao.create(TEST_USER_1);
+      testUserSqlDao.create(TEST_USER_1);
     }
     catch (DataAccessException e) {
       throw new RuntimeException(e);
     }
 
-    Throwable actualException = Assertions.assertThrows(DataAccessException.class, () -> {testUserDao.create(TEST_USER_1);});
+    Throwable actualException = Assertions.assertThrows(DataAccessException.class, () -> {
+      testUserSqlDao.create(TEST_USER_1);});
     Assertions.assertEquals(DataAccessException.class, actualException.getClass());
   }
 
@@ -111,8 +112,8 @@ class UserDaoTest extends DaoTest {
   void getExistingUserTest() {
     UserData actualRetrievedUser;
     try {
-      testUserDao.create(TEST_USER_1);
-      actualRetrievedUser = testUserDao.get(TEST_USER_1.username());
+      testUserSqlDao.create(TEST_USER_1);
+      actualRetrievedUser = testUserSqlDao.get(TEST_USER_1.username());
     }
     catch (DataAccessException e) {
       throw new RuntimeException(e);
@@ -124,7 +125,8 @@ class UserDaoTest extends DaoTest {
 
   @Test
   void attemptGetNonExistingUserTest() {
-    Throwable actualException = Assertions.assertThrows(DataAccessException.class, () -> {testUserDao.get(TEST_USERNAME_1);});
+    Throwable actualException = Assertions.assertThrows(DataAccessException.class, () -> {
+      testUserSqlDao.get(TEST_USERNAME_1);});
     Assertions.assertEquals(DataAccessException.class, actualException.getClass());
   }
 
@@ -132,8 +134,8 @@ class UserDaoTest extends DaoTest {
   void deleteExistingUserTest() {
     UserData actualRetrievedUser;
     try {
-      testUserDao.create(TEST_USER_1);
-      actualRetrievedUser = testUserDao.get(TEST_USER_1.username());
+      testUserSqlDao.create(TEST_USER_1);
+      actualRetrievedUser = testUserSqlDao.get(TEST_USER_1.username());
     }
     catch (DataAccessException e) {
       throw new RuntimeException(e);
@@ -144,7 +146,8 @@ class UserDaoTest extends DaoTest {
 
   @Test
   void deleteNonExistingUserTest() {
-    Throwable actualException = Assertions.assertThrows(DataAccessException.class, () -> {testUserDao.delete(TEST_USERNAME_1);});
+    Throwable actualException = Assertions.assertThrows(DataAccessException.class, () -> {
+      testUserSqlDao.delete(TEST_USERNAME_1);});
     Assertions.assertEquals(DataAccessException.class, actualException.getClass());
   }
 
@@ -153,10 +156,10 @@ class UserDaoTest extends DaoTest {
     Collection<UserData> listedData;
 
     try {
-      testUserDao.create(TEST_USER_1);
-      testUserDao.create(TEST_USER_2);
-      testUserDao.clear();
-      listedData = testUserDao.listData();
+      testUserSqlDao.create(TEST_USER_1);
+      testUserSqlDao.create(TEST_USER_2);
+      testUserSqlDao.clear();
+      listedData = testUserSqlDao.list();
     }
     catch (DataAccessException e) {
       throw new RuntimeException(e);

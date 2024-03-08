@@ -1,7 +1,8 @@
-package dataAccess.databaseAccess.databaseAccessObject;
+package dataAccess.databaseAccess.sqlAccessObject;
 
+import dataAccess.AuthDao;
 import dataAccess.DataAccessException;
-import dataAccess.databaseAccess.DatabaseAccessObject;
+import dataAccess.databaseAccess.SqlAccessObject;
 import model.AuthData;
 
 import java.sql.ResultSet;
@@ -10,8 +11,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 
-public class AuthDao extends DatabaseAccessObject<String, AuthData> {
+/**
+ * Implements a DAO that interacts with auth data in an SQL database.
+ */
+public class AuthSqlDao extends SqlAccessObject<String, AuthData> implements AuthDao {
 
+  // Name of the 'authdata' table in the database
   private static final String AUTH_TABLE = "authdata";
 
 
@@ -26,8 +31,8 @@ public class AuthDao extends DatabaseAccessObject<String, AuthData> {
   public String create(AuthData data) throws DataAccessException {
 
     try {
-      executeUpdate("INSERT INTO " + AUTH_TABLE +
-              " (authToken, username) VALUES(?, ?)", data.authToken(), data.username());
+      executeUpdate("INSERT INTO " + AUTH_TABLE
+              + " (authToken, username) VALUES(?, ?)", data.authToken(), data.username());
       return data.authToken();
     }
     catch (SQLException e) {
@@ -70,7 +75,7 @@ public class AuthDao extends DatabaseAccessObject<String, AuthData> {
    * @return  collection of AuthData objects representing all auth entries
    */
   @Override
-  public Collection<AuthData> listData() throws DataAccessException {
+  public Collection<AuthData> list() throws DataAccessException {
     try (var preparedStatement = connection.prepareStatement(
             "SELECT * FROM " + AUTH_TABLE
     )) {
@@ -147,7 +152,14 @@ public class AuthDao extends DatabaseAccessObject<String, AuthData> {
   }
 
 
-  //TODO Extract common extension here upon reorganization of DAO structure
+  /**
+   * Retrieve a username from the sql database based on an auth token.
+   *
+   * @param authToken auth token
+   * @return          username associated with given auth token
+   * @throws DataAccessException  if SQL error thrown during selection
+   */
+  @Override
   public String getUsernameFromAuthToken(String authToken) throws DataAccessException {
     try {
       return get(authToken).username();

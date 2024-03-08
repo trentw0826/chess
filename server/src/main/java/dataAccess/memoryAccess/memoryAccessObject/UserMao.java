@@ -1,6 +1,7 @@
 package dataAccess.memoryAccess.memoryAccessObject;
 
 import dataAccess.DataAccessException;
+import dataAccess.UserDao;
 import dataAccess.memoryAccess.MemoryAccessObject;
 import model.UserData;
 
@@ -9,7 +10,7 @@ import java.util.Objects;
 /**
  * Defines a data access object that accesses and modifies locally stored user data
  */
-public class UserMao extends MemoryAccessObject<String, UserData> {
+public class UserMao extends MemoryAccessObject<String, UserData> implements UserDao {
 
   /**
    * Returns if a password attempt is valid for the given username.
@@ -18,6 +19,7 @@ public class UserMao extends MemoryAccessObject<String, UserData> {
    * @param passwordAttempt password attempt
    * @return                if the attempted password matches the associated one
    */
+  @Override
   public boolean attemptPassword(String username, String passwordAttempt) {
     try {
       return Objects.equals(get(username).password(), passwordAttempt);

@@ -4,24 +4,21 @@ import chess.ChessGame;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import dataAccess.DataAccessObject;
-import dataAccess.DatabaseManager;
 import model.DataModel;
 
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import static java.sql.Types.NULL;
 
-public abstract class DatabaseAccessObject<K, T extends DataModel<K>> implements DataAccessObject<K, T> {
+public abstract class SqlAccessObject<K, T extends DataModel<K>> implements DataAccessObject<K, T> {
 
   protected static final Gson gson = new Gson();
   protected static Connection connection = null;
 
-  protected DatabaseAccessObject() {
+  protected SqlAccessObject() {
     try {
       configureDatabase();
     }

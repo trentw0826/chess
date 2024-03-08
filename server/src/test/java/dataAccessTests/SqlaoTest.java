@@ -5,7 +5,7 @@ import model.AuthData;
 import model.GameData;
 import model.UserData;
 
-public class DaoTest {
+public class SqlaoTest {
   protected static final Gson GSON = new Gson();
 
   protected static final String TEST_USERNAME_1 = "SomeUsername1";

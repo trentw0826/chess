@@ -2,6 +2,7 @@ package dataAccess.memoryAccess.memoryAccessObject;
 
 
 import dataAccess.DataAccessException;
+import dataAccess.GameDao;
 import dataAccess.memoryAccess.MemoryAccessObject;
 import model.GameData;
 
@@ -10,7 +11,7 @@ import java.util.Map;
 /**
  * Defines a data access object that accesses and modifies locally stored game data
  */
-public class GameMao extends MemoryAccessObject<Integer, GameData> {
+public class GameMao extends MemoryAccessObject<Integer, GameData> implements GameDao {
 
   private static int numGames;
 
@@ -74,4 +75,62 @@ public class GameMao extends MemoryAccessObject<Integer, GameData> {
     }
     return false;
   }
+
+
+  /**
+   * Add an observer to the game associated with the given game ID;
+   *
+   * @param gameID            game ID
+   * @param observerUsername  observer's username
+   * @throws DataAccessException  if SQL error thrown during adding
+   */
+  @Override
+  public void addObserver(int gameID, String observerUsername) {
+    GameData retrievedGame = localData.get(gameID);
+    retrievedGame.addObserver(observerUsername);
+    localData.put(gameID, retrievedGame);
+  }
+
+  /**
+   * Sets the player of a game to have the desired color.
+   *
+   * @param gameID    game ID
+   * @param color     desired color ("white" for white, "black" for black, or null for observer)
+   * @param username  joining player's username
+   * @throws DataAccessException  if SQL error thrown during adding
+   */
+  @Override
+  public void setPlayer(int gameID, String color, String username) throws DataAccessException {
+    GameData retrievedGame = localData.get(gameID);
+
+    String currWhiteUser = retrievedGame.getWhiteUsername();
+    String currBlackUser = retrievedGame.getBlackUsername();
+
+    if (color == null) {
+      addObserver(gameID, username);
+    }
+    else if (color.equalsIgnoreCase("white")) {
+      if (currWhiteUser != null) {
+        retrievedGame.setWhiteUsername(username);
+      }
+      else {
+        throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN.message());
+      }
+    }
+    else if (color.equalsIgnoreCase("black")) {
+      if (currBlackUser != null) {
+        retrievedGame.setBlackUsername(username);
+      }
+      else {
+        throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN.message());
+      }
+    }
+    else {
+      // Color couldn't be recognized as white, black, or an observer
+      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST.message());
+    }
+
+    localData.put(gameID, retrievedGame);
+  }
+
 }

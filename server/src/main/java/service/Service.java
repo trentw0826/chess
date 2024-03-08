@@ -1,10 +1,13 @@
 package service;
 
 
-import dataAccess.DataAccessException;
-import dataAccess.databaseAccess.databaseAccessObject.AuthDao;
-import dataAccess.databaseAccess.databaseAccessObject.GameDao;
-import dataAccess.databaseAccess.databaseAccessObject.UserDao;
+import dataAccess.*;
+import dataAccess.databaseAccess.sqlAccessObject.AuthSqlDao;
+import dataAccess.databaseAccess.sqlAccessObject.GameSqlDao;
+import dataAccess.databaseAccess.sqlAccessObject.UserSqlDao;
+import dataAccess.memoryAccess.memoryAccessObject.AuthMao;
+import dataAccess.memoryAccess.memoryAccessObject.GameMao;
+import dataAccess.memoryAccess.memoryAccessObject.UserMao;
 import service.request.ServiceRequest;
 import service.response.ServiceResponse;
 
@@ -15,19 +18,22 @@ import java.util.UUID;
  */
 public abstract class Service <U extends ServiceRequest, T extends ServiceResponse> {
 
-  /*
-   * Attempt to load local database access objects
-   */
+  /* Database Access Objects */
   protected final UserDao USER_DAO;
   protected final GameDao GAME_DAO;
   protected final AuthDao AUTH_DAO;
 
 
-
   protected Service() {
-    USER_DAO = new UserDao();
-    AUTH_DAO = new AuthDao();
-    GAME_DAO = new GameDao();
+    /* Remote SQL data storage */
+    USER_DAO = new UserSqlDao();
+    AUTH_DAO = new AuthSqlDao();
+    GAME_DAO = new GameSqlDao();
+
+    /* Local data storage */
+//    USER_DAO = new UserMao();
+//    AUTH_DAO = new AuthMao();
+//    GAME_DAO = new GameMao();
   }
 
   /**
@@ -72,7 +78,7 @@ public abstract class Service <U extends ServiceRequest, T extends ServiceRespon
    * @param authToken auth token
    * @return          true if given auth token exists in Auth database
    */
-  protected boolean invalidAuthToken(String authToken) {
+  protected boolean invalidAuthToken(final String authToken) {
     try {
       AUTH_DAO.get(authToken);
     }

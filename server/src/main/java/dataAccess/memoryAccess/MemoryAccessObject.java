@@ -82,7 +82,7 @@ public abstract class MemoryAccessObject<K, T extends DataModel<K>> implements D
    * @return  collection of data in map.
    */
   @Override
-  public Collection<T> listData() {
+  public Collection<T> list() {
     return localData.values();
   }
 

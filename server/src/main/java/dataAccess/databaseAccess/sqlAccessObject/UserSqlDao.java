@@ -1,7 +1,8 @@
-package dataAccess.databaseAccess.databaseAccessObject;
+package dataAccess.databaseAccess.sqlAccessObject;
 
 import dataAccess.DataAccessException;
-import dataAccess.databaseAccess.DatabaseAccessObject;
+import dataAccess.UserDao;
+import dataAccess.databaseAccess.SqlAccessObject;
 import model.UserData;
 
 import java.sql.ResultSet;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 
-public class UserDao extends DatabaseAccessObject<String, UserData> {
+public class UserSqlDao extends SqlAccessObject<String, UserData> implements UserDao {
 
   private static final String USER_TABLE = "userdata";
 
@@ -72,7 +73,7 @@ public class UserDao extends DatabaseAccessObject<String, UserData> {
    * @return  collection of user data objects representing all the user data entries
    */
   @Override
-  public Collection<UserData> listData() throws DataAccessException {
+  public Collection<UserData> list() throws DataAccessException {
     try (var preparedStatement = connection.prepareStatement(
             "SELECT * FROM " + USER_TABLE
     )) {
@@ -135,6 +136,7 @@ public class UserDao extends DatabaseAccessObject<String, UserData> {
    * @param passwordAttempt attempted password for the existing user
    * @return                if the passwords match
    */
+  @Override
   public boolean attemptPassword(String username, String passwordAttempt) {
     try {
       return get(username).password().equals(passwordAttempt);

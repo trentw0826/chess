@@ -23,7 +23,7 @@ public class ListGamesService extends Service <ListGamesRequest, ListGamesRespon
         throw new DataAccessException(DataAccessException.ErrorMessages.UNAUTHORIZED);
       }
 
-      listGamesResponse = new ListGamesResponse(GAME_DAO.listData());
+      listGamesResponse = new ListGamesResponse(GAME_DAO.list());
     }
     catch (DataAccessException e) {
       listGamesResponse = new ListGamesResponse(e.getMessage()); // Unsuccessful listGames

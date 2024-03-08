@@ -10,11 +10,10 @@ import java.util.Collection;
  * @param <T> data model type
  * @param <K> key type associated with the data model
  */
-// TODO Should all data access objects be static utility classes?
 public interface DataAccessObject<K, T extends DataModel<K>> {
-  K create(T data) throws DataAccessException;
-  T get(K key) throws DataAccessException;
-  Collection<T> listData() throws DataAccessException;
-  void delete(K key) throws DataAccessException;
+  K create(final T data) throws DataAccessException;
+  T get(final K key) throws DataAccessException;
+  Collection<T> list() throws DataAccessException;
+  void delete(final K key) throws DataAccessException;
   void clear() throws DataAccessException;
 }

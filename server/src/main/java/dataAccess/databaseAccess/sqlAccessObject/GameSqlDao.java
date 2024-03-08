@@ -1,8 +1,9 @@
-package dataAccess.databaseAccess.databaseAccessObject;
+package dataAccess.databaseAccess.sqlAccessObject;
 
 import chess.ChessGame;
 import dataAccess.DataAccessException;
-import dataAccess.databaseAccess.DatabaseAccessObject;
+import dataAccess.GameDao;
+import dataAccess.databaseAccess.SqlAccessObject;
 import model.GameData;
 
 import java.sql.ResultSet;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 
-public class GameDao extends DatabaseAccessObject<Integer, GameData> {
+public class GameSqlDao extends SqlAccessObject<Integer, GameData> implements GameDao {
 
   private static final String GAME_TABLE = "gamedata";
 
@@ -77,7 +78,7 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
    * @throws DataAccessException  if SQL error is thrown during selection
    */
   @Override
-  public Collection<GameData> listData() throws DataAccessException {
+  public Collection<GameData> list() throws DataAccessException {
     // TODO add observers and actual game to query
     try (var preparedStatement = connection.prepareStatement("SELECT gameID, whiteUsername, blackUsername, gameName, game FROM " + GAME_TABLE)) {
       Collection<GameData> games = new ArrayList<>();
@@ -161,6 +162,35 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
   }
 
 
+  /**
+   * Add an observer to the game associated with the given game ID;
+   *
+   * @param gameID            game ID
+   * @param observerUsername  observer's username
+   * @throws DataAccessException  if SQL error thrown during adding
+   */
+  @Override
+  public void addObserver (int gameID, String observerUsername) throws DataAccessException {
+    try {
+      executeUpdate(
+              "INSERT INTO observers (username, gameID) VALUES (?, ?)",
+              observerUsername, gameID
+      );
+    }
+    catch (SQLException e) {
+      throw new DataAccessException("Observer could not be added: " + e.getMessage());
+    }
+  }
+
+
+  /**
+   * Sets the player of a game to have the desired color.
+   *
+   * @param gameID    game ID
+   * @param color     desired color ("white" for white, "black" for black, or null for observer)
+   * @param username  joining player's username
+   * @throws DataAccessException  if SQL error thrown during adding
+   */
   public void setPlayer(int gameID, String color, String username) throws DataAccessException {
     GameData retrievedData = get(gameID);
     String setPlayerStatement;
@@ -191,18 +221,6 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
 
     catch (SQLException e) {
       throw new DataAccessException("Unable to set player: " + e.getMessage());
-    }
-  }
-
-  public void addObserver (int gameID, String observerUsername) throws DataAccessException {
-    try {
-      executeUpdate(
-              "INSERT INTO observers (username, gameID) VALUES (?, ?)",
-              observerUsername, gameID
-      );
-    }
-    catch (SQLException e) {
-      throw new DataAccessException("Observer could not be added: " + e.getMessage());
     }
   }
 }
