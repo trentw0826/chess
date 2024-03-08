@@ -12,7 +12,7 @@ import java.util.Collection;
 
 public class UserDao extends DatabaseAccessObject<String, UserData> {
 
-  private static final String USER_DATABASE_NAME = "userdata";
+  private static final String USER_TABLE = "userdata";
 
   public UserDao() throws DataAccessException {
     super();
@@ -30,14 +30,14 @@ public class UserDao extends DatabaseAccessObject<String, UserData> {
   public String create(UserData data) throws DataAccessException {
     try {
       executeUpdate(
-              "INSERT INTO " + USER_DATABASE_NAME + " (username, password, email) VALUES(?, ?, ?)",
+              "INSERT INTO " + USER_TABLE + " (username, password, email) VALUES(?, ?, ?)",
               data.username(), data.password(), data.email()
       );
 
       return data.username();
     }
     catch (SQLException e) {
-      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": " + e.getMessage());
+      throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN.message() + ": " + e.getMessage());
     }
   }
 
@@ -52,7 +52,7 @@ public class UserDao extends DatabaseAccessObject<String, UserData> {
   @Override
   public UserData get(String key) throws DataAccessException {
     try (var preparedStatement = connection.prepareStatement(
-            "SELECT * FROM " + USER_DATABASE_NAME + " WHERE username=?"
+            "SELECT * FROM " + USER_TABLE + " WHERE username=?"
     )) {
       preparedStatement.setString(1, key);
       ResultSet rs = preparedStatement.executeQuery();
@@ -78,7 +78,7 @@ public class UserDao extends DatabaseAccessObject<String, UserData> {
   @Override
   public Collection<UserData> listData() throws DataAccessException {
     try (var preparedStatement = connection.prepareStatement(
-            "SELECT * FROM " + USER_DATABASE_NAME
+            "SELECT * FROM " + USER_TABLE
     )) {
       Collection<UserData> users = new ArrayList<>();
 
@@ -103,7 +103,7 @@ public class UserDao extends DatabaseAccessObject<String, UserData> {
    */
   @Override
   public void delete(String key) throws DataAccessException {
-    try (var preparedStatement = connection.prepareStatement("DELETE FROM " + USER_DATABASE_NAME + " WHERE username=?")) {
+    try (var preparedStatement = connection.prepareStatement("DELETE FROM " + USER_TABLE + " WHERE username=?")) {
       preparedStatement.setString(1, key);
       int rowsAffected = preparedStatement.executeUpdate();
       if (rowsAffected == 0) {
@@ -124,15 +124,28 @@ public class UserDao extends DatabaseAccessObject<String, UserData> {
   @Override
   public void clear() throws DataAccessException {
     try {
-      executeUpdate("TRUNCATE TABLE " + USER_DATABASE_NAME);
+      executeUpdate("TRUNCATE TABLE " + USER_TABLE);
     }
     catch (SQLException e) {
       throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": " + e.getMessage());
     }
   }
 
-  public boolean attemptPassword(String username, String password) {
-    return false;
+
+  /**
+   * Checks a password attempt against the password associated with the desired username.
+   *
+   * @param username        username of existing user
+   * @param passwordAttempt attempted password for the existing user
+   * @return                if the passwords match
+   */
+  public boolean attemptPassword(String username, String passwordAttempt) {
+    try {
+      return get(username).password().equals(passwordAttempt);
+    }
+    catch (DataAccessException e) {
+      throw new IllegalArgumentException("Bad username passed to attemptPassword");
+    }
   }
 
 

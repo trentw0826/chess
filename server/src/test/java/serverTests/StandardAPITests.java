@@ -78,7 +78,7 @@ public class StandardAPITests {
     @Test
     @Order(1)
     @DisplayName("Static Files")
-    public void staticFiles() throws Exception {
+     void staticFiles() throws Exception {
         String htmlFromServer = serverFacade.file("/").replaceAll("\r", "");
         Assertions.assertEquals(HttpURLConnection.HTTP_OK, serverFacade.getStatusCode(),
                 "Server response code was not 200 OK");
@@ -90,7 +90,7 @@ public class StandardAPITests {
     @Test
     @Order(2)
     @DisplayName("Normal User Login")
-    public void successLogin() throws TestException {
+     void successLogin() throws TestException {
         TestModels.TestLoginRequest loginRequest = new TestModels.TestLoginRequest();
         loginRequest.username = existingUser.username;
         loginRequest.password = existingUser.password;
@@ -111,7 +111,7 @@ public class StandardAPITests {
     @Test
     @Order(3)
     @DisplayName("Login Invalid User")
-    public void loginInvalidUser() throws TestException {
+     void loginInvalidUser() throws TestException {
         TestModels.TestLoginRequest loginRequest = new TestModels.TestLoginRequest();
         loginRequest.username = newUser.username;
         loginRequest.password = newUser.password;
@@ -130,7 +130,7 @@ public class StandardAPITests {
     @Test
     @Order(4)
     @DisplayName("Login Wrong Password")
-    public void loginWrongPassword() throws TestException {
+     void loginWrongPassword() throws TestException {
         TestModels.TestLoginRequest loginRequest = new TestModels.TestLoginRequest();
         loginRequest.username = existingUser.username;
         loginRequest.password = newUser.password;
@@ -149,7 +149,7 @@ public class StandardAPITests {
     @Test
     @Order(5)
     @DisplayName("Unique Authtoken Each Login")
-    public void uniqueAuthorizationTokens() throws TestException {
+     void uniqueAuthorizationTokens() throws TestException {
         TestModels.TestLoginRequest loginRequest = new TestModels.TestLoginRequest();
         loginRequest.username = existingUser.username;
         loginRequest.password = existingUser.password;
@@ -214,7 +214,7 @@ public class StandardAPITests {
     @Test
     @Order(6)
     @DisplayName("Normal User Registration")
-    public void successRegister() throws TestException {
+     void successRegister() throws TestException {
         TestModels.TestRegisterRequest registerRequest = new TestModels.TestRegisterRequest();
         registerRequest.username = newUser.username;
         registerRequest.password = newUser.password;
@@ -237,7 +237,7 @@ public class StandardAPITests {
     @Test
     @Order(7)
     @DisplayName("Re-Register User")
-    public void registerTwice() throws TestException {
+     void registerTwice() throws TestException {
         //create request trying to register existing user
         TestModels.TestRegisterRequest registerRequest = new TestModels.TestRegisterRequest();
         registerRequest.username = existingUser.username;
@@ -259,7 +259,7 @@ public class StandardAPITests {
     @Test
     @Order(8)
     @DisplayName("Register Bad Request")
-    public void failRegister() throws TestException {
+     void failRegister() throws TestException {
         //attempt to register a user without a password
         TestModels.TestRegisterRequest registerRequest = new TestModels.TestRegisterRequest();
         registerRequest.username = newUser.username;
@@ -280,7 +280,7 @@ public class StandardAPITests {
     @Test
     @Order(9)
     @DisplayName("Normal Logout")
-    public void successLogout() throws TestException {
+     void successLogout() throws TestException {
         //log out existing user
         TestModels.TestResult result = serverFacade.logout(existingAuth);
 
@@ -294,7 +294,7 @@ public class StandardAPITests {
     @Test
     @Order(10)
     @DisplayName("Invalid Auth Logout")
-    public void failLogout() throws TestException {
+     void failLogout() throws TestException {
         //log out user twice
         //second logout should fail
         serverFacade.logout(existingAuth);
@@ -310,7 +310,7 @@ public class StandardAPITests {
     @Test
     @Order(11)
     @DisplayName("Valid Creation")
-    public void goodCreate() throws TestException {
+     void goodCreate() throws TestException {
         TestModels.TestCreateResult createResult = serverFacade.createGame(createRequest, existingAuth);
 
         Assertions.assertEquals(HttpURLConnection.HTTP_OK, serverFacade.getStatusCode(),
@@ -326,7 +326,7 @@ public class StandardAPITests {
     @Test
     @Order(12)
     @DisplayName("Create with Bad Authentication")
-    public void badAuthCreate() throws TestException {
+     void badAuthCreate() throws TestException {
         //log out user so auth is invalid
         serverFacade.logout(existingAuth);
 
@@ -343,7 +343,7 @@ public class StandardAPITests {
     @Test
     @Order(13)
     @DisplayName("Watch Game")
-    public void goodWatch() throws TestException {
+     void goodWatch() throws TestException {
         //create game
         TestModels.TestCreateResult createResult = serverFacade.createGame(createRequest, existingAuth);
 
@@ -374,7 +374,7 @@ public class StandardAPITests {
     @Test
     @Order(14)
     @DisplayName("Watch Bad Authentication")
-    public void badAuthWatch() throws TestException {
+     void badAuthWatch() throws TestException {
         //create game
         TestModels.TestCreateResult createResult = serverFacade.createGame(createRequest, existingAuth);
 
@@ -397,7 +397,7 @@ public class StandardAPITests {
     @Test
     @Order(15)
     @DisplayName("Watch Bad Game ID")
-    public void badGameIDWatch() throws TestException {
+     void badGameIDWatch() throws TestException {
         //create game
         TestModels.TestCreateResult createResult = serverFacade.createGame(createRequest, existingAuth);
 
@@ -420,7 +420,7 @@ public class StandardAPITests {
     @Test
     @Order(16)
     @DisplayName("Many Watchers")
-    public void manyWatch() throws TestException {
+     void manyWatch() throws TestException {
         //create game
         createRequest = new TestModels.TestCreateRequest();
         createRequest.gameName = "Test Game";
@@ -493,7 +493,7 @@ public class StandardAPITests {
     @Test
     @Order(17)
     @DisplayName("Join Created Game")
-    public void goodJoin() throws TestException {
+     void goodJoin() throws TestException {
         //create game
         TestModels.TestCreateResult createResult = serverFacade.createGame(createRequest, existingAuth);
 
@@ -523,7 +523,7 @@ public class StandardAPITests {
     @Test
     @Order(18)
     @DisplayName("Join Bad Authentication")
-    public void badAuthJoin() throws TestException {
+     void badAuthJoin() throws TestException {
         //create game
         TestModels.TestCreateResult createResult = serverFacade.createGame(createRequest, existingAuth);
 
@@ -547,7 +547,7 @@ public class StandardAPITests {
     @Test
     @Order(19)
     @DisplayName("Join Bad Team Color")
-    public void badColorJoin() throws TestException {
+     void badColorJoin() throws TestException {
         //create game
         TestModels.TestCreateResult createResult = serverFacade.createGame(createRequest, existingAuth);
 
@@ -564,7 +564,7 @@ public class StandardAPITests {
         registerRequest.email = newUser.email;
         TestModels.TestLoginRegisterResult registerResult = serverFacade.register(registerRequest);
 
-        //join request trying to also join  as black
+        //join request trying to also join as black
         joinRequest = new TestModels.TestJoinRequest();
         joinRequest.gameID = createResult.gameID;
         joinRequest.playerColor = ChessGame.TeamColor.BLACK;
@@ -582,7 +582,7 @@ public class StandardAPITests {
     @Test
     @Order(20)
     @DisplayName("Join Bad Game ID")
-    public void badGameIDJoin() throws TestException {
+     void badGameIDJoin() throws TestException {
         //create game
         createRequest = new TestModels.TestCreateRequest();
         TestModels.TestCreateResult createResult = serverFacade.createGame(createRequest, existingAuth);
@@ -607,7 +607,7 @@ public class StandardAPITests {
     @Test
     @Order(21)
     @DisplayName("List No Games")
-    public void noGamesList() throws TestException {
+     void noGamesList() throws TestException {
         TestModels.TestListResult result = serverFacade.listGames(existingAuth);
 
         Assertions.assertEquals(HttpURLConnection.HTTP_OK, serverFacade.getStatusCode(),
@@ -622,7 +622,7 @@ public class StandardAPITests {
     @Test
     @Order(22)
     @DisplayName("List Multiple Games")
-    public void gamesList() throws TestException {
+     void gamesList() throws TestException {
         //register a few users to create games
         TestModels.TestRegisterRequest registerRequest = new TestModels.TestRegisterRequest();
         registerRequest.username = "a";
@@ -735,7 +735,7 @@ public class StandardAPITests {
     @Test
     @Order(23)
     @DisplayName("Clear Test")
-    public void clearData() throws TestException {
+     void clearData() throws TestException {
         //create filler games
         createRequest.gameName = "Mr. Meeseeks";
         serverFacade.createGame(createRequest, existingAuth);
@@ -804,7 +804,7 @@ public class StandardAPITests {
     @Test
     @Order(24)
     @DisplayName("Multiple Clears")
-    public void multipleClear() throws TestException {
+     void multipleClear() throws TestException {
 
         //clear multiple times
         serverFacade.clear();

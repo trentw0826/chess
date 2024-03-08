@@ -17,6 +17,8 @@ public class JoinGameService extends Service <JoinGameRequest, JoinGameResponse>
    * @param joinGameRequest joinGame request
    * @return                joinGame response
    */
+  //TODO Make compatible with memory access by rearranging inheritance hierarchy such that
+  // AuthDao and AuthMao necessarily implement the same interface
   @Override
   public JoinGameResponse processHandlerRequest(JoinGameRequest joinGameRequest) {
     JoinGameResponse joinGameResponse;
@@ -31,38 +33,19 @@ public class JoinGameService extends Service <JoinGameRequest, JoinGameResponse>
         throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST);
       }
 
-      String desiredGamesWhitePlayer = desiredGame.getWhiteUsername();
-      String desiredGamesBlackPlayer = desiredGame.getBlackUsername();
+      int currGameID = desiredGame.getGameID();
       String desiredColor = joinGameRequest.playerColor();
 
-      if (desiredColor == null) {
-        // Add the user as an observer
-        //TODO The service class shouldn't directly alter the data but rather pass the job to a DAO
-        desiredGame.addObserver(currentUsername);
-      }
-      else if (desiredColor.equalsIgnoreCase("white")) {
-        if (desiredGamesWhitePlayer == null) {
-          // Player wants to be added as white player, which is available
-          desiredGame.setWhiteUsername(currentUsername);
-        }
-        else {
-          // Player wants to be added as white player, but it is unavailable
-          throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN);
-        }
+
+      if (desiredColor.equalsIgnoreCase("white")) {
+        GAME_DAO.setPlayer(currGameID, "white", currentUsername);
       }
       else if (desiredColor.equalsIgnoreCase("black")) {
-        if (desiredGamesBlackPlayer == null) {
-          // Player wants to be added as black player, which is available
-          desiredGame.setBlackUsername(currentUsername);
-        }
-        else {
-          // Player wants to be added as black player, but it is unavailable
-          throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN);
-        }
+        GAME_DAO.setPlayer(currGameID, "black", currentUsername);
       }
       else {
-        // player's desired player color could not be recognized as white, black, or observer
-        throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST);
+        // Add player as observer
+        GAME_DAO.addObserver(currGameID, currentUsername);
       }
 
       joinGameResponse = new JoinGameResponse();

@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import static java.sql.Types.NULL;
 
-// TODO Should all data access objects be static classes?
 public abstract class DatabaseAccessObject<K, T extends DataModel<K>> implements DataAccessObject<K, T> {
   protected static final Connection connection;
   protected static final Gson gson = new Gson();
@@ -23,12 +22,13 @@ public abstract class DatabaseAccessObject<K, T extends DataModel<K>> implements
   static {
     try {
       connection = DatabaseManager.getConnection();
-    } 
+    }
     catch (DataAccessException e) {
       throw new IllegalStateException(e.getMessage());
     }
   }
 
+  protected DatabaseAccessObject() {}
 
   /*
    * Initializing statements for the database table creations
@@ -76,7 +76,7 @@ public abstract class DatabaseAccessObject<K, T extends DataModel<K>> implements
    *
    * @throws DataAccessException  if sql error thrown during configuration
    */
-  private void configureDatabase() throws DataAccessException {
+  private static void configureDatabase() throws DataAccessException {
     DatabaseManager.createDatabase();
     try {
       for (var statement : CREATE_STATEMENTS) {
@@ -97,7 +97,7 @@ public abstract class DatabaseAccessObject<K, T extends DataModel<K>> implements
    * @return                the generated auto key, if applicable ('-1' otherwise)
    * @throws SQLException   if SQL error thrown during query processing
    */
-  protected int executeUpdate(String statement, Object... statementParams) throws SQLException {
+  protected static int executeUpdate(String statement, Object... statementParams) throws SQLException {
     try (PreparedStatement preparedStatement = connection.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
       for (var i = 0; i < statementParams.length; i++) {
         var param = statementParams[i];

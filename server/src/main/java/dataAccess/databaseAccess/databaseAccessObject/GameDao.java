@@ -13,7 +13,7 @@ import java.util.Collection;
 
 public class GameDao extends DatabaseAccessObject<Integer, GameData> {
 
-  private static final String GAME_DATABASE_NAME = "gamedata";
+  private static final String GAME_TABLE = "gamedata";
 
 
   public GameDao() throws DataAccessException {
@@ -31,7 +31,7 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
   @Override
   public Integer create(GameData data) throws DataAccessException {
     try {
-      return executeUpdate("INSERT INTO " + GAME_DATABASE_NAME +
+      return executeUpdate("INSERT INTO " + GAME_TABLE +
                     " (whiteUsername, blackUsername, gameName, game) VALUES(?, ?, ?, ?)",
                     data.getWhiteUsername(), data.getBlackUsername(), data.getGameName(), GameData.getEmptyGame());
     }
@@ -54,7 +54,7 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
     //TODO update to 'SELECT *'
     try (var preparedStatement = connection.prepareStatement(
             "SELECT gameID, whiteUsername, blackUsername, gameName, game FROM " +
-            GAME_DATABASE_NAME + " WHERE gameID=?")) {
+                    GAME_TABLE + " WHERE gameID=?")) {
       preparedStatement.setInt(1, key);
       ResultSet rs = preparedStatement.executeQuery();
       rs.next();
@@ -75,7 +75,7 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
   @Override
   public Collection<GameData> listData() throws DataAccessException {
     // TODO add observers and actual game to query
-    try (var preparedStatement = connection.prepareStatement("SELECT gameID, whiteUsername, blackUsername, gameName, game FROM " + GAME_DATABASE_NAME)) {
+    try (var preparedStatement = connection.prepareStatement("SELECT gameID, whiteUsername, blackUsername, gameName, game FROM " + GAME_TABLE)) {
       Collection<GameData> games = new ArrayList<>();
 
       try (ResultSet rs = preparedStatement.executeQuery()) {
@@ -100,7 +100,16 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
    */
   @Override
   public void delete(Integer key) throws DataAccessException {
-
+    try (var preparedStatement = connection.prepareStatement("DELETE FROM " + GAME_TABLE + " WHERE gameID=?")) {
+      preparedStatement.setInt(1, key);
+      int rowsAffected = preparedStatement.executeUpdate();
+      if (rowsAffected == 0) {
+        throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST);
+      }
+    }
+    catch (SQLException e) {
+      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": " + e.getMessage());
+    }
   }
 
 
@@ -114,7 +123,7 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
     try {
       executeUpdate("SET foreign_key_checks = 0");
       executeUpdate("TRUNCATE TABLE observers");
-      executeUpdate("TRUNCATE TABLE " + GAME_DATABASE_NAME);
+      executeUpdate("TRUNCATE TABLE " + GAME_TABLE);
       executeUpdate("SET foreign_key_checks = 1");
     }
     catch (SQLException e) {
@@ -145,5 +154,43 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
     catch (SQLException e) {
       throw new IllegalArgumentException("Bad result set passed to readGameData: " + e.getMessage());
     }
+  }
+
+
+  public void setPlayer(int gameID, String color, String username) throws DataAccessException {
+    GameData retrievedData = get(gameID);
+    String setPlayerStatement;
+
+    if (color.equalsIgnoreCase("white")) {
+      if (retrievedData.getWhiteUsername() != null) {
+        throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN);
+      }
+      else {
+        setPlayerStatement = "UPDATE " + GAME_TABLE + " SET whiteUsername=? WHERE gameID=?";
+      }
+    }
+    else if (color.equalsIgnoreCase("black")) {
+      if (retrievedData.getBlackUsername() != null) {
+        throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN);
+      }
+      else {
+        setPlayerStatement = "UPDATE " + GAME_TABLE + " SET blackUsername=? WHERE gameID=?";
+      }
+    }
+    else {
+      throw new IllegalArgumentException("Bad color passed to setPlayer");
+    }
+
+    try {
+      executeUpdate(setPlayerStatement, username, gameID);
+    }
+
+    catch (SQLException e) {
+      throw new DataAccessException("Unable to set player: " + e.getMessage());
+    }
+  }
+
+  public void addObserver (int gameID, String observerUsername) throws DataAccessException {
+    //TODO Implement
   }
 }

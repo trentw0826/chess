@@ -4,17 +4,22 @@ import dataAccess.DataAccessException;
 import dataAccess.databaseAccess.databaseAccessObject.AuthDao;
 import dataAccess.databaseAccess.databaseAccessObject.GameDao;
 import dataAccess.databaseAccess.databaseAccessObject.UserDao;
+import model.AuthData;
 import model.UserData;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
 
-class UserDaoTest extends DaoTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class AuthDaoTest extends DaoTest {
 
   static UserDao testUserDao;
   static AuthDao testAuthDao;
   static GameDao testGameDao;
-
 
   @BeforeEach
   void setUp() {
@@ -45,10 +50,10 @@ class UserDaoTest extends DaoTest {
   }
 
   @Test
-  void listDataEmptyTest() {
-    Collection<UserData> listedData;
+  void listEmptyAuthTest() {
+    Collection<AuthData> listedData;
     try {
-      listedData = testUserDao.listData();
+      listedData = testAuthDao.listData();
     } catch (DataAccessException e) {
       throw new RuntimeException(e);
     }
@@ -58,11 +63,11 @@ class UserDaoTest extends DaoTest {
   }
 
   @Test
-  void ListDataOneUserTest() {
-    Collection<UserData> listedData;
+  void listOneAuthTest() {
+    Collection<AuthData> listedData;
     try {
-      testUserDao.create(TEST_USER_1);
-        listedData = testUserDao.listData();
+      testAuthDao.create(TEST_AUTH_1);
+      listedData = testAuthDao.listData();
     } catch (DataAccessException e) {
       throw new RuntimeException(e);
     }
@@ -70,18 +75,18 @@ class UserDaoTest extends DaoTest {
     int expectedSize = 1;
 
     Assertions.assertEquals(expectedSize, listedData.size());
-    Assertions.assertEquals(TEST_USER_1, listedData.iterator().next());
+    Assertions.assertEquals(TEST_AUTH_1, listedData.iterator().next());
   }
 
   @Test
-  void createOneUserTest() {
-    Collection<UserData> listedData;
-    UserData actualUser;
+  void createOneAuthTest() {
+    Collection<AuthData> listedData;
+    AuthData actualAuth;
 
     try {
-      testUserDao.create(TEST_USER_1);
-      listedData = testUserDao.listData();
-      actualUser = testUserDao.listData().iterator().next();
+      testAuthDao.create(TEST_AUTH_1);
+      listedData = testAuthDao.listData();
+      actualAuth = testAuthDao.listData().iterator().next();
     }
 
     catch (DataAccessException e) {
@@ -91,72 +96,72 @@ class UserDaoTest extends DaoTest {
     int expectedSize = 1;
     Assertions.assertEquals(expectedSize, listedData.size());
 
-    Assertions.assertEquals(TEST_USER_1, actualUser);
+    Assertions.assertEquals(TEST_AUTH_1, actualAuth);
   }
 
+
   @Test
-  void createAlreadyExistingUserTest() {
+  void createAlreadyExistingAuthTest() {
     try {
-      testUserDao.create(TEST_USER_1);
+      testAuthDao.create(TEST_AUTH_1);
     }
     catch (DataAccessException e) {
       throw new RuntimeException(e);
     }
 
-    Throwable actualException = Assertions.assertThrows(DataAccessException.class, () -> {testUserDao.create(TEST_USER_1);});
+    Throwable actualException = Assertions.assertThrows(DataAccessException.class, () -> {testAuthDao.create(TEST_AUTH_1);});
     Assertions.assertEquals(DataAccessException.class, actualException.getClass());
   }
 
   @Test
-  void getExistingUserTest() {
-    UserData actualRetrievedUser;
+  void getExistingAuthTest() {
+    AuthData actualRetrievedAuth;
     try {
-      testUserDao.create(TEST_USER_1);
-      actualRetrievedUser = testUserDao.get(TEST_USER_1.username());
+      testAuthDao.create(TEST_AUTH_1);
+      actualRetrievedAuth = testAuthDao.get(TEST_AUTH_1.authToken());
     }
     catch (DataAccessException e) {
       throw new RuntimeException(e);
     }
 
-    Assertions.assertEquals(TEST_USER_1, actualRetrievedUser);
+    Assertions.assertEquals(TEST_AUTH_1, actualRetrievedAuth);
   }
 
-
   @Test
-  void attemptGetNonExistingUserTest() {
-    Throwable actualException = Assertions.assertThrows(DataAccessException.class, () -> {testUserDao.get(TEST_USERNAME_1);});
+  void getNonExistingAuthTest() {
+    Throwable actualException = Assertions.assertThrows(DataAccessException.class, () -> {testAuthDao.get(TEST_AUTH_TOKEN_1);});
     Assertions.assertEquals(DataAccessException.class, actualException.getClass());
   }
 
   @Test
-  void deleteExistingUserTest() {
-    UserData actualRetrievedUser;
+  void deleteExistingAuthTest() {
+    AuthData actualRetrievedAuth;
     try {
-      testUserDao.create(TEST_USER_1);
-      actualRetrievedUser = testUserDao.get(TEST_USER_1.username());
+      testAuthDao.create(TEST_AUTH_1);
+      actualRetrievedAuth = testAuthDao.get(TEST_AUTH_1.authToken());
     }
     catch (DataAccessException e) {
       throw new RuntimeException(e);
     }
 
-    Assertions.assertEquals(TEST_USER_1, actualRetrievedUser);
+    Assertions.assertEquals(TEST_AUTH_1, actualRetrievedAuth);
   }
 
   @Test
-  void deleteNonExistingUserTest() {
-    Throwable actualException = Assertions.assertThrows(DataAccessException.class, () -> {testUserDao.delete(TEST_USERNAME_1);});
+  void deleteNonExistingAuthTest() {
+    Throwable actualException = Assertions.assertThrows(DataAccessException.class, () -> {testAuthDao.delete(TEST_AUTH_TOKEN_1);});
     Assertions.assertEquals(DataAccessException.class, actualException.getClass());
   }
 
   @Test
   void clearTest() {
-    Collection<UserData> listedData;
+    Collection<AuthData> listedData;
 
     try {
-      testUserDao.create(TEST_USER_1);
-      testUserDao.create(TEST_USER_2);
-      testUserDao.clear();
-      listedData = testUserDao.listData();
+      testAuthDao.create(TEST_AUTH_1);
+      testAuthDao.create(TEST_AUTH_2);
+      testAuthDao.clear();
+      listedData = testAuthDao.listData();
     }
     catch (DataAccessException e) {
       throw new RuntimeException(e);
@@ -164,9 +169,5 @@ class UserDaoTest extends DaoTest {
 
     int expectedSize = 0;
     Assertions.assertEquals(expectedSize, listedData.size());
-  }
-
-  @Test
-  void attemptPassword() {
   }
 }

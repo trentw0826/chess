@@ -4,16 +4,15 @@ import dataAccess.DataAccessException;
 import dataAccess.databaseAccess.DatabaseAccessObject;
 import model.AuthData;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 
 public class AuthDao extends DatabaseAccessObject<String, AuthData> {
 
-  private static final String AUTH_DATABASE_NAME = "authdata";
+  private static final String AUTH_TABLE = "authdata";
 
   public AuthDao() throws DataAccessException {
     super();
@@ -31,7 +30,7 @@ public class AuthDao extends DatabaseAccessObject<String, AuthData> {
   public String create(AuthData data) throws DataAccessException {
 
     try {
-      executeUpdate("INSERT INTO " + AUTH_DATABASE_NAME +
+      executeUpdate("INSERT INTO " + AUTH_TABLE +
               " (authToken, username) VALUES(?, ?)", data.authToken(), data.username());
       return data.authToken();
     }
@@ -50,11 +49,18 @@ public class AuthDao extends DatabaseAccessObject<String, AuthData> {
    */
   @Override
   public AuthData get(String key) throws DataAccessException {
-    try (PreparedStatement preparedStatement = connection.prepareStatement(
-            "SELECT authToken, username FROM " + AUTH_DATABASE_NAME + " WHERE authtoken=?")) {
+    try (var preparedStatement = connection.prepareStatement(
+            "SELECT * FROM " + AUTH_TABLE + " WHERE authtoken=?"
+    )) {
       preparedStatement.setString(1, key);
-      ResultSet resultSet = preparedStatement.executeQuery();
-      return readAuthData(resultSet);
+      ResultSet rs = preparedStatement.executeQuery();
+      rs.next();
+      try {
+        return readAuthData(rs);
+      }
+      catch (IllegalArgumentException e) {
+        throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": auth doesn't exist");
+      }
     }
     catch (SQLException e) {
       throw new DataAccessException("Auth data could not be retrieved: " + e.getMessage());
@@ -68,8 +74,22 @@ public class AuthDao extends DatabaseAccessObject<String, AuthData> {
    * @return  collection of AuthData objects representing all auth entries
    */
   @Override
-  public Collection<AuthData> listData() {
-    return Collections.emptyList();
+  public Collection<AuthData> listData() throws DataAccessException {
+    try (var preparedStatement = connection.prepareStatement(
+            "SELECT * FROM " + AUTH_TABLE
+    )) {
+      Collection<AuthData> auths = new ArrayList<>();
+
+      try (ResultSet rs = preparedStatement.executeQuery()) {
+        while (rs.next()) {
+          auths.add(readAuthData(rs));
+        }
+        return auths;
+      }
+    }
+    catch (SQLException e) {
+      throw new DataAccessException("Game data could not be retrieved: " + e.getMessage());
+    }
   }
 
 
@@ -81,7 +101,16 @@ public class AuthDao extends DatabaseAccessObject<String, AuthData> {
    */
   @Override
   public void delete(String key) throws DataAccessException {
-
+    try (var preparedStatement = connection.prepareStatement("DELETE FROM " + AUTH_TABLE + " WHERE authtoken=?")) {
+      preparedStatement.setString(1, key);
+      int rowsAffected = preparedStatement.executeUpdate();
+      if (rowsAffected == 0) {
+        throw new DataAccessException(DataAccessException.ErrorMessages.UNAUTHORIZED);
+      }
+    }
+    catch (SQLException e) {
+      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": " + e.getMessage());
+    }
   }
 
 
@@ -93,7 +122,7 @@ public class AuthDao extends DatabaseAccessObject<String, AuthData> {
   @Override
   public void clear() throws DataAccessException {
     try {
-      executeUpdate("TRUNCATE TABLE " + AUTH_DATABASE_NAME);
+      executeUpdate("TRUNCATE TABLE " + AUTH_TABLE);
     }
     catch (SQLException e) {
       throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST + ": " + e.getMessage());
@@ -110,19 +139,25 @@ public class AuthDao extends DatabaseAccessObject<String, AuthData> {
    * @throws SQLException if sql error is thrown during reading
    */
   private AuthData readAuthData(ResultSet rs) throws SQLException {
-    if (rs.next()) {
+    try {
       String authToken = rs.getString(1);
       String username = rs.getString(2);
+
       return new AuthData(authToken, username);
     }
-    else {
-      throw new IllegalArgumentException("Empty result set passed to readAuthData");
+    catch (SQLException e) {
+      throw new IllegalArgumentException("Bad result set passed to readAuthData: " + e.getMessage());
     }
   }
 
 
-  //TODO Extract common definition between authdao and authmao?
+  //TODO Extract common extension here upon reorganization of DAO structure
   public String getUsernameFromAuthToken(String authToken) throws DataAccessException {
-    return get(authToken).username();
+    try {
+      return get(authToken).username();
+    }
+    catch (DataAccessException e) {
+      throw new DataAccessException(DataAccessException.ErrorMessages.UNAUTHORIZED);
+    }
   }
 }
