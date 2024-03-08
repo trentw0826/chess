@@ -3,7 +3,6 @@ package model;
 import chess.ChessGame;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -66,9 +65,9 @@ public class GameData implements DataModel<Integer> {
     this.game = game;
   }
 
-  public static ChessGame getEmptyGame() {
-    return new ChessGame();
-  }
+//  public static ChessGame getEmptyGame() {
+//    return new ChessGame();
+//  }
 
   public void addObserver(String newObserverUsername) {
     observers.add(newObserverUsername);
@@ -82,18 +81,5 @@ public class GameData implements DataModel<Integer> {
   @Override
   public Integer generateKey() {
     return gameID;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    GameData gameData = (GameData) o;
-    return Objects.equals(gameID, gameData.gameID) && Objects.equals(whiteUsername, gameData.whiteUsername) && Objects.equals(blackUsername, gameData.blackUsername) && Objects.equals(observers, gameData.observers) && Objects.equals(gameName, gameData.gameName) && Objects.equals(game, gameData.game);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(gameID, whiteUsername, blackUsername, observers, gameName, game);
   }
 }

@@ -1,10 +1,13 @@
 package dataAccessTests;
 
+import com.google.gson.Gson;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
 
 public class DaoTest {
+  protected static final Gson GSON = new Gson();
+
   protected static final String TEST_USERNAME_1 = "SomeUsername1";
   protected static final String TEST_USERNAME_2 = "SomeUsername2";
   protected static final String TEST_USERNAME_3 = "SomeUsername3";

@@ -31,9 +31,10 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
   @Override
   public Integer create(GameData data) throws DataAccessException {
     try {
+      //TODO Should game be initialized as a new ChessGame or null?
       return executeUpdate("INSERT INTO " + GAME_TABLE +
                     " (whiteUsername, blackUsername, gameName, game) VALUES(?, ?, ?, ?)",
-                    data.getWhiteUsername(), data.getBlackUsername(), data.getGameName(), GameData.getEmptyGame());
+                    data.getWhiteUsername(), data.getBlackUsername(), data.getGameName(), null);
     }
     catch (SQLException e) {
       throw new DataAccessException("Game data couldn't be inserted: " + e.getMessage());
@@ -52,6 +53,10 @@ public class GameDao extends DatabaseAccessObject<Integer, GameData> {
   public GameData get(Integer key) throws DataAccessException {
     //TODO add observers to sql query
     //TODO update to 'SELECT *'
+    if (key == null) {
+      throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST);
+    }
+
     try (var preparedStatement = connection.prepareStatement(
             "SELECT gameID, whiteUsername, blackUsername, gameName, game FROM " +
                     GAME_TABLE + " WHERE gameID=?")) {

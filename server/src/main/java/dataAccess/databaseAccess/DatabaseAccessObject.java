@@ -28,7 +28,14 @@ public abstract class DatabaseAccessObject<K, T extends DataModel<K>> implements
     }
   }
 
-  protected DatabaseAccessObject() {}
+  protected DatabaseAccessObject() {
+    try {
+      configureDatabase();
+    }
+    catch (DataAccessException e) {
+      throw new IllegalStateException("Database couldn't be initialized: " + e.getMessage());
+    }
+  }
 
   /*
    * Initializing statements for the database table creations
@@ -56,11 +63,11 @@ public abstract class DatabaseAccessObject<K, T extends DataModel<K>> implements
                 whiteUsername VARCHAR(255),
                 blackUsername VARCHAR(255),
                 gameName VARCHAR(255) NOT NULL,
-                game JSON NOT NULL
+                game JSON
             )
             """,
           """
-          CREATE TABLE observers (
+          CREATE TABLE IF NOT EXISTS observers (
               username VARCHAR(255) NOT NULL,
               gameID INT NOT NULL,
               
