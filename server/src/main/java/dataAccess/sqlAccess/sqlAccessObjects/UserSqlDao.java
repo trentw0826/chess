@@ -4,6 +4,7 @@ import dataAccess.DataAccessException;
 import dataAccess.dataAccessObject.UserDao;
 import dataAccess.sqlAccess.SqlAccessObject;
 import model.UserData;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +15,7 @@ import java.util.Collection;
 public class UserSqlDao extends SqlAccessObject<String, UserData> implements UserDao {
 
   private static final String USER_TABLE = "userdata";
+  BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 
   /**
@@ -28,7 +30,7 @@ public class UserSqlDao extends SqlAccessObject<String, UserData> implements Use
     try {
       executeUpdate(
               "INSERT INTO " + USER_TABLE + " (username, password, email) VALUES(?, ?, ?)",
-              data.username(), data.password(), data.email()
+              data.username(), hashPassword(data.password()), data.email()
       );
 
       return data.username();
@@ -139,7 +141,7 @@ public class UserSqlDao extends SqlAccessObject<String, UserData> implements Use
   @Override
   public boolean attemptPassword(String username, String passwordAttempt) {
     try {
-      return get(username).password().equals(passwordAttempt);
+      return encoder.matches(passwordAttempt, get(username).password());
     }
     catch (DataAccessException e) {
       throw new IllegalArgumentException("Bad username passed to attemptPassword");
@@ -147,6 +149,13 @@ public class UserSqlDao extends SqlAccessObject<String, UserData> implements Use
   }
 
 
+  /**
+   * Convert a result set containing user data into a UserData object.
+   *
+   * @param rs  result set containing user data
+   * @return    UserData objected extracted from 'rs'
+   * @throws SQLException if SQL thrown during conversion
+   */
   private UserData readUserData(ResultSet rs) throws SQLException {
     try {
       String username = rs.getString(1);
@@ -158,5 +167,17 @@ public class UserSqlDao extends SqlAccessObject<String, UserData> implements Use
     catch (SQLException e) {
       throw new IllegalArgumentException("Bad result set passed to readUserData: " + e.getMessage());
     }
+  }
+
+
+  /**
+   * Hash a given password with bcrypt.
+   *
+   * @param password  password to be hashed
+   * @return          hashed password
+   */
+  private String hashPassword(String password) {
+    return encoder.encode(password);
+//    return password;
   }
 }

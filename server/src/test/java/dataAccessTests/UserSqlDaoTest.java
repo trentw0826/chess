@@ -168,8 +168,4 @@ class UserSqlDaoTest extends SqlaoTest {
     int expectedSize = 0;
     Assertions.assertEquals(expectedSize, listedData.size());
   }
-
-  @Test
-  void attemptPasswordTest() {
-  }
 }
