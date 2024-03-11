@@ -13,6 +13,8 @@ import java.util.Objects;
  */
 public class ChessGame {
 
+  //TODO Reorganize structure such that 'validMoves' doesn't need to exist
+  //TODO create starting board upon construction
   private ChessBoard board;
   private TeamColor teamTurn;
   private Collection<ChessMove> validMoves;
