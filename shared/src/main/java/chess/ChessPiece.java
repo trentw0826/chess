@@ -31,6 +31,7 @@ public class ChessPiece implements Cloneable {
   /**
    * @return string representation of piece
    */
+  // TODO update string representation to unicode chess characters
   @Override
   public String toString() {
     char c = ChessConstants.PIECE_TYPE_TO_CHAR.get(pieceType);
