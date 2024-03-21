@@ -11,9 +11,4 @@ public class ResponseException extends Exception {
   public int getStatusCode() {
     return statusCode;
   }
-
-  @Override
-  public String getMessage() {
-    return statusCode + " " + getMessage();
-  }
 }

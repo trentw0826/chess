@@ -23,11 +23,12 @@ public class ServerFacade {
   // TODO make shared http paths enum between server & client
   public AuthData registerUser(UserData user) throws ResponseException {
     var path = "/user";
-    return this.makeRequest("POST", path, user, AuthData.class, null);
+    return makeRequest("POST", path, user, AuthData.class, null);
   }
 
-  public void login() {
-    // TODO Implement
+  public AuthData login(UserData userData) throws ResponseException {
+    var path = "/session";
+    return makeRequest("POST", path, userData, AuthData.class, null);
   }
 
   public void logout() {

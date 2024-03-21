@@ -1,6 +1,7 @@
 package ui;
 
 import exception.ResponseException;
+import model.AuthData;
 import model.UserData;
 
 import java.util.*;
@@ -176,7 +177,8 @@ public class ClientUI {
 
       case LOGIN:
         System.out.println("Logging in...");
-        // TODO Implement login functionality
+        UserData loggingInUserData = new UserData(userInputArr[1], userInputArr[2], null);
+        AuthData successfulLoginAuthData = serverFacade.login(loggingInUserData);
         currAvailableCommands = POST_LOGIN_COMMANDS;
         break;
 
