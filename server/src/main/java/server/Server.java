@@ -1,6 +1,7 @@
 package server;
 
 import handler.*;
+import httpPath.HttpPath;
 import spark.*;
 
 /**
@@ -37,27 +38,12 @@ public class Server {
      * Defines the spark server's routes.
      */
     private static void createRoutes() {
-
-        // Contains enum values associated with needed path strings
-        enum PATHS {
-            DB("/db"),
-            USER("/user"),
-            SESSION("/session"),
-            GAME("/game");
-
-            private final String path;
-
-            PATHS(String path) {
-                this.path = path;
-            }
-        }
-
-        Spark.delete(PATHS.DB.path, (req, res) -> ClearHandler.instance().handleRequest(req, res));
-        Spark.post(PATHS.USER.path, (req, res) -> RegisterHandler.instance().handleRequest(req, res));
-        Spark.post(PATHS.SESSION.path, (req, res) -> LoginHandler.instance().handleRequest(req, res));
-        Spark.delete(PATHS.SESSION.path, (req, res) -> LogoutHandler.instance().handleRequest(req, res));
-        Spark.post(PATHS.GAME.path, (req, res) -> CreateGameHandler.instance().handleRequest(req, res));
-        Spark.get(PATHS.GAME.path, (req, res) -> ListGamesHandler.instance().handleRequest(req, res));
-        Spark.put(PATHS.GAME.path, (req, res) -> JoinGameHandler.instance().handleRequest(req, res));
+        Spark.delete(HttpPath.PATHS.DB.getPath(), (req, res) -> ClearHandler.instance().handleRequest(req, res));
+        Spark.post(HttpPath.PATHS.USER.getPath(), (req, res) -> RegisterHandler.instance().handleRequest(req, res));
+        Spark.post(HttpPath.PATHS.SESSION.getPath(), (req, res) -> LoginHandler.instance().handleRequest(req, res));
+        Spark.delete(HttpPath.PATHS.SESSION.getPath(), (req, res) -> LogoutHandler.instance().handleRequest(req, res));
+        Spark.post(HttpPath.PATHS.GAME.getPath(), (req, res) -> CreateGameHandler.instance().handleRequest(req, res));
+        Spark.get(HttpPath.PATHS.GAME.getPath(), (req, res) -> ListGamesHandler.instance().handleRequest(req, res));
+        Spark.put(HttpPath.PATHS.GAME.getPath(), (req, res) -> JoinGameHandler.instance().handleRequest(req, res));
     }
 }

@@ -2,6 +2,7 @@ package ui;
 
 import com.google.gson.Gson;
 import exception.ResponseException;
+import httpPath.HttpPath;
 import model.AuthData;
 import model.UserData;
 
@@ -22,13 +23,12 @@ public class ServerFacade {
 
   // TODO make shared http paths enum between server & client
   public AuthData registerUser(UserData user) throws ResponseException {
-    var path = "/user";
-    return makeRequest("POST", path, user, AuthData.class, null);
+    return makeRequest("POST", HttpPath.PATHS.USER.getPath(), user, AuthData.class, null);
   }
 
   public AuthData login(UserData userData) throws ResponseException {
     var path = "/session";
-    return makeRequest("POST", path, userData, AuthData.class, null);
+    return makeRequest("POST", HttpPath.PATHS.SESSION.getPath(), userData, AuthData.class, null);
   }
 
   public void logout() {
@@ -95,7 +95,7 @@ public class ServerFacade {
   private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, ResponseException {
     var status = http.getResponseCode();
     if (!isSuccessful(status)) {
-      throw new ResponseException(status, "failure: " + status);
+      throw new ResponseException(status, "Failure [" + status + "]");
     }
   }
 
