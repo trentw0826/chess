@@ -2,6 +2,7 @@ package ui;
 
 import com.google.gson.Gson;
 import exception.ResponseException;
+import model.AuthData;
 import model.UserData;
 
 import java.io.IOException;
@@ -19,9 +20,10 @@ public class ServerFacade {
     this.serverUrl = serverUrl;
   }
 
-  public void registerUser(UserData user) throws ResponseException {
-//    var path = "/user";
-//    return this.makeRequest("POST", path, user, UserData.class);
+  // TODO make shared http paths enum between server & client
+  public AuthData registerUser(UserData user) throws ResponseException {
+    var path = "/user";
+    return this.makeRequest("POST", path, user, AuthData.class, null);
   }
 
   public void login() {
@@ -56,12 +58,17 @@ public class ServerFacade {
    * @param <T>           type of desired response
    * @throws ResponseException  if exception thrown during request
    */
-  private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
+  private <T> T makeRequest(String method, String path, Object request,
+                            Class<T> responseClass, String auth) throws ResponseException {
     try {
       URL url = (new URI(serverUrl + path)).toURL();
       HttpURLConnection http = (HttpURLConnection) url.openConnection();
       http.setRequestMethod(method);
       http.setDoOutput(true);
+
+      if (auth != null) {
+        http.addRequestProperty("authorization", auth);
+      }
 
       writeBody(request, http);
       http.connect();

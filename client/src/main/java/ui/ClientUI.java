@@ -1,6 +1,7 @@
 package ui;
 
 import exception.ResponseException;
+import model.UserData;
 
 import java.util.*;
 
@@ -53,8 +54,7 @@ public class ClientUI {
     displayWelcomeMessage();
     while (isUserActive) {
       String[] userInputArr = getValidUserInput();
-      var userCommand = retrieveCommand(userInputArr[0]);
-      processCommand(userCommand);
+      processCommand(userInputArr);
     }
 
     exitProgram();
@@ -159,9 +159,11 @@ public class ClientUI {
   /**
    * Given a valid command, call associated program methods (as defined in phase 5 specs).
    *
-   * @param command a valid user input
+   * @param userInputArr valid array of user input arguments
    */
-  private static void processCommand(Command.Commands command) {
+  private static void processCommand(String[] userInputArr) {
+    Command.Commands command = retrieveCommand(userInputArr[0]);
+
     try {
       switch (command) {
       case HELP:
@@ -180,7 +182,8 @@ public class ClientUI {
 
       case REGISTER:
         System.out.println("Registering...");
-        serverFacade.registerUser(null);
+        UserData userData = new UserData(userInputArr[1], userInputArr[2], userInputArr[3]);
+        serverFacade.registerUser(userData);
         break;
 
       case LOGOUT:
