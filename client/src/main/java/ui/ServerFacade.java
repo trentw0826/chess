@@ -50,6 +50,10 @@ public class ServerFacade {
     return makeRequest("DELETE", HttpPath.PATHS.SESSION.getPath(), logoutRequest, null, auth);
   }
 
+  public void clear() throws ResponseException {
+    makeRequest("DELETE", HttpPath.PATHS.DB.getPath(), null, null, null);
+  }
+
 
   /**
    * Makes an http request to the server.

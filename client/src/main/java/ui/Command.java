@@ -18,7 +18,6 @@ public class Command {
    * as well as its description
    */
   enum Commands {
-
     HELP("help", "display available commands"),
     QUIT("quit", "exit the program"),
     LOGIN("login", "log in to your account", USERNAME_ARG, PASSWORD_ARG),

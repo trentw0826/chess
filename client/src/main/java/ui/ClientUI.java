@@ -44,7 +44,6 @@ public class ClientUI {
   private String currUsername;
   private String currAuthToken;
 
-  // TODO should this class be static?
   public ClientUI() {}
 
   /**
@@ -173,64 +172,45 @@ public class ClientUI {
     try {
       switch (command) {
         case REGISTER:
-          System.out.println("Registering...");
-          RegisterResponse registerResponse = serverFacade.registerUser(userInputArr[1], userInputArr[2], userInputArr[3]);
-          System.out.println("user \"" + registerResponse.getUsername() + "\" registered!");
+          register(userInputArr);
+          login(userInputArr);
           break;
 
         case LOGIN:
-          System.out.println("Logging in...");
-          LoginResponse loginResponse = serverFacade.login(userInputArr[1], userInputArr[2]);
-
-          currUsername = loginResponse.getUsername();
-          currAuthToken = loginResponse.getAuthToken();
-
-          currAvailableCommands = POST_LOGIN_COMMANDS;
-          System.out.println("Logged in!");
+          login(userInputArr);
           break;
 
         case LIST_GAMES:
-          System.out.println("Listing available games...");
-          ListGamesResponse listGamesResponse = serverFacade.listGames(currAuthToken);
-          for (var game : listGamesResponse.getGames()) {
-            System.out.println(" " + game.headerStr());
-          }
+          listGames();
           break;
 
         case CREATE_GAME:
-          System.out.println("Creating a new game...");
-          CreateGameResponse createGameResponse = serverFacade.createGame(userInputArr[1], currAuthToken);
-          System.out.println("Success [" + createGameResponse + "]");
+          createGame(userInputArr);
           break;
 
         case JOIN_GAME:
-          System.out.println("Joining a game...");
-          // TODO Implement join game functionality
+          joinGame();
           break;
 
+          //TODO is the observer case even necessary?
         case JOIN_OBSERVER:
           System.out.println("Observing a game...");
-          // TODO Implement join observer functionality
           break;
 
-      case LOGOUT:
-        System.out.println("Logging out...");
-        currAvailableCommands = PRE_LOGIN_COMMANDS;
-        serverFacade.logout(currAuthToken);
-        currUsername = null;
-        currAuthToken = null;
-        break;
+        case LOGOUT:
+          logout();
+          break;
 
-      case HELP:
-        displayAvailableCommands();
-        break;
+        case HELP:
+          displayAvailableCommands();
+          break;
 
-      case QUIT:
-        isUserActive = false;
-        break;
+        case QUIT:
+          isUserActive = false;
+          break;
 
-      default:
-        throw new IllegalArgumentException("Illegal command passed");
+        default:
+          throw new IllegalArgumentException("Illegal command passed");
       }
     }
     catch (ResponseException e) {
@@ -239,20 +219,63 @@ public class ClientUI {
   }
 
 
-  /**
-   * Responds to 'help command', displays all commands currently held in
-   * the 'availableCommands' collection.
-   */
+  private void register(String[] userInputArr) throws ResponseException {
+    System.out.println("Registering...");
+    RegisterResponse registerResponse = serverFacade.registerUser(userInputArr[1], userInputArr[2], userInputArr[3]);
+    System.out.println("user \"" + registerResponse.getUsername() + "\" registered!");
+  }
+
+
+  private void login(String[] userInputArr) throws ResponseException {
+    System.out.println("Logging in...");
+    LoginResponse loginResponse = serverFacade.login(userInputArr[1], userInputArr[2]);
+
+    currUsername = loginResponse.getUsername();
+    currAuthToken = loginResponse.getAuthToken();
+
+    currAvailableCommands = POST_LOGIN_COMMANDS;
+    System.out.println("Logged in!");
+  }
+
+
+  private void listGames() throws ResponseException {
+    System.out.println("Listing available games...");
+    ListGamesResponse listGamesResponse = serverFacade.listGames(currAuthToken);
+    for (var game : listGamesResponse.getGames()) {
+      System.out.println(" " + game.headerStr());
+    }
+  }
+
+
+  private void createGame(String[] userInputArr) throws ResponseException {
+    System.out.println("Creating a new game...");
+    CreateGameResponse createGameResponse = serverFacade.createGame(userInputArr[1], currAuthToken);
+    System.out.println("Success [" + createGameResponse + "]");
+  }
+
+
+  private void logout() throws ResponseException {
+    System.out.println("Logging out...");
+    currAvailableCommands = PRE_LOGIN_COMMANDS;
+    serverFacade.logout(currAuthToken);
+    currUsername = null;
+    currAuthToken = null;
+  }
+
+  
+  private void joinGame() {
+    System.out.println("Joining a game...");
+    // TODO Implement join game functionality
+  }
+
+
   private void displayAvailableCommands() {
     for (var command : currAvailableCommands) {
       System.out.println(" " + command);
     }
   }
 
-
-  /**
-   * Terminate the program with success
-   */
+  
   private static void exitProgram() {
     System.out.println("Exiting program...");
     exit(0);

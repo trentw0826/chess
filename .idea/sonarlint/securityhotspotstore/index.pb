@@ -101,3 +101,22 @@ a
 0src/test/java/serviceTests/ClearServiceTest.java,7\4\744d8b894216e8053dc23b1179349213dafc1fdc
 Z
 *src/main/java/handler/RegisterHandler.java,c\c\cc586a38f5a4e5647b731c6fb2c3f026a22d7b3f
+U
+%src/main/java/ui/Command/Command.java,7\e\7e606c48de1ff455647700862a6c398792d8df12
+J
+src/test/java/uiTests.java,5\b\5b0664965e28d2f1c7f5f5842b817070066e763b
+O
+src/test/java/ClientUITest.java,f\d\fdb6cd706de06e95d42b700b43b1f2d7711a1411
+T
+$src/test/java/ServerFacadeTests.java,3\a\3a37efa19e91657a1ec782cf870969e60193e8d7
+O
+src/test/ServerFacadeTests.java,7\6\7696f746d8eda8b968cbbc67e802fd9cffdc5a40
+`
+0src/test/java/clientTests/ServerFacadeTests.java,c\f\cf4a6b87ba93a9e44d28b89d3437e0296868fa89
+_
+/src/test/java/serverTests/PersistenceTests.java,4\a\4a5831de6b7a43c954855cdca99d86e6f0ec387b
+a
+1src/test/java/dataAccessTests/UserSqlDaoTest.java,c\6\c62f57c652b7de8e9b6677a90b24e45a9245408d
+:
+
+client.iml,8\1\81276a78d81379d1349e1ff0f16babcbe4db95cc
