@@ -11,7 +11,7 @@ public class Command {
   private static final String EMAIL_ARG = "<EMAIL>";
   private static final String GAME_NAME_ARG = "<GAME_NAME>";
   private static final String GAME_ID_ARG = "<GAME_ID>";
-  private static final String COLOR_ARG = "<\"white\"/\"black\">";
+  private static final String COLOR_ARG = "<white|black>";
 
   /**
    * Enum class to contain command types. Includes member variables to hold each command as a string
@@ -25,7 +25,7 @@ public class Command {
     LOGOUT("logout", "log out from your account"),
     CREATE_GAME("create", "create a new chess game", GAME_NAME_ARG),
     LIST_GAMES("list", "list all available chess games"),
-    JOIN_GAME("join", "join an existing chess game as the given color", COLOR_ARG, GAME_ID_ARG),
+    JOIN_GAME("join", "join an existing chess game as the given color", GAME_ID_ARG, COLOR_ARG),
     JOIN_OBSERVER("observe", "observe an existing chess game", GAME_ID_ARG);
 
 

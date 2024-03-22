@@ -173,7 +173,6 @@ public class ClientUI {
       switch (command) {
         case REGISTER:
           register(userInputArr);
-          login(userInputArr);
           break;
 
         case LOGIN:
@@ -189,12 +188,11 @@ public class ClientUI {
           break;
 
         case JOIN_GAME:
-          joinGame();
+          joinGame(userInputArr);
           break;
 
-          //TODO is the observer case even necessary?
         case JOIN_OBSERVER:
-          System.out.println("Observing a game...");
+          joinObserver(userInputArr);
           break;
 
         case LOGOUT:
@@ -222,27 +220,35 @@ public class ClientUI {
   private void register(String[] userInputArr) throws ResponseException {
     System.out.println("Registering...");
     RegisterResponse registerResponse = serverFacade.registerUser(userInputArr[1], userInputArr[2], userInputArr[3]);
-    System.out.println("user \"" + registerResponse.getUsername() + "\" registered!");
+
+    currAuthToken = registerResponse.getAuthToken();
+    currUsername = registerResponse.getUsername();
+    currAvailableCommands = POST_LOGIN_COMMANDS;
+    System.out.println("user \"" + registerResponse.getUsername() + "\" registered and logged in!");
   }
 
 
   private void login(String[] userInputArr) throws ResponseException {
     System.out.println("Logging in...");
     LoginResponse loginResponse = serverFacade.login(userInputArr[1], userInputArr[2]);
-
     currUsername = loginResponse.getUsername();
     currAuthToken = loginResponse.getAuthToken();
-
     currAvailableCommands = POST_LOGIN_COMMANDS;
-    System.out.println("Logged in!");
+    System.out.println("user \"" + loginResponse.getUsername() + "\" logged in!");
   }
 
 
   private void listGames() throws ResponseException {
     System.out.println("Listing available games...");
     ListGamesResponse listGamesResponse = serverFacade.listGames(currAuthToken);
-    for (var game : listGamesResponse.getGames()) {
-      System.out.println(" " + game.headerStr());
+    var games = listGamesResponse.getGames();
+    if (games.isEmpty()) {
+      System.out.println("no games exist :(");
+    }
+    else {
+      for (var game : games) {
+        System.out.println(" " + game.headerStr());
+      }
     }
   }
 
@@ -263,9 +269,18 @@ public class ClientUI {
   }
 
   
-  private void joinGame() {
+  private void joinGame(String[] userInputArr) throws ResponseException {
     System.out.println("Joining a game...");
-    // TODO Implement join game functionality
+    JoinGameResponse joinGameResponse = serverFacade.joinGame(currAuthToken, userInputArr[2], Integer.parseInt(userInputArr[1]));
+    System.out.println("joined game!");
+    // TODO show game board
+  }
+
+
+  private void joinObserver(String[] userInputArr) throws ResponseException {
+    System.out.println("Observing a game...");
+    JoinGameResponse joinGameResponse = serverFacade.joinGame(currAuthToken, null, Integer.parseInt(userInputArr[1]));
+    // TODO show game board
   }
 
 

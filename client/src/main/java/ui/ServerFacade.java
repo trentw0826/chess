@@ -41,8 +41,8 @@ public class ServerFacade {
   }
 
   public JoinGameResponse joinGame(String auth, String color, int gameID) throws ResponseException {
-    JoinGameRequest createGameRequest = new JoinGameRequest(auth, color, gameID);
-    return makeRequest("POST", HttpPath.PATHS.GAME.getPath(), createGameRequest, JoinGameResponse.class, auth);
+    JoinGameRequest joinGameRequest = new JoinGameRequest(auth, color, gameID);
+    return makeRequest("PUT", HttpPath.PATHS.GAME.getPath(), joinGameRequest, JoinGameResponse.class, auth);
   }
 
   public LogoutResponse logout(String auth) throws ResponseException {

@@ -86,13 +86,13 @@ public class GameData implements DataModel<Integer> {
     }
     else {
       if ((whiteUsername == null)) {
-        playerStatus = String.format("[BLACK] %s is waiting for an opponent...", blackUsername);
+        playerStatus = String.format("[BLACK] \"%s\" is waiting for an opponent...", blackUsername);
       }
       else {
         if (blackUsername == null)
-          playerStatus = String.format("[WHITE] %s is waiting for an opponent...", whiteUsername);
+          playerStatus = String.format("[WHITE] \"%s\" is waiting for an opponent...", whiteUsername);
         else {
-          playerStatus = String.format("[WHITE] %s versus [BLACK] %s", whiteUsername, blackUsername);
+          playerStatus = String.format("[WHITE] \"%s\" versus [BLACK] \"%s\"", whiteUsername, blackUsername);
         }
       }
     }
