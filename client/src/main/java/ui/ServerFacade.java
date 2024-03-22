@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.util.Objects;
 
 public class ServerFacade {
   private final String serverUrl;
@@ -72,7 +73,10 @@ public class ServerFacade {
       URL url = (new URI(serverUrl + path)).toURL();
       HttpURLConnection http = (HttpURLConnection) url.openConnection();
       http.setRequestMethod(method);
-      http.setDoOutput(true);
+
+      if (!Objects.equals(method, "GET")) {
+        http.setDoOutput(true);
+      }
 
       if (auth != null) {
         http.addRequestProperty("authorization", auth);

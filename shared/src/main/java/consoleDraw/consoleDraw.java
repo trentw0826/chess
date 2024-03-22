@@ -1,11 +1,11 @@
-package ui;
+package consoleDraw;
 
 /**
  * This class contains constants and functions relating to ANSI Escape Sequences that are useful in the Client display
  */
-public class TextStyle {
+public class consoleDraw {
 
-    private TextStyle() {}
+    private consoleDraw() {}
 
     private static final String UNICODE_ESCAPE = "\u001b";
     private static final String ANSI_ESCAPE = "\033";

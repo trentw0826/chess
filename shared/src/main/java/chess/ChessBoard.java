@@ -1,5 +1,7 @@
 package chess;
 
+import consoleDraw.consoleDraw;
+
 import java.util.*;
 
 import static chess.ChessPiece.PieceType.*;
@@ -17,6 +19,7 @@ public class ChessBoard implements Cloneable {
      */
     public ChessBoard() {
         board = new ChessPiece[ChessConstants.BOARD_SIZE][ChessConstants.BOARD_SIZE];
+        resetBoard();
     }
 
     /**
@@ -59,11 +62,12 @@ public class ChessBoard implements Cloneable {
         StringBuilder str = new StringBuilder();
         for (int i = 8; i >= 1; i--) {
             ChessPiece[] row = board[i - 1];
-            for (ChessPiece piece : row) {
-                String pieceStr = (piece == null) ? " " : piece.toString();
-                str.append("|").append(pieceStr);
+            for (int j = 0; j < 8; j++) {
+                var piece = row[j];
+                String pieceStr = (piece == null) ? consoleDraw.EMPTY : piece.toString();
+                str.append(pieceStr);
             }
-            str.append("|\n");
+            str.append("\n");
         }
         return str.toString();
     }

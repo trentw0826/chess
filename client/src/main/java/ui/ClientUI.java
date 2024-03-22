@@ -1,6 +1,8 @@
 package ui;
 
+import consoleDraw.consoleDraw;
 import exception.ResponseException;
+import model.GameData;
 import response.*;
 
 import java.util.*;
@@ -18,7 +20,7 @@ public class ClientUI {
 
   private static final Scanner SCANNER = new Scanner(System.in);
 
-  private static final String WELCOME_MESSAGE = TextStyle.WHITE_KING + " Chess Client " + TextStyle.WHITE_QUEEN;
+  private static final String WELCOME_MESSAGE = consoleDraw.WHITE_KING + " Chess Client " + consoleDraw.WHITE_QUEEN;
 
   private boolean isUserActive;
   private Collection<Command.Commands> currAvailableCommands;
@@ -143,7 +145,7 @@ public class ClientUI {
 
   // welcome message
   private void displayWelcomeMessage() {
-    System.out.println(TextStyle.underlineString(WELCOME_MESSAGE));
+    System.out.println(consoleDraw.underlineString(WELCOME_MESSAGE));
   }
 
   // characters to prompt user input
@@ -156,7 +158,7 @@ public class ClientUI {
   private void displayAssistedUserInputPrompt() {
     System.out.printf(
             " invalid command (type '%s' for available commands)%n",
-            TextStyle.boldString(HELP.getCmdString()));
+            consoleDraw.boldString(HELP.getCmdString()));
     displayUserInputPrompt();
   }
 
@@ -272,15 +274,18 @@ public class ClientUI {
   private void joinGame(String[] userInputArr) throws ResponseException {
     System.out.println("Joining a game...");
     JoinGameResponse joinGameResponse = serverFacade.joinGame(currAuthToken, userInputArr[2], Integer.parseInt(userInputArr[1]));
+    GameData fillerGame = new GameData("fillerGame");
+    System.out.println(fillerGame.getGame());
     System.out.println("joined game!");
-    // TODO show game board
   }
 
 
   private void joinObserver(String[] userInputArr) throws ResponseException {
     System.out.println("Observing a game...");
     JoinGameResponse joinGameResponse = serverFacade.joinGame(currAuthToken, null, Integer.parseInt(userInputArr[1]));
-    // TODO show game board
+    GameData fillerGame = new GameData("fillerGame");
+    System.out.println(fillerGame.getGame());
+    System.out.println("observing game!");
   }
 
 

@@ -26,7 +26,7 @@ public class GameData implements DataModel<Integer> {
   }
 
   public GameData(String gameName) {
-    this(null, null, null, gameName, null);
+    this(null, null, null, gameName, new ChessGame());
   }
 
   public String getWhiteUsername() {

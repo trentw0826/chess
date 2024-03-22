@@ -1,5 +1,7 @@
 package ui;
 
+import consoleDraw.consoleDraw;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -50,12 +52,12 @@ public class Command {
 
       var sb = new StringBuilder();
 
-      sb.append(TextStyle.boldString(cmdString));
+      sb.append(consoleDraw.boldString(cmdString));
       for (var arg : arguments) {
         sb.append(" ").append(arg);
       }
 
-      sb.append(" : ").append(TextStyle.italicizeString(cmdDescription));
+      sb.append(" : ").append(consoleDraw.italicizeString(cmdDescription));
       return sb.toString();
     }
 

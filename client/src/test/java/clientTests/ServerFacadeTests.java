@@ -77,9 +77,8 @@ class ServerFacadeTests {
   }
 
   @Test
-  void createExistingGameTest() throws ResponseException {
-    facade.createGame("someGameName", validAuth);
-    Assertions.assertThrows(ResponseException.class, () -> facade.createGame("someGameName", validAuth));
+  void createGameBadAuth() throws ResponseException {
+    Assertions.assertThrows(ResponseException.class, () -> facade.createGame("someGameName", "badauth"));
   }
 
   @Test

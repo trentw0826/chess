@@ -1,5 +1,7 @@
 package chess;
 
+import consoleDraw.consoleDraw;
+
 import java.util.Collection;
 import java.util.Objects;
 
@@ -31,24 +33,47 @@ public class ChessPiece implements Cloneable {
   /**
    * @return string representation of piece
    */
-  // TODO update string representation to unicode chess characters
   @Override
   public String toString() {
-    char c = ChessConstants.PIECE_TYPE_TO_CHAR.get(pieceType);
-    return String.valueOf((pieceColor == BLACK) ? c : Character.toUpperCase(c));
+    String str = null;
+
+    //TODO update piecetype enum to contain these values rather than having to retrieve them
+    if (pieceColor == WHITE) {
+      switch (pieceType) {
+        case KING -> str = consoleDraw.WHITE_KING;
+        case QUEEN -> str = consoleDraw.WHITE_QUEEN;
+        case KNIGHT -> str = consoleDraw.WHITE_KNIGHT;
+        case BISHOP -> str = consoleDraw.WHITE_BISHOP;
+        case ROOK -> str = consoleDraw.WHITE_ROOK;
+        case PAWN -> str = consoleDraw.WHITE_PAWN;
+        default -> throw new IllegalStateException();
+      }
+    }
+    else if (pieceColor == BLACK) {
+      switch (pieceType) {
+        case KING -> str = consoleDraw.BLACK_KING;
+        case QUEEN -> str = consoleDraw.BLACK_QUEEN;
+        case KNIGHT -> str = consoleDraw.BLACK_KNIGHT;
+        case BISHOP -> str = consoleDraw.BLACK_BISHOP;
+        case ROOK -> str = consoleDraw.BLACK_ROOK;
+        case PAWN -> str = consoleDraw.BLACK_PAWN;
+        default -> throw new IllegalStateException();
+      }
+    }
+    return str;
   }
 
 
-/**
+  /**
    * The various different chess piece options
    */
   public enum PieceType {
-      KING,
-      QUEEN,
-      BISHOP,
-      KNIGHT,
-      ROOK,
-      PAWN,
+    KING,
+    QUEEN,
+    BISHOP,
+    KNIGHT,
+    ROOK,
+    PAWN,
   }
 
 
