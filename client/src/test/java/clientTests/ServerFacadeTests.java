@@ -1,7 +1,6 @@
 import exception.ResponseException;
 import model.GameData;
 import org.junit.jupiter.api.*;
-import response.ListGamesResponse;
 import server.Server;
 import ui.ServerFacade;
 
@@ -14,13 +13,14 @@ class ServerFacadeTests {
 
   private String validAuth;
 
+
   @BeforeAll
   public static void init() {
     server = new Server();
     var port = server.run(0);
     System.out.println("Started test HTTP server on " + port);
 
-    facade = new ServerFacade("http://localhost:8080");
+    facade = new ServerFacade("http://localhost:" + port);
   }
 
   @AfterAll
@@ -81,6 +81,37 @@ class ServerFacadeTests {
     facade.createGame("someGameName", validAuth);
     Assertions.assertThrows(ResponseException.class, () -> facade.createGame("someGameName", validAuth));
   }
+
+  @Test
+  void joinGameTest() throws ResponseException {
+    facade.createGame("someGameName", validAuth);
+    facade.joinGame(validAuth, "white", 1);
+    Assertions.assertTrue(true);
+  }
+
+  @Test
+  void joinNonExistingGameTest() {
+    Assertions.assertThrows(ResponseException.class, () -> facade.joinGame(validAuth, "white", 1));
+  }
+
+  @Test
+  void badColorJoinGameTest() throws ResponseException {
+    facade.createGame("someGameName", validAuth);
+    Assertions.assertThrows(ResponseException.class, () -> facade.joinGame(validAuth, "not a color", 1));
+  }
+
+  @Test
+  void observeGameTest() throws ResponseException {
+    facade.createGame("someGameName", validAuth);
+    facade.joinGame(validAuth, null, 1);
+    Assertions.assertTrue(true);
+  }
+
+  @Test
+  void observeNonExistingGameTest() {
+    Assertions.assertThrows(ResponseException.class, () -> facade.joinGame(validAuth, null, 1));
+  }
+
 
   @Test
   void listGamesTest() throws ResponseException {
