@@ -47,3 +47,6 @@ X
 (src/main/java/textStyle/consoleDraw.java,d\6\d6731f421b390e783f00fa34f6c49e78851f310f
 Z
 *src/main/java/consoleDraw/consoleDraw.java,4\4\44eda9bca4f209e0f83915d9b7cfd29166328ee6
+:
+
+client.iml,8\1\81276a78d81379d1349e1ff0f16babcbe4db95cc
