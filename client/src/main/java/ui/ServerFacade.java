@@ -3,8 +3,8 @@ package ui;
 import com.google.gson.Gson;
 import exception.ResponseException;
 import httpPath.HttpPath;
-import model.AuthData;
-import model.UserData;
+import request.*;
+import response.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,30 +21,33 @@ public class ServerFacade {
     this.serverUrl = serverUrl;
   }
 
-  // TODO make shared http paths enum between server & client
-  public AuthData registerUser(UserData user) throws ResponseException {
-    return makeRequest("POST", HttpPath.PATHS.USER.getPath(), user, AuthData.class, null);
+  public RegisterResponse registerUser(String username, String password, String email) throws ResponseException {
+    RegisterRequest registerRequest = new RegisterRequest(username, password, email);
+    return makeRequest("POST", HttpPath.PATHS.USER.getPath(), registerRequest, RegisterResponse.class, null);
   }
 
-  public AuthData login(UserData userData) throws ResponseException {
-    var path = "/session";
-    return makeRequest("POST", HttpPath.PATHS.SESSION.getPath(), userData, AuthData.class, null);
+  public LoginResponse login(String username, String password) throws ResponseException {
+    LoginRequest loginRequest = new LoginRequest(username, password);
+    return makeRequest("POST", HttpPath.PATHS.SESSION.getPath(), loginRequest, LoginResponse.class, null);
   }
 
-  public void logout() {
-    // TODO Implement
+  public ListGamesResponse listGames(String auth) throws ResponseException {
+   return makeRequest("GET", HttpPath.PATHS.GAME.getPath(), null, ListGamesResponse.class, auth);
   }
 
-  public void listGames() {
-    // TODO Implement
+  public CreateGameResponse createGame(String gameName, String auth) throws ResponseException {
+    CreateGameRequest createGameRequest = new CreateGameRequest(gameName, auth);
+    return makeRequest("POST", HttpPath.PATHS.GAME.getPath(), createGameRequest, CreateGameResponse.class, auth);
   }
 
-  public void createGame() {
-    // TODO Implement
+  public JoinGameResponse joinGame(String auth, String color, int gameID) throws ResponseException {
+    JoinGameRequest createGameRequest = new JoinGameRequest(auth, color, gameID);
+    return makeRequest("POST", HttpPath.PATHS.GAME.getPath(), createGameRequest, JoinGameResponse.class, auth);
   }
 
-  public void joinGame() {
-    // TODO Implement
+  public LogoutResponse logout(String auth) throws ResponseException {
+    LogoutRequest logoutRequest = new LogoutRequest(auth);
+    return makeRequest("DELETE", HttpPath.PATHS.SESSION.getPath(), logoutRequest, null, auth);
   }
 
 
@@ -59,7 +62,7 @@ public class ServerFacade {
    * @param <T>           type of desired response
    * @throws ResponseException  if exception thrown during request
    */
-  private <T> T makeRequest(String method, String path, Object request,
+  private <T> T makeRequest(String method, String path, ServiceRequest request,
                             Class<T> responseClass, String auth) throws ResponseException {
     try {
       URL url = (new URI(serverUrl + path)).toURL();

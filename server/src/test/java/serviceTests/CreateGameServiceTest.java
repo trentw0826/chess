@@ -7,9 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.CreateGameService;
 import service.RegisterService;
-import service.request.CreateGameRequest;
-import service.request.RegisterRequest;
-import service.response.CreateGameResponse;
+import request.CreateGameRequest;
+import request.RegisterRequest;
+import response.CreateGameResponse;
 
 
 import static serviceTests.ServiceTestHelper.*;

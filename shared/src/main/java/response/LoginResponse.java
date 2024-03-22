@@ -1,18 +1,18 @@
-package service.response;
+package response;
 
-public class RegisterResponse extends ServiceResponse {
+public class LoginResponse extends ServiceResponse {
   private String username;
   private String authToken;
 
   // Successful
-  public RegisterResponse(String username, String authToken) {
+  public LoginResponse(String username, String authToken) {
     super();
     this.username = username;
     this.authToken = authToken;
   }
 
   // Unsuccessful
-  public RegisterResponse(String errorMessage) {
+  public LoginResponse(String errorMessage) {
     super(errorMessage);
   }
 

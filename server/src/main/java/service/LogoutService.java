@@ -1,8 +1,8 @@
 package service;
 
 import dataAccess.DataAccessException;
-import service.request.LogoutRequest;
-import service.response.LogoutResponse;
+import request.LogoutRequest;
+import response.LogoutResponse;
 
 
 public class LogoutService extends Service <LogoutRequest, LogoutResponse> {
@@ -20,7 +20,7 @@ public class LogoutService extends Service <LogoutRequest, LogoutResponse> {
     LogoutResponse logoutResponse;
 
     try {
-      AUTH_DAO.delete(logoutRequest.authToken());
+      authDao.delete(logoutRequest.authToken());
       logoutResponse = new LogoutResponse();
     }
     catch (DataAccessException e) {

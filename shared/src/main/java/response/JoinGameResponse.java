@@ -1,4 +1,4 @@
-package service.response;
+package response;
 
 public class JoinGameResponse extends ServiceResponse {
 

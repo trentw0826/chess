@@ -2,8 +2,8 @@ package handler;
 
 
 import service.ListGamesService;
-import service.request.ListGamesRequest;
-import service.response.ListGamesResponse;
+import request.ListGamesRequest;
+import response.ListGamesResponse;
 import spark.Request;
 
 

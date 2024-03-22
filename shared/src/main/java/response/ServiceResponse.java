@@ -1,4 +1,4 @@
-package service.response;
+package response;
 
 /**
  * Holds a response to the service class

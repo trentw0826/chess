@@ -2,8 +2,8 @@ package handler;
 
 
 import service.Service;
-import service.request.ServiceRequest;
-import service.response.ServiceResponse;
+import request.ServiceRequest;
+import response.ServiceResponse;
 import spark.Request;
 
 

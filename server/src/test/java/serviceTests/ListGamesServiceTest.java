@@ -8,16 +8,15 @@ import org.junit.jupiter.api.Test;
 import service.CreateGameService;
 import service.ListGamesService;
 import service.RegisterService;
-import service.request.CreateGameRequest;
-import service.request.ListGamesRequest;
-import service.request.RegisterRequest;
-import service.response.ListGamesResponse;
+import request.CreateGameRequest;
+import request.ListGamesRequest;
+import request.RegisterRequest;
+import response.ListGamesResponse;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static serviceTests.ServiceTestHelper.*;
 
 class ListGamesServiceTest {

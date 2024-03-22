@@ -4,8 +4,8 @@ package handler;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import service.JoinGameService;
-import service.request.JoinGameRequest;
-import service.response.JoinGameResponse;
+import request.JoinGameRequest;
+import response.JoinGameResponse;
 import spark.Request;
 
 

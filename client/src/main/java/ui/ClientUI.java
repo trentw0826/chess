@@ -1,8 +1,7 @@
 package ui;
 
 import exception.ResponseException;
-import model.AuthData;
-import model.UserData;
+import response.*;
 
 import java.util.*;
 
@@ -17,37 +16,42 @@ public class ClientUI {
   private static final String SERVER_URL = "http://localhost:8080";
   private static final ServerFacade serverFacade = new ServerFacade(SERVER_URL);
 
+  private static final Scanner SCANNER = new Scanner(System.in);
+
   private static final String WELCOME_MESSAGE = TextStyle.WHITE_KING + " Chess Client " + TextStyle.WHITE_QUEEN;
 
-  private static boolean isUserActive;
-  private static final Scanner SCANNER = new Scanner(System.in);
-  private static Collection<Command.Commands> currAvailableCommands;
+  private boolean isUserActive;
+  private Collection<Command.Commands> currAvailableCommands;
 
   // Set of before-login commands
   private static final Collection<Command.Commands> PRE_LOGIN_COMMANDS = Set.of(
-          HELP,
-          QUIT,
+          REGISTER,
           LOGIN,
-          REGISTER
-  );
+          HELP,
+          QUIT
+          );
 
   // Set of after-login commands
   private static final Collection<Command.Commands> POST_LOGIN_COMMANDS = Set.of(
-          HELP,
-          LOGOUT,
-          CREATE_GAME,
           LIST_GAMES,
+          CREATE_GAME,
           JOIN_GAME,
-          JOIN_OBSERVER
+          JOIN_OBSERVER,
+          LOGOUT,
+          HELP
   );
 
-  private ClientUI() {}
+  private String currUsername;
+  private String currAuthToken;
+
+  // TODO should this class be static?
+  public ClientUI() {}
 
   /**
    * Maintains the program/user interaction loop (read input, validate it,
    * convert to command, execute command, repeat), which continues until client logs out
    */
-  public static void repl() {
+  public void repl() {
     currAvailableCommands = PRE_LOGIN_COMMANDS;
     isUserActive = true;
 
@@ -68,7 +72,7 @@ public class ClientUI {
    * @param commandString command in string form
    * @return              command associated with 'commandString'
    */
-  private static Command.Commands retrieveCommand(String commandString) {
+  private Command.Commands retrieveCommand(String commandString) {
     for (Command.Commands command : currAvailableCommands) {
       if (command.getCmdString().equalsIgnoreCase(commandString)) {
         return command;
@@ -86,7 +90,7 @@ public class ClientUI {
    *
    * @return  validated command line input
    */
-  private static String[] getValidUserInput() {
+  private String[] getValidUserInput() {
     String[] userInputArr;
     boolean inputValidated = false;
 
@@ -121,7 +125,7 @@ public class ClientUI {
    * @param userInputArr command line input array
    * @return          if the desired command corresponds to some 'commandStr' in the 'Commands' enum class
    */
-  private static boolean validateUserInput(String[] userInputArr) {
+  private boolean validateUserInput(String[] userInputArr) {
     if (userInputArr == null || userInputArr.length == 0) {
       return false;
     }
@@ -139,17 +143,18 @@ public class ClientUI {
 
 
   // welcome message
-  private static void displayWelcomeMessage() {
+  private void displayWelcomeMessage() {
     System.out.println(TextStyle.underlineString(WELCOME_MESSAGE));
   }
 
   // characters to prompt user input
-  private static void displayUserInputPrompt() {
-    System.out.print(">>> ");
+  private void displayUserInputPrompt() {
+    String inputPrompt = (currUsername == null) ? ">>> " : ("[" + currUsername + "] >>> ");
+    System.out.print(inputPrompt);
   }
 
   // input prompt with extra assistance for understanding commands
-  private static void displayAssistedUserInputPrompt() {
+  private void displayAssistedUserInputPrompt() {
     System.out.printf(
             " invalid command (type '%s' for available commands)%n",
             TextStyle.boldString(HELP.getCmdString()));
@@ -162,56 +167,66 @@ public class ClientUI {
    *
    * @param userInputArr valid array of user input arguments
    */
-  private static void processCommand(String[] userInputArr) {
+  private void processCommand(String[] userInputArr) {
     Command.Commands command = retrieveCommand(userInputArr[0]);
 
     try {
       switch (command) {
+        case REGISTER:
+          System.out.println("Registering...");
+          RegisterResponse registerResponse = serverFacade.registerUser(userInputArr[1], userInputArr[2], userInputArr[3]);
+          System.out.println("user \"" + registerResponse.getUsername() + "\" registered!");
+          break;
+
+        case LOGIN:
+          System.out.println("Logging in...");
+          LoginResponse loginResponse = serverFacade.login(userInputArr[1], userInputArr[2]);
+
+          currUsername = loginResponse.getUsername();
+          currAuthToken = loginResponse.getAuthToken();
+
+          currAvailableCommands = POST_LOGIN_COMMANDS;
+          System.out.println("Logged in!");
+          break;
+
+        case LIST_GAMES:
+          System.out.println("Listing available games...");
+          ListGamesResponse listGamesResponse = serverFacade.listGames(currAuthToken);
+          for (var game : listGamesResponse.getGames()) {
+            System.out.println(" " + game.headerStr());
+          }
+          break;
+
+        case CREATE_GAME:
+          System.out.println("Creating a new game...");
+          CreateGameResponse createGameResponse = serverFacade.createGame(userInputArr[1], currAuthToken);
+          System.out.println("Success [" + createGameResponse + "]");
+          break;
+
+        case JOIN_GAME:
+          System.out.println("Joining a game...");
+          // TODO Implement join game functionality
+          break;
+
+        case JOIN_OBSERVER:
+          System.out.println("Observing a game...");
+          // TODO Implement join observer functionality
+          break;
+
+      case LOGOUT:
+        System.out.println("Logging out...");
+        currAvailableCommands = PRE_LOGIN_COMMANDS;
+        serverFacade.logout(currAuthToken);
+        currUsername = null;
+        currAuthToken = null;
+        break;
+
       case HELP:
         displayAvailableCommands();
         break;
 
       case QUIT:
         isUserActive = false;
-        break;
-
-      case LOGIN:
-        System.out.println("Logging in...");
-        UserData loggingInUserData = new UserData(userInputArr[1], userInputArr[2], null);
-        AuthData successfulLoginAuthData = serverFacade.login(loggingInUserData);
-        currAvailableCommands = POST_LOGIN_COMMANDS;
-        break;
-
-      case REGISTER:
-        System.out.println("Registering...");
-        UserData userData = new UserData(userInputArr[1], userInputArr[2], userInputArr[3]);
-        serverFacade.registerUser(userData);
-        break;
-
-      case LOGOUT:
-        System.out.println("Logging out...");
-        currAvailableCommands = PRE_LOGIN_COMMANDS;
-        // TODO Implement logout functionality
-        break;
-
-      case CREATE_GAME:
-        System.out.println("Creating a new game...");
-        // TODO Implement create game functionality
-        break;
-
-      case LIST_GAMES:
-        System.out.println("Listing available games...");
-        // TODO Implement list games functionality
-        break;
-
-      case JOIN_GAME:
-        System.out.println("Joining a game...");
-        // TODO Implement join game functionality
-        break;
-
-      case JOIN_OBSERVER:
-        System.out.println("Observing a game...");
-        // TODO Implement join observer functionality
         break;
 
       default:
@@ -228,7 +243,7 @@ public class ClientUI {
    * Responds to 'help command', displays all commands currently held in
    * the 'availableCommands' collection.
    */
-  private static void displayAvailableCommands() {
+  private void displayAvailableCommands() {
     for (var command : currAvailableCommands) {
       System.out.println(" " + command);
     }

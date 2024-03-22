@@ -1,4 +1,4 @@
-package service.request;
+package request;
 
 /**
  * Holds required information for a service register request.

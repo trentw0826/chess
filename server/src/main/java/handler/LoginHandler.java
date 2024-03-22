@@ -2,8 +2,8 @@ package handler;
 
 
 import service.LoginService;
-import service.request.LoginRequest;
-import service.response.LoginResponse;
+import request.LoginRequest;
+import response.LoginResponse;
 import spark.Request;
 
 

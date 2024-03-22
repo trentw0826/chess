@@ -3,8 +3,8 @@ package service;
 import dataAccess.DataAccessException;
 import model.AuthData;
 import model.UserData;
-import service.request.LoginRequest;
-import service.response.LoginResponse;
+import request.LoginRequest;
+import response.LoginResponse;
 
 
 public class LoginService extends Service <LoginRequest, LoginResponse> {
@@ -20,7 +20,7 @@ public class LoginService extends Service <LoginRequest, LoginResponse> {
   @Override
   public LoginResponse processHandlerRequest(LoginRequest loginRequest) {
     try {
-      UserData retrievedUserData = USER_DAO.get(loginRequest.username());  // Try to get user data
+      UserData retrievedUserData = userDao.get(loginRequest.username());  // Try to get user data
       checkPassword(retrievedUserData, loginRequest.password()); // Try to validate password
 
       AuthData newAuthData = generateAuthData(retrievedUserData);
@@ -33,7 +33,7 @@ public class LoginService extends Service <LoginRequest, LoginResponse> {
 
 
   private void checkPassword(UserData userData, String password) throws DataAccessException {
-    if (!USER_DAO.attemptPassword(userData.username(), password)) {
+    if (!userDao.attemptPassword(userData.username(), password)) {
       throw new DataAccessException(DataAccessException.ErrorMessages.UNAUTHORIZED);
     }
   }
@@ -41,7 +41,7 @@ public class LoginService extends Service <LoginRequest, LoginResponse> {
 
   private AuthData generateAuthData(UserData userData) throws DataAccessException {
     String authToken = generateNewAuthToken();
-    AUTH_DAO.create(new AuthData(authToken, userData.username()));
+    authDao.create(new AuthData(authToken, userData.username()));
     return new AuthData(authToken, userData.username());
   }
 }

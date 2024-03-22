@@ -1,8 +1,8 @@
 package service;
 
 import dataAccess.DataAccessException;
-import service.request.ListGamesRequest;
-import service.response.ListGamesResponse;
+import request.ListGamesRequest;
+import response.ListGamesResponse;
 
 
 public class ListGamesService extends Service <ListGamesRequest, ListGamesResponse> {
@@ -23,7 +23,7 @@ public class ListGamesService extends Service <ListGamesRequest, ListGamesRespon
         throw new DataAccessException(DataAccessException.ErrorMessages.UNAUTHORIZED);
       }
 
-      listGamesResponse = new ListGamesResponse(GAME_DAO.list());
+      listGamesResponse = new ListGamesResponse(gameDao.list());
     }
     catch (DataAccessException e) {
       listGamesResponse = new ListGamesResponse(e.getMessage()); // Unsuccessful listGames

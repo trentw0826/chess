@@ -8,8 +8,8 @@ import dataAccess.dataAccessObject.UserDao;
 import dataAccess.sqlAccess.sqlAccessObjects.AuthSqlDao;
 import dataAccess.sqlAccess.sqlAccessObjects.GameSqlDao;
 import dataAccess.sqlAccess.sqlAccessObjects.UserSqlDao;
-import service.request.ServiceRequest;
-import service.response.ServiceResponse;
+import request.ServiceRequest;
+import response.ServiceResponse;
 
 import java.util.UUID;
 
@@ -19,22 +19,18 @@ import java.util.UUID;
 public abstract class Service <U extends ServiceRequest, T extends ServiceResponse> {
 
   /* Database Access Objects */
-  protected final UserDao USER_DAO;
-  protected final GameDao GAME_DAO;
-  protected final AuthDao AUTH_DAO;
+  protected final UserDao userDao;
+  protected final GameDao gameDao;
+  protected final AuthDao authDao;
 
 
   protected Service() {
-    /* Remote SQL data storage */
-    USER_DAO = new UserSqlDao();
-    AUTH_DAO = new AuthSqlDao();
-    GAME_DAO = new GameSqlDao();
-
-    /* Local data storage */
-//    USER_DAO = new UserMao();
-//    AUTH_DAO = new AuthMao();
-//    GAME_DAO = new GameMao();
+    // Data storage
+    userDao = new UserSqlDao();
+    authDao = new AuthSqlDao();
+    gameDao = new GameSqlDao();
   }
+
 
   /**
    * Handle the given service request.
@@ -52,9 +48,9 @@ public abstract class Service <U extends ServiceRequest, T extends ServiceRespon
    */
   public ServiceResponse clear() {
     try {
-      USER_DAO.clear();
-      AUTH_DAO.clear();
-      GAME_DAO.clear();
+      userDao.clear();
+      authDao.clear();
+      gameDao.clear();
     }
     catch (DataAccessException e) {
       return new ServiceResponse(e.getMessage());
@@ -80,7 +76,7 @@ public abstract class Service <U extends ServiceRequest, T extends ServiceRespon
    */
   protected boolean invalidAuthToken(final String authToken) {
     try {
-      AUTH_DAO.get(authToken);
+      authDao.get(authToken);
     }
     catch (DataAccessException e) {
       return true;

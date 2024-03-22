@@ -6,8 +6,8 @@ import service.LoginService;
 import service.LogoutService;
 import service.RegisterService;
 import service.Service;
-import service.request.ServiceRequest;
-import service.response.ServiceResponse;
+import request.ServiceRequest;
+import response.ServiceResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
 

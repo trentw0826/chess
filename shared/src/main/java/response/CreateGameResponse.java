@@ -1,4 +1,4 @@
-package service.response;
+package response;
 
 public class CreateGameResponse extends ServiceResponse {
   private Integer gameID = null;

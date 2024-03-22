@@ -2,8 +2,8 @@ package service;
 
 import dataAccess.DataAccessException;
 import model.GameData;
-import service.request.JoinGameRequest;
-import service.response.JoinGameResponse;
+import request.JoinGameRequest;
+import response.JoinGameResponse;
 
 
 public class JoinGameService extends Service <JoinGameRequest, JoinGameResponse> {
@@ -24,10 +24,10 @@ public class JoinGameService extends Service <JoinGameRequest, JoinGameResponse>
 
     try {
       // Tries to get username from auth token
-      String currentUsername = AUTH_DAO.getUsernameFromAuthToken(joinGameRequest.authToken());
+      String currentUsername = authDao.getUsernameFromAuthToken(joinGameRequest.authToken());
 
       // Tries to get desired game from provided ID
-      GameData desiredGame = GAME_DAO.get(joinGameRequest.gameID());
+      GameData desiredGame = gameDao.get(joinGameRequest.gameID());
       if (desiredGame == null) {
         throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST);
       }
@@ -36,13 +36,13 @@ public class JoinGameService extends Service <JoinGameRequest, JoinGameResponse>
       String desiredColor = joinGameRequest.playerColor();
 
       if (desiredColor == null) {
-        GAME_DAO.addObserver(currGameID, currentUsername);
+        gameDao.addObserver(currGameID, currentUsername);
       }
       else if (desiredColor.equalsIgnoreCase("white")) {
-        GAME_DAO.setPlayer(currGameID, "white", currentUsername);
+        gameDao.setPlayer(currGameID, "white", currentUsername);
       }
       else if (desiredColor.equalsIgnoreCase("black")) {
-        GAME_DAO.setPlayer(currGameID, "black", currentUsername);
+        gameDao.setPlayer(currGameID, "black", currentUsername);
       }
       else {
         throw new IllegalArgumentException("Bad color passed to join game service");

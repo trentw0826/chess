@@ -2,8 +2,8 @@ package service;
 
 import dataAccess.DataAccessException;
 import model.GameData;
-import service.request.CreateGameRequest;
-import service.response.CreateGameResponse;
+import request.CreateGameRequest;
+import response.CreateGameResponse;
 
 
 public class CreateGameService extends Service <CreateGameRequest, CreateGameResponse> {
@@ -27,7 +27,7 @@ public class CreateGameService extends Service <CreateGameRequest, CreateGameRes
         throw new DataAccessException(DataAccessException.ErrorMessages.UNAUTHORIZED);
       }
 
-      int gameID = GAME_DAO.create(newGame);
+      int gameID = gameDao.create(newGame);
       createGameResponse = new CreateGameResponse(gameID);
     }
     catch (DataAccessException e) {

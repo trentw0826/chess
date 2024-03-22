@@ -65,10 +65,6 @@ public class GameData implements DataModel<Integer> {
     this.game = game;
   }
 
-//  public static ChessGame getEmptyGame() {
-//    return new ChessGame();
-//  }
-
   public void addObserver(String newObserverUsername) {
     observers.add(newObserverUsername);
   }
@@ -81,5 +77,26 @@ public class GameData implements DataModel<Integer> {
   @Override
   public Integer generateKey() {
     return gameID;
+  }
+
+  public String headerStr() {
+    String playerStatus;
+    if (whiteUsername == null && blackUsername == null) {
+      playerStatus = "no current players";
+    }
+    else {
+      if ((whiteUsername == null)) {
+        playerStatus = String.format("[BLACK] %s is waiting for an opponent...", blackUsername);
+      }
+      else {
+        if (blackUsername == null)
+          playerStatus = String.format("[WHITE] %s is waiting for an opponent...", whiteUsername);
+        else {
+          playerStatus = String.format("[WHITE] %s versus [BLACK] %s", whiteUsername, blackUsername);
+        }
+      }
+    }
+
+    return String.format("[id: %s] [name: \"%s\"] [%s]", gameID, gameName, playerStatus);
   }
 }
