@@ -65,9 +65,9 @@ public class ChessBoard implements Cloneable {
             for (int j = 0; j < 8; j++) {
                 var piece = row[j];
                 String pieceStr = (piece == null) ? consoleDraw.EMPTY : piece.toString();
-                str.append(pieceStr);
+                str.append("|").append(pieceStr);
             }
-            str.append("\n");
+            str.append("|\n");
         }
         return str.toString();
     }

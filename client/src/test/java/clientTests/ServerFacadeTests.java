@@ -42,6 +42,8 @@ class ServerFacadeTests {
     Assertions.assertTrue(true);
   }
 
+
+
   @Test
   void registerValidUser() throws ResponseException {
     facade.registerUser("b", "a", "a");

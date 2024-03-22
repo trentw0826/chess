@@ -49,6 +49,14 @@ public class consoleDraw {
     public static final String SET_BG_COLOR_WHITE = SET_BG_COLOR + "15m";
     public static final String RESET_BG_COLOR = SET_BG_COLOR + "0m";
 
+    public static final String DARK_SQUARE_BG_COLOR;
+    public static final String LIGHT_SQUARE_BG_COLOR;
+
+    static {
+        DARK_SQUARE_BG_COLOR = getColorEscape(118,150,86);
+        LIGHT_SQUARE_BG_COLOR = getColorEscape(238,238,210);
+    }
+
     public static final String WHITE_KING = " ♔ ";
     public static final String WHITE_QUEEN = " ♕ ";
     public static final String WHITE_BISHOP = " ♗ ";
@@ -83,8 +91,8 @@ public class consoleDraw {
         System.out.print(ERASE_SCREEN);
     }
 
-    public static void setTextColor(int r, int g, int b) {
-        System.out.printf("\u001B[38;2;%d;%d;%dm", r, g, b);
+    public static String getColorEscape(int r, int g, int b) {
+        return String.format("\u001B[38;2;%d;%d;%dm", r, g, b);
     }
 
     public static void setBackgroundColor(int r, int g, int b) {

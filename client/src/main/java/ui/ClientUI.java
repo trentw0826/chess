@@ -150,14 +150,15 @@ public class ClientUI {
 
   // characters to prompt user input
   private void displayUserInputPrompt() {
-    String inputPrompt = (currUsername == null) ? ">>> " : ("[" + currUsername + "] >>> ");
+    String name = (currUsername == null) ? "logged out" : currUsername;
+    String inputPrompt = "\n[" + name + "] >>> ";
     System.out.print(inputPrompt);
   }
 
   // input prompt with extra assistance for understanding commands
   private void displayAssistedUserInputPrompt() {
     System.out.printf(
-            " invalid command (type '%s' for available commands)%n",
+            "  invalid command (type '%s' for available commands)%n",
             consoleDraw.boldString(HELP.getCmdString()));
     displayUserInputPrompt();
   }
@@ -214,90 +215,91 @@ public class ClientUI {
       }
     }
     catch (ResponseException e) {
-      System.out.println(e.getMessage());
+      System.out.println("  " + e.getMessage());
     }
   }
 
 
   private void register(String[] userInputArr) throws ResponseException {
-    System.out.println("Registering...");
+    System.out.println("  registering...");
     RegisterResponse registerResponse = serverFacade.registerUser(userInputArr[1], userInputArr[2], userInputArr[3]);
 
     currAuthToken = registerResponse.getAuthToken();
     currUsername = registerResponse.getUsername();
     currAvailableCommands = POST_LOGIN_COMMANDS;
-    System.out.println("user \"" + registerResponse.getUsername() + "\" registered and logged in!");
+    System.out.println("  user \"" + registerResponse.getUsername() + "\" registered and logged in!");
   }
 
 
   private void login(String[] userInputArr) throws ResponseException {
-    System.out.println("Logging in...");
+    System.out.println("  logging in...");
     LoginResponse loginResponse = serverFacade.login(userInputArr[1], userInputArr[2]);
     currUsername = loginResponse.getUsername();
     currAuthToken = loginResponse.getAuthToken();
     currAvailableCommands = POST_LOGIN_COMMANDS;
-    System.out.println("user \"" + loginResponse.getUsername() + "\" logged in!");
+    System.out.println("  user \"" + loginResponse.getUsername() + "\" logged in!");
   }
 
 
   private void listGames() throws ResponseException {
-    System.out.println("Listing available games...");
+    System.out.println("  listing available games...");
     ListGamesResponse listGamesResponse = serverFacade.listGames(currAuthToken);
     var games = listGamesResponse.getGames();
     if (games.isEmpty()) {
-      System.out.println("no games exist :(");
+      System.out.println("  no games exist :(");
     }
     else {
       for (var game : games) {
-        System.out.println(" " + game.headerStr());
+        System.out.println("  " + game.headerStr());
       }
     }
   }
 
 
   private void createGame(String[] userInputArr) throws ResponseException {
-    System.out.println("Creating a new game...");
+    System.out.println("  creating a new game...");
     CreateGameResponse createGameResponse = serverFacade.createGame(userInputArr[1], currAuthToken);
-    System.out.println("Success [" + createGameResponse + "]");
+    System.out.println("  game [id: " + createGameResponse.getGameID() + "] created!");
   }
 
 
   private void logout() throws ResponseException {
-    System.out.println("Logging out...");
+    System.out.println("  logging out...");
     currAvailableCommands = PRE_LOGIN_COMMANDS;
     serverFacade.logout(currAuthToken);
     currUsername = null;
     currAuthToken = null;
+    System.out.println("  logged out!");
   }
 
   
   private void joinGame(String[] userInputArr) throws ResponseException {
-    System.out.println("Joining a game...");
+    System.out.println("  joining a game...");
     JoinGameResponse joinGameResponse = serverFacade.joinGame(currAuthToken, userInputArr[2], Integer.parseInt(userInputArr[1]));
     GameData fillerGame = new GameData("fillerGame");
     System.out.println(fillerGame.getGame());
-    System.out.println("joined game!");
+    System.out.println("  joined game!");
   }
 
 
   private void joinObserver(String[] userInputArr) throws ResponseException {
-    System.out.println("Observing a game...");
+    System.out.println("  observing a game...");
     JoinGameResponse joinGameResponse = serverFacade.joinGame(currAuthToken, null, Integer.parseInt(userInputArr[1]));
     GameData fillerGame = new GameData("fillerGame");
     System.out.println(fillerGame.getGame());
-    System.out.println("observing game!");
+    System.out.println("  observing game!");
   }
 
 
   private void displayAvailableCommands() {
     for (var command : currAvailableCommands) {
-      System.out.println(" " + command);
+      System.out.println("  " + command);
     }
   }
 
   
   private static void exitProgram() {
-    System.out.println("Exiting program...");
+    System.out.println("  exiting program...");
     exit(0);
   }
 }
