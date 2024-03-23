@@ -60,15 +60,27 @@ public class ChessBoard implements Cloneable {
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
+        str.append(consoleDraw.SET_TEXT_COLOR_BLACK);
+
         for (int i = 8; i >= 1; i--) {
             ChessPiece[] row = board[i - 1];
             for (int j = 0; j < 8; j++) {
                 var piece = row[j];
                 String pieceStr = (piece == null) ? consoleDraw.EMPTY : piece.toString();
-                str.append("|").append(pieceStr);
+
+                if (((i + j) % 2 == 0)) {
+                    str.append(consoleDraw.DARK_SQUARE_BG_COLOR);
+                }
+                else {
+                    str.append(consoleDraw.LIGHT_SQUARE_BG_COLOR);
+                }
+
+                str.append(pieceStr);
             }
-            str.append("|\n");
+            str.append(consoleDraw.RESET_BG_COLOR).append("\n");
         }
+
+        str.append(consoleDraw.RESET_TEXT_COLOR);
         return str.toString();
     }
 

@@ -47,15 +47,11 @@ public class consoleDraw {
     public static final String SET_BG_COLOR_BLUE = SET_BG_COLOR + "12m";
     public static final String SET_BG_COLOR_MAGENTA = SET_BG_COLOR + "5m";
     public static final String SET_BG_COLOR_WHITE = SET_BG_COLOR + "15m";
-    public static final String RESET_BG_COLOR = SET_BG_COLOR + "0m";
 
-    public static final String DARK_SQUARE_BG_COLOR;
-    public static final String LIGHT_SQUARE_BG_COLOR;
+    public static final String DARK_SQUARE_BG_COLOR = "\u001B[48;5;252m";
+    public static final String LIGHT_SQUARE_BG_COLOR = "\u001B[48;5;254m";
 
-    static {
-        DARK_SQUARE_BG_COLOR = getColorEscape(118,150,86);
-        LIGHT_SQUARE_BG_COLOR = getColorEscape(238,238,210);
-    }
+    public static final String RESET_BG_COLOR = "\u001B[49m";
 
     public static final String WHITE_KING = " ♔ ";
     public static final String WHITE_QUEEN = " ♕ ";
