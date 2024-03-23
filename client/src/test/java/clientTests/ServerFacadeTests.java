@@ -1,3 +1,5 @@
+package clientTests;
+
 import exception.ResponseException;
 import model.GameData;
 import org.junit.jupiter.api.*;
@@ -38,16 +40,13 @@ class ServerFacadeTests {
 
   @Test
   void clearTest() throws ResponseException {
-    facade.clear();
-    Assertions.assertTrue(true);
+    Assertions.assertDoesNotThrow(() -> facade.clear());
   }
-
 
 
   @Test
   void registerValidUser() throws ResponseException {
-    facade.registerUser("b", "a", "a");
-    Assertions.assertTrue(true);
+    Assertions.assertDoesNotThrow(() -> facade.registerUser("b", "a", "a"));
   }
 
   @Test
@@ -58,8 +57,7 @@ class ServerFacadeTests {
   @Test
   void validLogin() throws ResponseException {
     facade.registerUser("b", "a", "a");
-    facade.login("b", "a");
-    Assertions.assertTrue(true);
+    Assertions.assertDoesNotThrow(() -> facade.login("b", "a"));
   }
 
   @Test
@@ -74,8 +72,7 @@ class ServerFacadeTests {
 
   @Test
   void createGameTest() throws ResponseException {
-    facade.createGame("someGameName", validAuth);
-    Assertions.assertTrue(true);
+    Assertions.assertDoesNotThrow(() -> facade.createGame("someGameName", validAuth));
   }
 
   @Test
@@ -86,8 +83,7 @@ class ServerFacadeTests {
   @Test
   void joinGameTest() throws ResponseException {
     facade.createGame("someGameName", validAuth);
-    facade.joinGame(validAuth, "white", 1);
-    Assertions.assertTrue(true);
+    Assertions.assertDoesNotThrow(() -> facade.joinGame(validAuth, "white", 1));
   }
 
   @Test
@@ -104,8 +100,7 @@ class ServerFacadeTests {
   @Test
   void observeGameTest() throws ResponseException {
     facade.createGame("someGameName", validAuth);
-    facade.joinGame(validAuth, null, 1);
-    Assertions.assertTrue(true);
+    Assertions.assertDoesNotThrow(() -> facade.joinGame(validAuth, null, 1));
   }
 
   @Test
