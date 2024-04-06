@@ -25,10 +25,10 @@ public class Command {
     LOGIN("login", "log in to your account", USERNAME_ARG, PASSWORD_ARG),
     REGISTER("register", "create a new account", USERNAME_ARG, PASSWORD_ARG, EMAIL_ARG),
     LOGOUT("logout", "log out from your account"),
-    CREATE_GAME("create", "create a new chess game", GAME_NAME_ARG),
-    LIST_GAMES("list", "list all available chess games"),
-    JOIN_GAME("join", "join an existing chess game as the given color", GAME_ID_ARG, COLOR_ARG),
-    JOIN_OBSERVER("observe", "observe an existing chess game", GAME_ID_ARG);
+    CREATE("create", "create a new chess game", GAME_NAME_ARG),
+    LIST("list", "list all available chess games"),
+    JOIN("join", "join an existing chess game as the given color", GAME_ID_ARG, COLOR_ARG),
+    OBSERVE("observe", "observe an existing chess game", GAME_ID_ARG);
 
 
     private final String cmdString;

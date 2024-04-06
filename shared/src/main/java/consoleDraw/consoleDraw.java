@@ -83,6 +83,10 @@ public class consoleDraw {
         return SET_TEXT_UNDERLINE + str + RESET_TEXT_UNDERLINE;
     }
 
+    public static String getStringWithBackground(String backgroundColor, String str) {
+        return backgroundColor + str + RESET_BG_COLOR;
+    }
+
     public static void clearScreen() {
         System.out.print(ERASE_SCREEN);
     }

@@ -1,9 +1,9 @@
-import ui.ClientUI;
+import ui.UserInterface;
 
 public class ClientMain {
 
     public static void main(String[] args) {
-        ClientUI clientUI = new ClientUI();
-        clientUI.repl();
+        UserInterface userInterface = new UserInterface();
+        userInterface.start();
     }
 }

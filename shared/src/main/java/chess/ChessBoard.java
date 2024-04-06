@@ -54,34 +54,31 @@ public class ChessBoard implements Cloneable {
     }
 
 
-    /**
-     * @return deepToString of board attribute
-     */
-    @Override
-    public String toString() {
-        StringBuilder str = new StringBuilder();
-        str.append(consoleDraw.SET_TEXT_COLOR_BLACK);
+    public String getPrintable(boolean isWhite) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(consoleDraw.SET_TEXT_COLOR_BLACK);
 
-        for (int i = 8; i >= 1; i--) {
+        int startRow = isWhite ? 8 : 1;
+        int endRow = isWhite ? 0 : 9;
+        int rowIncrement = isWhite ? -1 : 1;
+
+        for (int i = startRow; i != endRow; i += rowIncrement) {
             ChessPiece[] row = board[i - 1];
-            for (int j = 0; j < 8; j++) {
-                var piece = row[j];
+            final int startCol = isWhite ? 0 : 7;
+            final int endCol = isWhite ? 8 : -1;
+            final int colIncrement = isWhite ? 1 : -1;
+
+            for (int j = startCol; j != endCol; j += colIncrement) {
+                ChessPiece piece = row[j];
                 String pieceStr = (piece == null) ? consoleDraw.EMPTY : piece.toString();
-
-                if (((i + j) % 2 == 0)) {
-                    str.append(consoleDraw.DARK_SQUARE_BG_COLOR);
-                }
-                else {
-                    str.append(consoleDraw.LIGHT_SQUARE_BG_COLOR);
-                }
-
-                str.append(pieceStr);
+                sb.append(((i + j) % 2 == 1) ? consoleDraw.DARK_SQUARE_BG_COLOR : consoleDraw.LIGHT_SQUARE_BG_COLOR)
+                        .append(pieceStr);
             }
-            str.append(consoleDraw.RESET_BG_COLOR).append("\n");
+            sb.append(consoleDraw.RESET_BG_COLOR).append("\n");
         }
+        sb.append(consoleDraw.SET_TEXT_COLOR_WHITE);
 
-        str.append(consoleDraw.RESET_TEXT_COLOR);
-        return str.toString();
+        return sb.toString();
     }
 
 

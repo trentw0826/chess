@@ -97,6 +97,6 @@ public class GameData implements DataModel<Integer> {
       }
     }
 
-    return String.format("[id: %s] [name: \"%s\"] [%s]", gameID, gameName, playerStatus);
+    return String.format("[\"%s\"] [%s]", gameName, playerStatus);
   }
 }

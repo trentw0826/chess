@@ -15,6 +15,10 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Objects;
 
+/**
+ * Acts as an in-between for the client and the server;
+ * Takes information for common requests, converts to proper http requests, and makes requests
+ */
 public class ServerFacade {
   private final String serverUrl;
 
@@ -87,8 +91,11 @@ public class ServerFacade {
       throwIfNotSuccessful(http);
       return readBody(http, responseClass);
     }
-    catch (Exception ex) {
-      throw new ResponseException(500, ex.getMessage());
+    catch (ResponseException re) {
+      throw re;
+    }
+    catch (Exception e) {
+      throw new ResponseException(e.getMessage(), 500);
     }
   }
 
@@ -103,10 +110,10 @@ public class ServerFacade {
     }
   }
 
-  private void throwIfNotSuccessful(HttpURLConnection http) throws IOException, ResponseException {
+  private static void throwIfNotSuccessful(HttpURLConnection http) throws IOException, ResponseException {
     var status = http.getResponseCode();
     if (!isSuccessful(status)) {
-      throw new ResponseException(status, "Failure [" + status + "]");
+      throw new ResponseException("Failure", status);
     }
   }
 
@@ -124,7 +131,7 @@ public class ServerFacade {
   }
 
 
-  private boolean isSuccessful(int status) {
+  private static boolean isSuccessful(int status) {
     return status / 100 == 2;
   }
 }

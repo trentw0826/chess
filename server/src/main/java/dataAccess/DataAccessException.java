@@ -17,9 +17,9 @@ public class DataAccessException extends Exception{
      * Custom error messages defining the nature of data access exceptions
      */
     public enum ErrorMessages {
-        BAD_REQUEST("Error: bad request"),
-        UNAUTHORIZED("Error: unauthorized"),
-        ALREADY_TAKEN("Error: already taken");
+        BAD_REQUEST("bad request"),
+        UNAUTHORIZED("unauthorized"),
+        ALREADY_TAKEN("already taken");
 
         private final String message;
 
