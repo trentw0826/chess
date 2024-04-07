@@ -1,21 +1,21 @@
 
 ™
-java:S4144›"UUpdate this method so that its implementation is not identical to "join" on line 147.(„èÿ†8¢ï‚­ë1J$c82a4908-bb31-4d0f-8637-e7e60855a2c0
-m	java:S1061"+Replace this use of System.out by a logger.(§ˆ›ê8şı‚¬ë1J$08bd94fd-0fa3-4db5-a82e-a3942847c746
-m	java:S106F"+Replace this use of System.out by a logger.(Åã“Ì8€ş‚¬ë1J$f06f0902-3323-4246-bbc6-1dd4ee0bb7e0
-r	java:S106Z"+Replace this use of System.out by a logger.(İÑİ›úÿÿÿÿ8ş‚¬ë1J$4239c477-ccd9-4ddf-b7a0-dfdd242b274f
-m	java:S106p"+Replace this use of System.out by a logger.(¹ÂÇ8‚ş‚¬ë1J$b685b94b-e862-4c7c-a3bb-ff135445f24c
+java:S4144›"UUpdate this method so that its implementation is not identical to "join" on line 147.(„èÿ†8¢ï‚­ë1J$55dc09c3-7a1f-441f-970a-ddcda5e2d7e2
+m	java:S1061"+Replace this use of System.out by a logger.(§ˆ›ê8şı‚¬ë1J$78dd6e2e-4d9e-43e3-a609-8e5083368f05
+m	java:S106F"+Replace this use of System.out by a logger.(Åã“Ì8€ş‚¬ë1J$44ed83f8-be86-457b-ba17-b240365a7d6a
+r	java:S106Z"+Replace this use of System.out by a logger.(İÑİ›úÿÿÿÿ8ş‚¬ë1J$265c31a4-29c1-418b-b69c-528232aac232
+m	java:S106p"+Replace this use of System.out by a logger.(¹ÂÇ8‚ş‚¬ë1J$c937413e-7257-4fa8-9a07-41182004983c
 ˆ
-java:S1854–"DRemove this useless assignment to local variable "joinGameResponse".(•˜Æ´8á©£¬ë1J$c6e71951-80d8-4d40-8d4f-5b30b4643b49
+java:S1854–"DRemove this useless assignment to local variable "joinGameResponse".(•˜Æ´8á©£¬ë1J$26eccc5b-ed49-4ca5-92ec-256354180c1f
 y
-java:S1481–"5Remove this unused "joinGameResponse" local variable.(•˜Æ´8ã©£¬ë1J$3391c319-f9f7-41f7-b178-63c6104ff077
-n	java:S106˜"+Replace this use of System.out by a logger.(Î ùî8½ì¡¬ë1J$1714d90c-e5c4-4263-8e0c-54e7aaced1a6
+java:S1481–"5Remove this unused "joinGameResponse" local variable.(•˜Æ´8ã©£¬ë1J$f940c836-26e2-46ef-9d64-dd80ef441ce3
+n	java:S106˜"+Replace this use of System.out by a logger.(Î ùî8½ì¡¬ë1J$fd6d8b58-6192-45a8-88ee-281cb38a5909
 ˆ
-java:S1854"DRemove this useless assignment to local variable "joinGameResponse".(•˜Æ´8ò¶¤¬ë1J$493eb7f1-8073-440a-8ebf-7639a6dafb77
+java:S1854"DRemove this useless assignment to local variable "joinGameResponse".(•˜Æ´8ò¶¤¬ë1J$890ab959-4cba-4c4c-9baf-098617dabd28
 y
-java:S1481"5Remove this unused "joinGameResponse" local variable.(•˜Æ´8ò¶¤¬ë1J$21fac0e0-1ef2-48f2-9176-7ca8ee8c94f7
-n	java:S106 "+Replace this use of System.out by a logger.(Î ùî8”¢¬ë1J$8689d7f0-59bc-4451-aaa0-28dc3c622561
-s	java:S106¥"+Replace this use of System.out by a logger.(—£¨Èúÿÿÿÿ8²Ì¢¬ë1J$b6aa6a88-d546-43b2-a6fc-87d1ee3375b6
-n	java:S106­"+Replace this use of System.out by a logger.(ò°àÉ8Öù¢¬ë1J$c130e1c8-cc2e-4a63-a296-3f7e32b3ede4
-s	java:S106³"+Replace this use of System.out by a logger.(åë«©øÿÿÿÿ8é©£¬ë1J$9a4f71f0-8e14-4d07-8fed-29ad805b7cb3
-n	java:S106¼"+Replace this use of System.out by a logger.(€™ûí8õ¶¤¬ë1J$a100284a-179d-4df9-b9c2-2f0c0cffc285
+java:S1481"5Remove this unused "joinGameResponse" local variable.(•˜Æ´8ò¶¤¬ë1J$26380592-5eb9-4525-a29f-ede0c8583b96
+n	java:S106 "+Replace this use of System.out by a logger.(Î ùî8”¢¬ë1J$b93c6b26-0d23-45f9-9d71-736f4ccf1e91
+s	java:S106¥"+Replace this use of System.out by a logger.(—£¨Èúÿÿÿÿ8²Ì¢¬ë1J$4ad41df4-20cd-46f1-8c60-c7bcb8bb2813
+n	java:S106­"+Replace this use of System.out by a logger.(ò°àÉ8Öù¢¬ë1J$742d8a6d-325e-4d4c-89b1-5dbcd324f235
+s	java:S106³"+Replace this use of System.out by a logger.(åë«©øÿÿÿÿ8é©£¬ë1J$cf7fc54f-5bf1-4af3-a162-c59c6559f1c3
+n	java:S106¼"+Replace this use of System.out by a logger.(€™ûí8õ¶¤¬ë1J$da204dbc-aeb1-4738-a9cb-1c7910f4e5bc

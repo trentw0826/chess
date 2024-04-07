@@ -1,7 +1,7 @@
 
-m	java:S106"+Replace this use of System.out by a logger.(¾¢À—8íİ¤¨ë1J$7736f258-7adb-4524-866b-a41d1da518d2
-r	java:S106 "+Replace this use of System.out by a logger.(ö¬Úøÿÿÿÿ8îİ¤¨ë1J$87326b5a-5947-41b0-b9bf-34494acea5b8
+m	java:S106"+Replace this use of System.out by a logger.(¾¢À—8íİ¤¨ë1J$2ea3d8f8-401d-4fab-bbd6-9f335a7413e9
+r	java:S106 "+Replace this use of System.out by a logger.(ö¬Úøÿÿÿÿ8îİ¤¨ë1J$612db004-ae42-43d7-8612-00a84c28b8d0
 z
-java:S1135"2Complete the task associated to this TODO comment.(÷”Œƒûÿÿÿÿ8æÕğ©ë1J$d20c5bce-3d05-4151-873d-333a3b89de3c
-r	java:S106'"+Replace this use of System.out by a logger.(•ÛéÇşÿÿÿÿ8îİ¤¨ë1J$9ff92399-38be-4562-83a2-058ad6aa0b71
-r	java:S106-"+Replace this use of System.out by a logger.(ÔÊùÆûÿÿÿÿ8ğİ¤¨ë1J$e7fdb3fd-81cc-491a-81e0-ed7770788f57
+java:S1135"2Complete the task associated to this TODO comment.(÷”Œƒûÿÿÿÿ8æÕğ©ë1J$b443360e-b517-4d5f-b159-faba3cbd2ea4
+r	java:S106'"+Replace this use of System.out by a logger.(•ÛéÇşÿÿÿÿ8îİ¤¨ë1J$73df31a4-df8f-4174-ad36-7bb2e508bbcb
+r	java:S106."+Replace this use of System.out by a logger.(ÔÊùÆûÿÿÿÿ8åÆ‰®ë1J$b6b2f7fd-4b90-4b10-a7db-1fd0ba2c7d71

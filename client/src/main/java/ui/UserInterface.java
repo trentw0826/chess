@@ -42,6 +42,7 @@ public class UserInterface {
 
   private String[] getUserInput() {
     Scanner scanner = new Scanner(System.in);
+    clearScreen();
     System.out.print("\n>>> ");
     return scanner.nextLine().trim().split("\\s+");
   }

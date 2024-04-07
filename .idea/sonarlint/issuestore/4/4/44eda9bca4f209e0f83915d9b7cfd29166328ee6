@@ -1,7 +1,7 @@
 
-ˆ	java:S101"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(žÇÈ‘J$89174a27-e8b4-4ffa-a309-31beaed14fbf
-š	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¨Ÿ«ÐøÿÿÿÿJ$d6c867fb-08bf-4238-a040-151626eedd40
-k	java:S106["+Replace this use of System.out by a logger.(§«¥•ûÿÿÿÿJ$82f5461c-b1e4-4efc-bf6a-f09941b6d080
-k	java:S106c"+Replace this use of System.out by a logger.(ïÙš´þÿÿÿÿJ$e9c6383a-3bda-45dd-a604-dade009112fe
+ˆ	java:S101"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(žÇÈ‘J$5558fe06-29aa-4e74-9df5-8616a2a62027
+š	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¨Ÿ«ÐøÿÿÿÿJ$4f84c38c-2f40-4539-8500-87f7582f040c
+k	java:S106["+Replace this use of System.out by a logger.(§«¥•ûÿÿÿÿJ$91cc06c7-827e-49b2-a2b7-16b5a50ac970
+k	java:S106c"+Replace this use of System.out by a logger.(ïÙš´þÿÿÿÿJ$5cb4511f-4024-4aa8-8bb9-1621ef86d3d1
 k
-java:S1068"/Remove this unused "ANSI_ESCAPE" private field.(“—ÑèJ$9f44a388-95b6-4c81-adc6-1cf2ec880ec7
+java:S1068"/Remove this unused "ANSI_ESCAPE" private field.(“—ÑèJ$f2b9cf88-eec3-49d8-8bdf-a355fd9a9ae6
