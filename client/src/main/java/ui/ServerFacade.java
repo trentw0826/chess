@@ -5,6 +5,7 @@ import exception.ResponseException;
 import httpPath.HttpPath;
 import request.*;
 import response.*;
+import playerColor.PlayerColor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,7 +46,7 @@ public class ServerFacade {
     return makeRequest("POST", HttpPath.PATHS.GAME.getPath(), createGameRequest, CreateGameResponse.class, auth);
   }
 
-  public JoinGameResponse joinGame(String auth, String color, int gameID) throws ResponseException {
+  public JoinGameResponse joinGame(String auth, PlayerColor color, int gameID) throws ResponseException {
     JoinGameRequest joinGameRequest = new JoinGameRequest(auth, color, gameID);
     return makeRequest("PUT", HttpPath.PATHS.GAME.getPath(), joinGameRequest, JoinGameResponse.class, auth);
   }

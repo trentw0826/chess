@@ -1,5 +1,7 @@
 package request;
 
+import playerColor.PlayerColor;
+
 /**
  * Holds required information for a service join game request.
  *
@@ -7,4 +9,4 @@ package request;
  * @param playerColor player color
  * @param gameID      game ID
  */
-public record JoinGameRequest(String authToken, String playerColor, Integer gameID) implements ServiceRequest {}
+public record JoinGameRequest(String authToken, PlayerColor playerColor, Integer gameID) implements ServiceRequest {}

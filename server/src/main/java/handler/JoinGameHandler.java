@@ -3,6 +3,7 @@ package handler;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import playerColor.PlayerColor;
 import service.JoinGameService;
 import request.JoinGameRequest;
 import response.JoinGameResponse;
@@ -43,8 +44,13 @@ public class JoinGameHandler extends Handler<JoinGameRequest, JoinGameResponse> 
     }
 
     JsonElement playerColorElement = gson.fromJson(req.body(), JsonObject.class).get("playerColor");
-    String playerColor = (playerColorElement == null) ? null : playerColorElement.getAsString();
-
+    PlayerColor playerColor;
+    try {
+      playerColor = PlayerColor.valueOf(playerColorElement.getAsString());
+    }
+    catch (IllegalArgumentException e) {
+      throw new IllegalStateException("Bad player color passed to join game handler");
+    }
     JsonElement gameIdElement = gson.fromJson(req.body(), JsonObject.class).get("gameID");
 
     if (gameIdElement == null) {

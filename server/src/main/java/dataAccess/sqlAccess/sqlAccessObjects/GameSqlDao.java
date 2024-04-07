@@ -5,6 +5,7 @@ import dataAccess.DataAccessException;
 import dataAccess.dataAccessObject.GameDao;
 import dataAccess.sqlAccess.SqlAccessObject;
 import model.GameData;
+import playerColor.PlayerColor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -191,11 +192,11 @@ public class GameSqlDao extends SqlAccessObject<Integer, GameData> implements Ga
    * @param username  joining player's username
    * @throws DataAccessException  if SQL error thrown during adding
    */
-  public void setPlayer(int gameID, String color, String username) throws DataAccessException {
+  public void setPlayer(int gameID, PlayerColor color, String username) throws DataAccessException {
     GameData retrievedData = get(gameID);
     String setPlayerStatement;
 
-    if (color.equalsIgnoreCase("white")) {
+    if (color == PlayerColor.WHITE) {
       if (retrievedData.getWhiteUsername() != null) {
         throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN);
       }
@@ -203,7 +204,7 @@ public class GameSqlDao extends SqlAccessObject<Integer, GameData> implements Ga
         setPlayerStatement = "UPDATE " + GAME_TABLE + " SET whiteUsername=? WHERE gameID=?";
       }
     }
-    else if (color.equalsIgnoreCase("black")) {
+    else if (color == PlayerColor.BLACK) {
       if (retrievedData.getBlackUsername() != null) {
         throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN);
       }

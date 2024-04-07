@@ -1,4 +1,4 @@
-package webSocketMessages.userCommands;
+package request.webSocketMessages.userCommands;
 
 /**
  * Used to request to start observing a game.

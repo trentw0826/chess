@@ -1,4 +1,4 @@
-package webSocketMessages.userCommands;
+package request.webSocketMessages.userCommands;
 
 /**
  * Tells the server you are leaving the game so it will stop sending you notifications.

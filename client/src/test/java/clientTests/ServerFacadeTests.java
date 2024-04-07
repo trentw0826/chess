@@ -3,6 +3,7 @@ package clientTests;
 import exception.ResponseException;
 import model.GameData;
 import org.junit.jupiter.api.*;
+import playerColor.PlayerColor;
 import server.Server;
 import ui.ServerFacade;
 
@@ -83,18 +84,12 @@ class ServerFacadeTests {
   @Test
   void joinGameTest() throws ResponseException {
     facade.createGame("someGameName", validAuth);
-    Assertions.assertDoesNotThrow(() -> facade.joinGame(validAuth, "white", 1));
+    Assertions.assertDoesNotThrow(() -> facade.joinGame(validAuth, PlayerColor.WHITE, 1));
   }
 
   @Test
   void joinNonExistingGameTest() {
-    Assertions.assertThrows(ResponseException.class, () -> facade.joinGame(validAuth, "white", 1));
-  }
-
-  @Test
-  void badColorJoinGameTest() throws ResponseException {
-    facade.createGame("someGameName", validAuth);
-    Assertions.assertThrows(ResponseException.class, () -> facade.joinGame(validAuth, "not a color", 1));
+    Assertions.assertThrows(ResponseException.class, () -> facade.joinGame(validAuth, PlayerColor.WHITE, 1));
   }
 
   @Test

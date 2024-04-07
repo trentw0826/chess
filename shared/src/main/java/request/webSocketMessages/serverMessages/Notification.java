@@ -1,4 +1,4 @@
-package webSocketMessages.serverMessages;
+package request.webSocketMessages.serverMessages;
 
 /**
  * This is a message meant to inform a player when another player made an action.

@@ -1,4 +1,4 @@
-package webSocketMessages.serverMessages;
+package request.webSocketMessages.serverMessages;
 
 /**
  * This message is sent to a client when it sends an invalid command.

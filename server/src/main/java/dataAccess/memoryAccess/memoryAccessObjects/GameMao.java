@@ -5,6 +5,7 @@ import dataAccess.DataAccessException;
 import dataAccess.dataAccessObject.GameDao;
 import dataAccess.memoryAccess.MemoryAccessObject;
 import model.GameData;
+import playerColor.PlayerColor;
 
 import java.util.Map;
 
@@ -100,7 +101,7 @@ public class GameMao extends MemoryAccessObject<Integer, GameData> implements Ga
    * @throws DataAccessException  if SQL error thrown during adding
    */
   @Override
-  public void setPlayer(int gameID, String color, String username) throws DataAccessException {
+  public void setPlayer(int gameID, PlayerColor color, String username) throws DataAccessException {
     GameData retrievedGame = localData.get(gameID);
 
     String currWhiteUser = retrievedGame.getWhiteUsername();
@@ -109,7 +110,7 @@ public class GameMao extends MemoryAccessObject<Integer, GameData> implements Ga
     if (color == null) {
       addObserver(gameID, username);
     }
-    else if (color.equalsIgnoreCase("white")) {
+    else if (color == PlayerColor.WHITE) {
       if (currWhiteUser != null) {
         retrievedGame.setWhiteUsername(username);
       }
@@ -117,7 +118,7 @@ public class GameMao extends MemoryAccessObject<Integer, GameData> implements Ga
         throw new DataAccessException(DataAccessException.ErrorMessages.ALREADY_TAKEN);
       }
     }
-    else if (color.equalsIgnoreCase("black")) {
+    else if (color == PlayerColor.BLACK) {
       if (currBlackUser != null) {
         retrievedGame.setBlackUsername(username);
       }
@@ -132,5 +133,4 @@ public class GameMao extends MemoryAccessObject<Integer, GameData> implements Ga
 
     localData.put(gameID, retrievedGame);
   }
-
 }

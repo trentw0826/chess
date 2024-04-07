@@ -1,4 +1,4 @@
-package webSocketMessages.userCommands;
+package request.webSocketMessages.userCommands;
 
 //TODO Make player color some shared enum rather than a string
 

@@ -3,6 +3,7 @@ package dataAccess.dataAccessObject;
 import dataAccess.DataAccessException;
 import dataAccess.DataAccessObject;
 import model.GameData;
+import playerColor.PlayerColor;
 
 public interface GameDao extends DataAccessObject<Integer, GameData> {
 
@@ -24,5 +25,5 @@ public interface GameDao extends DataAccessObject<Integer, GameData> {
    * @param username  joining player's username
    * @throws DataAccessException  if SQL error thrown during adding
    */
-  void setPlayer(final int gameID, final String color, final String username) throws DataAccessException;
+  void setPlayer(final int gameID, final PlayerColor color, final String username) throws DataAccessException;
 }

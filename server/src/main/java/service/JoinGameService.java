@@ -4,6 +4,7 @@ import dataAccess.DataAccessException;
 import model.GameData;
 import request.JoinGameRequest;
 import response.JoinGameResponse;
+import playerColor.PlayerColor;
 
 
 public class JoinGameService extends Service <JoinGameRequest, JoinGameResponse> {
@@ -33,20 +34,12 @@ public class JoinGameService extends Service <JoinGameRequest, JoinGameResponse>
       }
 
       int currGameID = desiredGame.getGameID();
-      String desiredColor = joinGameRequest.playerColor();
+      PlayerColor desiredColor = joinGameRequest.playerColor();
 
       if (desiredColor == null) {
         gameDao.addObserver(currGameID, currentUsername);
       }
-      else if (desiredColor.equalsIgnoreCase("white")) {
-        gameDao.setPlayer(currGameID, "white", currentUsername);
-      }
-      else if (desiredColor.equalsIgnoreCase("black")) {
-        gameDao.setPlayer(currGameID, "black", currentUsername);
-      }
-      else {
-        throw new IllegalArgumentException("Bad color passed to join game service");
-      }
+      gameDao.setPlayer(currGameID, desiredColor, currentUsername);
 
       joinGameResponse = new JoinGameResponse();
     }

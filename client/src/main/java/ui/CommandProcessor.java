@@ -1,6 +1,7 @@
 package ui;
 
 import exception.ResponseException;
+import playerColor.PlayerColor;
 import response.*;
 import model.*;
 
@@ -144,26 +145,35 @@ public class CommandProcessor {
     }
   }
 
-  private void join(String[] userInput) throws ResponseException {
+
+  private void join(String[] userInput) throws ResponseException, CommandException {
     int localGameNum = Integer.parseInt(userInput[1]);
     int gameId = currAvailableGames.get(localGameNum - 1).getGameID();
-    JoinGameResponse joinGameResponse = serverFacade.joinGame(currAuthToken, userInput[2], gameId);
+
+    PlayerColor playerColor;
+    try {
+      playerColor = PlayerColor.valueOf(userInput[2].toUpperCase());
+      serverFacade.joinGame(currAuthToken, playerColor, gameId);
+    }
+    catch (IllegalArgumentException e) {
+      throw new CommandException("Make sure your color is 'white' or 'black'");
+    }
+
     GameData fillerGame = new GameData("fillerGame");
-    System.out.println(fillerGame.getGame().getBoard().getPrintable(true));
+    boolean isWhite = (playerColor == PlayerColor.WHITE);
+    System.out.println(fillerGame.getGame().getBoard().getPrintable(isWhite));
   }
 
   private void observe(String[] userInput) throws ResponseException {
-    int localGameNum = Integer.parseInt(userInput[1]);
-    int gameId = currAvailableGames.get(localGameNum - 1).getGameID();
-    JoinGameResponse joinGameResponse = serverFacade.joinGame(currAuthToken, userInput[2], gameId);
-    GameData fillerGame = new GameData("fillerGame");
-    System.out.println(fillerGame.getGame().getBoard().getPrintable(true));
+
   }
+
 
   private void create(String[] userInput) throws ResponseException {
     CreateGameResponse createGameResponse = serverFacade.createGame(userInput[1], currAuthToken);
     System.out.printf(" game '%s' created (id:%d) ", userInput[1], createGameResponse.getGameID());
   }
+
 
   private void list() throws ResponseException {
     ListGamesResponse listGamesResponse = serverFacade.listGames(currAuthToken);
@@ -176,10 +186,11 @@ public class CommandProcessor {
       int i = 0;
       for (GameData gameData : currAvailableGames) {
         i++;
-        System.out.printf("%d: %s", i, gameData.headerStr());
+        System.out.printf("%d: %s%n", i, gameData.headerStr());
       }
     }
   }
+
 
   private void logout() throws ResponseException {
     serverFacade.logout(currAuthToken);
