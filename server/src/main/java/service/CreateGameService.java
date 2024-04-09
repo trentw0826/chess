@@ -2,7 +2,7 @@ package service;
 
 import dataAccess.DataAccessException;
 import model.GameData;
-import request.CreateGameRequest;
+import request.httpRequests.CreateGameRequest;
 import response.CreateGameResponse;
 
 

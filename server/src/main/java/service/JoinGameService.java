@@ -2,7 +2,7 @@ package service;
 
 import dataAccess.DataAccessException;
 import model.GameData;
-import request.JoinGameRequest;
+import request.httpRequests.JoinGameRequest;
 import response.JoinGameResponse;
 import playerColor.PlayerColor;
 
@@ -39,7 +39,9 @@ public class JoinGameService extends Service <JoinGameRequest, JoinGameResponse>
       if (desiredColor == null) {
         gameDao.addObserver(currGameID, currentUsername);
       }
-      gameDao.setPlayer(currGameID, desiredColor, currentUsername);
+      else {
+        gameDao.setPlayer(currGameID, desiredColor, currentUsername);
+      }
 
       joinGameResponse = new JoinGameResponse();
     }

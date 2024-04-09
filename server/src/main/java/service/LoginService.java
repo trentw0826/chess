@@ -3,7 +3,7 @@ package service;
 import dataAccess.DataAccessException;
 import model.AuthData;
 import model.UserData;
-import request.LoginRequest;
+import request.httpRequests.LoginRequest;
 import response.LoginResponse;
 
 

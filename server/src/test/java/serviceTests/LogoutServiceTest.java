@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.LogoutService;
 import service.RegisterService;
-import request.LogoutRequest;
-import request.RegisterRequest;
+import request.httpRequests.LogoutRequest;
+import request.httpRequests.RegisterRequest;
 import response.LogoutResponse;
 
 import static serviceTests.ServiceTestHelper.*;

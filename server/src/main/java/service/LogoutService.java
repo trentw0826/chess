@@ -1,7 +1,7 @@
 package service;
 
 import dataAccess.DataAccessException;
-import request.LogoutRequest;
+import request.httpRequests.LogoutRequest;
 import response.LogoutResponse;
 
 

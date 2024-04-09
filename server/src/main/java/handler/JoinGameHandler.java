@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import playerColor.PlayerColor;
 import service.JoinGameService;
-import request.JoinGameRequest;
+import request.httpRequests.JoinGameRequest;
 import response.JoinGameResponse;
 import spark.Request;
 
@@ -38,28 +38,38 @@ public class JoinGameHandler extends Handler<JoinGameRequest, JoinGameResponse> 
   @Override
   protected JoinGameRequest deserializeRequest(Request req) {
     String authToken = req.headers("authorization");
-
     if (authToken == null) {
       throw new IllegalArgumentException("No auth token passed with request body");
     }
 
-    JsonElement playerColorElement = gson.fromJson(req.body(), JsonObject.class).get("playerColor");
-    PlayerColor playerColor;
-    try {
-      playerColor = PlayerColor.valueOf(playerColorElement.getAsString());
+    JsonObject requestBody = gson.fromJson(req.body(), JsonObject.class);
+
+    JsonElement playerColorElement = requestBody.get("playerColor");
+    PlayerColor playerColor = parsePlayerColor(playerColorElement);
+
+    JsonElement gameIdElement = requestBody.get("gameID");
+    Integer gameId = parseGameID(gameIdElement);
+
+    return new JoinGameRequest(authToken, playerColor, gameId);
+  }
+
+  private PlayerColor parsePlayerColor(JsonElement playerColorElement) {
+    if (playerColorElement == null) {
+      return null;
     }
-    catch (IllegalArgumentException e) {
+    String colorString = playerColorElement.getAsString();
+    try {
+      return PlayerColor.valueOf(colorString);
+    } catch (IllegalArgumentException e) {
       throw new IllegalStateException("Bad player color passed to join game handler");
     }
-    JsonElement gameIdElement = gson.fromJson(req.body(), JsonObject.class).get("gameID");
+  }
 
-    if (gameIdElement == null) {
+  private Integer parseGameID(JsonElement gameIdElement) {
+    if (gameIdElement == null || gameIdElement.isJsonNull()) {
       throw new IllegalStateException("No game ID associated with requested game");
     }
-
-    Integer gameID = gameIdElement.getAsInt();
-
-    return new JoinGameRequest(authToken, playerColor, gameID);
+    return gameIdElement.getAsInt();
   }
 
   @Override

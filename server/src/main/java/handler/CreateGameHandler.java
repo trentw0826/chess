@@ -4,7 +4,7 @@ package handler;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import service.CreateGameService;
-import request.CreateGameRequest;
+import request.httpRequests.CreateGameRequest;
 import response.CreateGameResponse;
 import spark.Request;
 

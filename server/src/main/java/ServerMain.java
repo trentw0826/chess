@@ -1,6 +1,7 @@
 import chess.*;
 import server.Server;
 
+//TODO Indicate to admin when server has not established connetion with database
 public class ServerMain {
     public static void main(String[] args) {
         var piece = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);

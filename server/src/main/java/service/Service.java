@@ -8,7 +8,7 @@ import dataAccess.dataAccessObject.UserDao;
 import dataAccess.sqlAccess.sqlAccessObjects.AuthSqlDao;
 import dataAccess.sqlAccess.sqlAccessObjects.GameSqlDao;
 import dataAccess.sqlAccess.sqlAccessObjects.UserSqlDao;
-import request.ServiceRequest;
+import request.httpRequests.ServiceRequest;
 import response.ServiceResponse;
 
 import java.util.UUID;

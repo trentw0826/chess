@@ -48,8 +48,6 @@ public class GameSqlDao extends SqlAccessObject<Integer, GameData> implements Ga
    */
   @Override
   public GameData get(Integer key) throws DataAccessException {
-    //TODO add observers to sql query
-    //TODO update to 'SELECT *'
     if (key == null) {
       throw new DataAccessException(DataAccessException.ErrorMessages.BAD_REQUEST);
     }
@@ -80,7 +78,6 @@ public class GameSqlDao extends SqlAccessObject<Integer, GameData> implements Ga
    */
   @Override
   public Collection<GameData> list() throws DataAccessException {
-    // TODO add observers and actual game to query
     try (var preparedStatement = connection.prepareStatement("SELECT gameID, whiteUsername, blackUsername, gameName, game FROM " + GAME_TABLE)) {
       Collection<GameData> games = new ArrayList<>();
 

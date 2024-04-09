@@ -1,7 +1,7 @@
 package service;
 
 import dataAccess.DataAccessException;
-import request.ListGamesRequest;
+import request.httpRequests.ListGamesRequest;
 import response.ListGamesResponse;
 
 

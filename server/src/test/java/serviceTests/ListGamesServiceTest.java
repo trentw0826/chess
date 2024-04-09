@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 import service.CreateGameService;
 import service.ListGamesService;
 import service.RegisterService;
-import request.CreateGameRequest;
-import request.ListGamesRequest;
-import request.RegisterRequest;
+import request.httpRequests.CreateGameRequest;
+import request.httpRequests.ListGamesRequest;
+import request.httpRequests.RegisterRequest;
 import response.ListGamesResponse;
 
 import java.util.Collection;

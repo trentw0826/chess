@@ -1,0 +1,10 @@
+
+“
+java:S1301&"KReplace this "switch" statement by "if" statements to increase readability.(óŽÌ’üÿÿÿÿ8­Íþ¢ì1J$e7c22c21-4a6f-4975-b6ce-ae4353393a0c
+´
+java:S1130$"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.( ˜Î”þÿÿÿÿ8ÓÍþ¢ì1J$6548786c-ea97-419b-9021-19907aaa7d1a
+ƒ	java:S125("<This block of commented-out lines of code should be removed.(ìù”àúÿÿÿÿ8ÖÍþ¢ì1J$84deb812-a766-4e06-b7cd-f91e0d685ce9
+u
+java:S1135B"2Complete the task associated to this TODO comment.(þ²Èò8ÛÍþ¢ì1J$ad49989f-53d7-43cb-a5fb-84ce097a1e68
+z
+java:S1135O"2Complete the task associated to this TODO comment.( ûÊÒýÿÿÿÿ8ÝÍþ¢ì1J$2bab367d-107e-4bf2-9972-2489851cff1c

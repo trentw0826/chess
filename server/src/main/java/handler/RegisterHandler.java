@@ -2,7 +2,7 @@ package handler;
 
 
 import service.RegisterService;
-import request.RegisterRequest;
+import request.httpRequests.RegisterRequest;
 import response.RegisterResponse;
 import spark.Request;
 

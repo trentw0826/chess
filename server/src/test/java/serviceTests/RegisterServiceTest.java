@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.RegisterService;
-import request.RegisterRequest;
+import request.httpRequests.RegisterRequest;
 import response.RegisterResponse;
 
 import static serviceTests.ServiceTestHelper.*;

@@ -1,0 +1,22 @@
+
+Å
+java:S1186²"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(„èÿ†8¦—£ì1J$fb239a1a-9e02-46b1-9696-4a9f611c6898
+z
+java:S1135'"2Complete the task associated to this TODO comment.(Á°“ãûÿÿÿÿ8›¦—£ì1J$56ce1bba-eccb-49b6-a0b7-0aeaf349a1c1
+m	java:S1063"+Replace this use of System.out by a logger.(§ˆ›ê8Ÿ¦—£ì1J$b21a7290-6885-4a6d-a04f-37b241d3f82f
+m	java:S106H"+Replace this use of System.out by a logger.(Åã“Ì8¢¦—£ì1J$c8dba5c2-106d-4e4c-aab2-a99ba64ecb0e
+r	java:S106\"+Replace this use of System.out by a logger.(İÑİ›úÿÿÿÿ8¥¦—£ì1J$acc40336-13aa-4be4-9a2a-302a6aa26d8a
+m	java:S106r"+Replace this use of System.out by a logger.(¹ÂÇ8¨¦—£ì1J$e138b675-51f4-47de-aef8-dcad9ed45250
+„	java:S125­"<This block of commented-out lines of code should be removed.(ÏÒì‰üÿÿÿÿ8Ùç³£ì1J$0a93aede-d69e-4c0e-bdb2-583b6b975312
+¸
+java:S1130²"tRemove the declaration of thrown exception 'exception.ResponseException', as it cannot be thrown from method's body.(„èÿ†8»¦—£ì1J$9343b40d-3da9-429d-9ce8-5606f4c475b2
+t
+java:S1172²"0Remove this unused method parameter "userInput".(„èÿ†8¼¦—£ì1J$4514325e-1c27-4c07-ae07-175a8250bcc0
+
+java:S1854¸"FRemove this useless assignment to local variable "createGameResponse".(®‰…ôùÿÿÿÿ8½¦—£ì1J$e539bca8-c384-475f-9ab7-e9f0edcd6681
+€
+java:S1481¸"7Remove this unused "createGameResponse" local variable.(®‰…ôùÿÿÿÿ8¾¦—£ì1J$9fbc474c-4f69-4c78-a649-27b017291484
+n	java:S106¹"+Replace this use of System.out by a logger.(ıÉ€¦8¾¦—£ì1J$6f756350-33e2-482b-8ad0-357b1e659a11
+n	java:S106Â"+Replace this use of System.out by a logger.(ò°àÉ8À¦—£ì1J$b13dbec3-43b6-48db-b9dc-0ee2d13d708a
+s	java:S106È"+Replace this use of System.out by a logger.(ÑÚø¼şÿÿÿÿ8Á¦—£ì1J$b9ab16a9-7f9b-481b-aa83-c2d33ef818a6
+n	java:S106Ò"+Replace this use of System.out by a logger.(€™ûí8Â¦—£ì1J$c0a1a2c3-938a-4271-980a-ffbf8961deff

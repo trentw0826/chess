@@ -2,7 +2,7 @@ package handler;
 
 
 import service.ListGamesService;
-import request.ListGamesRequest;
+import request.httpRequests.ListGamesRequest;
 import response.ListGamesResponse;
 import spark.Request;
 

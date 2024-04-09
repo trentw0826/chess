@@ -3,7 +3,7 @@ package ui;
 import com.google.gson.Gson;
 import exception.ResponseException;
 import httpPath.HttpPath;
-import request.*;
+import request.httpRequests.*;
 import response.*;
 import playerColor.PlayerColor;
 
@@ -46,7 +46,7 @@ public class ServerFacade {
     return makeRequest("POST", HttpPath.PATHS.GAME.getPath(), createGameRequest, CreateGameResponse.class, auth);
   }
 
-  public JoinGameResponse joinGame(String auth, PlayerColor color, int gameID) throws ResponseException {
+  public JoinGameResponse joinGame(int gameID, String auth, PlayerColor color) throws ResponseException {
     JoinGameRequest joinGameRequest = new JoinGameRequest(auth, color, gameID);
     return makeRequest("PUT", HttpPath.PATHS.GAME.getPath(), joinGameRequest, JoinGameResponse.class, auth);
   }

@@ -178,6 +178,5 @@ public class UserSqlDao extends SqlAccessObject<String, UserData> implements Use
    */
   private String hashPassword(String password) {
     return encoder.encode(password);
-//    return password;
   }
 }

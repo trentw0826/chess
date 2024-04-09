@@ -84,23 +84,23 @@ class ServerFacadeTests {
   @Test
   void joinGameTest() throws ResponseException {
     facade.createGame("someGameName", validAuth);
-    Assertions.assertDoesNotThrow(() -> facade.joinGame(validAuth, PlayerColor.WHITE, 1));
+    Assertions.assertDoesNotThrow(() -> facade.joinGame(1, validAuth, PlayerColor.WHITE));
   }
 
   @Test
   void joinNonExistingGameTest() {
-    Assertions.assertThrows(ResponseException.class, () -> facade.joinGame(validAuth, PlayerColor.WHITE, 1));
+    Assertions.assertThrows(ResponseException.class, () -> facade.joinGame(1, validAuth, PlayerColor.WHITE));
   }
 
   @Test
   void observeGameTest() throws ResponseException {
     facade.createGame("someGameName", validAuth);
-    Assertions.assertDoesNotThrow(() -> facade.joinGame(validAuth, null, 1));
+    Assertions.assertDoesNotThrow(() -> facade.joinGame(1, validAuth, null));
   }
 
   @Test
   void observeNonExistingGameTest() {
-    Assertions.assertThrows(ResponseException.class, () -> facade.joinGame(validAuth, null, 1));
+    Assertions.assertThrows(ResponseException.class, () -> facade.joinGame(1, validAuth, null));
   }
 
 

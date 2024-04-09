@@ -2,7 +2,7 @@ package handler;
 
 
 import service.LogoutService;
-import request.LogoutRequest;
+import request.httpRequests.LogoutRequest;
 import response.LogoutResponse;
 import spark.Request;
 

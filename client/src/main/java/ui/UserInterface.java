@@ -7,22 +7,23 @@ import java.util.Scanner;
 import static consoleDraw.consoleDraw.*;
 
 public class UserInterface {
-  private final CommandProcessor commandProcessor;
+  private final ClientCommandProcessor clientCommandProcessor;
   private boolean isUserActive;
 
   private static final String WELCOME_MESSAGE = WHITE_KING + " Chess Client " + WHITE_QUEEN;
 
   public UserInterface() {
-    this.commandProcessor = new CommandProcessor();
+    this.clientCommandProcessor = new ClientCommandProcessor();
     this.isUserActive = true;
   }
+
 
   public void start() {
     displayWelcomeMessage();
     while (isUserActive) {
       String[] userInput = getUserInput();
       try {
-        commandProcessor.processUserInputArr(userInput);
+        clientCommandProcessor.processUserInputArr(userInput);
       }
       catch (CommandException e) {
         System.out.printf(" <!> %s <!>%n", e.getMessage());

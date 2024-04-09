@@ -7,8 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.CreateGameService;
 import service.RegisterService;
-import request.CreateGameRequest;
-import request.RegisterRequest;
+import request.httpRequests.CreateGameRequest;
+import request.httpRequests.RegisterRequest;
 import response.CreateGameResponse;
 
 

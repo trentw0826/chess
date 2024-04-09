@@ -2,11 +2,14 @@ package server;
 
 import handler.*;
 import httpPath.HttpPath;
+import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import server.websocket.WebSocketHandler;
 import spark.*;
 
 /**
  * Server class to define and run basic Spark server.
  */
+@WebSocket
 public class Server {
 
     /**
@@ -17,11 +20,8 @@ public class Server {
      */
     public int run(int port) {
         Spark.port(port);
-
         Spark.staticFiles.location("web");
-
         createRoutes();
-
         Spark.awaitInitialization();
         return Spark.port();
     }
@@ -37,7 +37,9 @@ public class Server {
     /**
      * Defines the spark server's routes.
      */
-    private static void createRoutes() {
+    private void createRoutes() {
+        Spark.webSocket("/connect", WebSocketHandler.class);
+
         Spark.delete(HttpPath.PATHS.DB.getPath(), (req, res) -> ClearHandler.instance().handleRequest(req, res));
         Spark.post(HttpPath.PATHS.USER.getPath(), (req, res) -> RegisterHandler.instance().handleRequest(req, res));
         Spark.post(HttpPath.PATHS.SESSION.getPath(), (req, res) -> LoginHandler.instance().handleRequest(req, res));
