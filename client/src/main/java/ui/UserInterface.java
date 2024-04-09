@@ -1,19 +1,21 @@
 package ui;
 
 import exception.ResponseException;
+import ui.command.CommandException;
+import ui.command.CommandFilter;
 
 import java.util.Scanner;
 
 import static consoleDraw.consoleDraw.*;
 
 public class UserInterface {
-  private final ClientCommandProcessor clientCommandProcessor;
+  private final CommandFilter commandFilter;
   private boolean isUserActive;
 
   private static final String WELCOME_MESSAGE = WHITE_KING + " Chess Client " + WHITE_QUEEN;
 
   public UserInterface() {
-    this.clientCommandProcessor = new ClientCommandProcessor();
+    this.commandFilter = new CommandFilter();
     this.isUserActive = true;
   }
 
@@ -23,7 +25,7 @@ public class UserInterface {
     while (isUserActive) {
       String[] userInput = getUserInput();
       try {
-        clientCommandProcessor.processUserInputArr(userInput);
+        commandFilter.processUserInputArr(userInput);
       }
       catch (CommandException e) {
         System.out.printf(" <!> %s <!>%n", e.getMessage());

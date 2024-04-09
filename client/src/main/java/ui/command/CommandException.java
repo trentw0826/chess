@@ -1,4 +1,4 @@
-package ui;
+package ui.command;
 
 public class CommandException extends Exception {
 

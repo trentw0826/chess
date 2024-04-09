@@ -5,7 +5,7 @@ import model.GameData;
 import org.junit.jupiter.api.*;
 import playerColor.PlayerColor;
 import server.Server;
-import ui.ServerFacade;
+import ui.facade.ServerFacade;
 
 import java.util.Collection;
 
