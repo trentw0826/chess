@@ -2,5 +2,10 @@ package playerColor;
 
 public enum PlayerColor {
   WHITE,
-  BLACK
+  BLACK;
+
+  @Override
+  public String toString() {
+    return name().toLowerCase();
+  }
 }

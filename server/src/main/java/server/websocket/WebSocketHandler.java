@@ -23,17 +23,15 @@ public class WebSocketHandler {
   private final Gson gson;
   private final ConnectionManager connectionManager;
   private final AuthDao authDao;
-  private final GameDao gameDao;
 
   public WebSocketHandler() {
     gson = new Gson();
     this.connectionManager = new ConnectionManager();
     this.authDao = new AuthSqlDao();
-    this.gameDao = new GameSqlDao();
   }
 
   @OnWebSocketMessage
-  public void onMessage(Session session, String message) throws IOException {
+  public void onMessage(Session session, String message) {
     UserGameCommand userGameCommand = new Gson().fromJson(message, UserGameCommand.class);
     switch (userGameCommand.getCommandType()) {
       case JOIN_PLAYER -> join(gson.fromJson(message, JoinPlayerCommand.class), session);
@@ -50,14 +48,14 @@ public class WebSocketHandler {
     String currAuthToken = joinPlayerCommand.getAuthToken();
     PlayerColor desiredColor = joinPlayerCommand.getPlayerColor();
 
-    try {
-      String requestingUsername = authDao.getUsernameFromAuthToken(currAuthToken);
-      gameDao.setPlayer(desiredGameID, desiredColor, requestingUsername);
+    connectionManager.add(desiredGameID, currAuthToken, session);
 
-      connectionManager.add(desiredGameID, currAuthToken, session);
+    String requestingUsername;
+    try {
+      requestingUsername = authDao.getUsernameFromAuthToken(currAuthToken);
 
       String outgoingMessage = String.format("'%s' has joined the game as %s",
-              requestingUsername, desiredColor.name().toLowerCase());
+              requestingUsername, desiredColor.toString());
 
       Notification notification = new Notification(outgoingMessage);
       broadcast(desiredGameID, notification, currAuthToken);

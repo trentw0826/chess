@@ -107,6 +107,7 @@ public class CommandFilter {
 
   private void leave() {
     //TODO Implement
+    currClientState = ClientState.POST_LOGIN;
   }
 
   private void makeMove(String[] userInputArr) {
