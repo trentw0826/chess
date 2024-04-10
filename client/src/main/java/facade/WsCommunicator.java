@@ -1,9 +1,9 @@
-package ui.facade;
+package facade;
 
-import chess.ChessGame;
 import com.google.gson.Gson;
 import exception.ResponseException;
 import playerColor.PlayerColor;
+import request.webSocketMessages.serverMessages.Error;
 import request.webSocketMessages.serverMessages.LoadGame;
 import request.webSocketMessages.serverMessages.Notification;
 import request.webSocketMessages.serverMessages.ServerMessage;
@@ -14,14 +14,14 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class WebsocketFacade extends Endpoint {
+public class WsCommunicator extends Endpoint {
   private final Gson gson;
-  private Session currSession;
+  private final Session currSession;
 
-  public WebsocketFacade(String url) throws ResponseException {
+  public WsCommunicator(String url, ServerMessageObserver serverMessageObserver) throws ResponseException {
+    this.gson = new Gson();
+
     try {
-      this.gson = new Gson();
-
       url = url.replace("http", "ws");
       URI socketURI = new URI(url + "/connect");
 
@@ -35,17 +35,19 @@ public class WebsocketFacade extends Endpoint {
           switch (messageType) {
             case NOTIFICATION:
               Notification notification = gson.fromJson(s, Notification.class);
-              //TODO Improve responsibility encapsulation by migrating printing over to UserInterface
-              System.out.printf("Server notification: %s%n", notification.getMessage());
+              serverMessageObserver.notifyOfMessage(notification);
               break;
+
             case LOAD_GAME:
               LoadGame loadGame = gson.fromJson(s, LoadGame.class);
-              ChessGame loadedGame = loadGame.getGame();
-              System.out.printf("%n%s%n", loadedGame.getBoard().getPrintable(true));  //TODO factor in color
+              serverMessageObserver.notifyOfMessage(loadGame);
               break;
+
             case ERROR:
-              //TODO implement logic upon receiving error from server
+              Error errorMessage = gson.fromJson(s, Error.class);
+              serverMessageObserver.notifyOfMessage(errorMessage);
               break;
+
             default:
               throw new IllegalStateException("Bad enum passed to message handler");
           }

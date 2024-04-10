@@ -1,4 +1,4 @@
-package ui.command;
+package command;
 
 import consoleDraw.consoleDraw;
 

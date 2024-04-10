@@ -1,8 +1,8 @@
-package ui.command;
+package command;
 
 import java.util.List;
 
-import static ui.command.Command.Commands.*;
+import static command.Command.Commands.*;
 
 enum ClientState {
   PRE_LOGIN(List.of(REGISTER, LOGIN, HELP, QUIT)),

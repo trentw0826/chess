@@ -5,14 +5,14 @@ import model.GameData;
 import org.junit.jupiter.api.*;
 import playerColor.PlayerColor;
 import server.Server;
-import ui.facade.ServerFacade;
+import facade.HttpCommunicator;
 
 import java.util.Collection;
 
-class ServerFacadeTests {
+class HttpCommunicatorTests {
 
   private static Server server;
-  private static ServerFacade facade;
+  private static HttpCommunicator facade;
 
   private String validAuth;
 
@@ -23,7 +23,7 @@ class ServerFacadeTests {
     var port = server.run(0);
     System.out.println("Started test HTTP server on " + port);
 
-    facade = new ServerFacade("http://localhost:" + port);
+    facade = new HttpCommunicator("http://localhost:" + port);
   }
 
   @AfterAll

@@ -1,4 +1,4 @@
-package ui.facade;
+package facade;
 
 import com.google.gson.Gson;
 import exception.ResponseException;
@@ -20,10 +20,10 @@ import java.util.Objects;
  * Acts as an in-between for the client and the server;
  * Takes information for common requests, converts to proper http requests, and makes requests
  */
-public class ServerFacade {
+public class HttpCommunicator {
   private final String serverUrl;
 
-  public ServerFacade(String serverUrl) {
+  public HttpCommunicator(String serverUrl) {
     this.serverUrl = serverUrl;
   }
 

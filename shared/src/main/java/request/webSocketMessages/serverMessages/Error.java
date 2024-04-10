@@ -14,6 +14,10 @@ public class Error extends ServerMessage {
     this.errorMessage = errorMessage;
   }
 
+  public String getErrorMessage() {
+    return errorMessage;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
