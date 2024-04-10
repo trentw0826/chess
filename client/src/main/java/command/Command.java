@@ -1,6 +1,6 @@
 package command;
 
-import consoleDraw.consoleDraw;
+import consoleDraw.ConsoleDraw;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,12 +63,12 @@ public class Command {
     public String toString() {
       var sb = new StringBuilder();
 
-      sb.append(consoleDraw.boldString(name().toLowerCase()));
+      sb.append(ConsoleDraw.boldString(name().toLowerCase()));
       for (var arg : arguments) {
         sb.append(" ").append(arg);
       }
 
-      sb.append(" : ").append(consoleDraw.italicizeString(cmdDescription));
+      sb.append(" : ").append(ConsoleDraw.italicizeString(cmdDescription));
       return sb.toString();
     }
 

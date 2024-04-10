@@ -1,5 +1,4 @@
 import command.CommandException;
-import command.CommandProcessor;
 import exception.ResponseException;
 import facade.ServerMessageObserver;
 import request.webSocketMessages.serverMessages.*;
@@ -8,7 +7,6 @@ import request.webSocketMessages.serverMessages.ServerMessage;
 
 import java.util.Scanner;
 
-import static command.CommandProcessor.TERMINATE;
 
 /**
  * Center for handling user interactions.
@@ -31,11 +29,11 @@ public class Repl implements ServerMessageObserver {
     ClientConsoleControl.displayWelcomeMessage();
     while (true) {
       String[] userInput = getUserInput();
-      String processedOutput = "";
+      String processedOutput;
 
       try {
         processedOutput = processor.processUserInputArr(userInput);
-        if (processedOutput.equals(TERMINATE)) {
+        if (processedOutput.equals(CommandProcessor.TERMINATE)) {
           break;
         }
         ClientConsoleControl.printNeutralMessage(processedOutput);
@@ -57,9 +55,10 @@ public class Repl implements ServerMessageObserver {
     switch (message.getServerMessageType()) {
       case NOTIFICATION -> ClientConsoleControl.printNotification(((Notification) message).getMessage());
       case ERROR -> ClientConsoleControl.printErrorMessage(((Error) message).getErrorMessage());
-      case LOAD_GAME -> ClientConsoleControl.printChessBoard(((LoadGame) message).getGame());
+      case LOAD_GAME -> ClientConsoleControl.printChessBoard(((LoadGame) message).getGame(), true); //TODO factor in active color
     }
   }
+
 
   /**
    * @return  Line of user input from the console

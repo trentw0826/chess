@@ -1,7 +1,9 @@
 import chess.ChessGame;
+import chess.ChessPiece;
+import consoleDraw.ConsoleDraw;
 
-import static consoleDraw.consoleDraw.WHITE_KING;
-import static consoleDraw.consoleDraw.WHITE_QUEEN;
+import static consoleDraw.ConsoleDraw.WHITE_KING;
+import static consoleDraw.ConsoleDraw.WHITE_QUEEN;
 
 public class ClientConsoleControl {
 
@@ -36,8 +38,31 @@ public class ClientConsoleControl {
     System.out.println(message);
   }
 
-  public static void printChessBoard(ChessGame game) {
-    //TODO migrate printable logic from chessboard to here
-    System.out.println(game.getBoard().getPrintable(true));
+  public static void printChessBoard(ChessGame game, boolean isWhite) {
+    StringBuilder sb = new StringBuilder();
+    var board = game.getBoard().getBoard();
+    sb.append(ConsoleDraw.SET_TEXT_COLOR_BLACK);
+
+    int startRow = isWhite ? 8 : 1;
+    int endRow = isWhite ? 0 : 9;
+    int rowIncrement = isWhite ? -1 : 1;
+
+    for (int i = startRow; i != endRow; i += rowIncrement) {
+      ChessPiece[] row = board[i - 1];
+      final int startCol = isWhite ? 0 : 7;
+      final int endCol = isWhite ? 8 : -1;
+      final int colIncrement = isWhite ? 1 : -1;
+
+      for (int j = startCol; j != endCol; j += colIncrement) {
+        ChessPiece piece = row[j];
+        String pieceStr = (piece == null) ? ConsoleDraw.EMPTY : piece.toString();
+        boolean isDark = (i + j) % 2 == 1;
+        sb.append(isDark ? ConsoleDraw.DARK_SQUARE_BG_COLOR : ConsoleDraw.LIGHT_SQUARE_BG_COLOR).append(pieceStr);
+      }
+      sb.append(ConsoleDraw.RESET_BG_COLOR).append("\n");
+    }
+    sb.append(ConsoleDraw.SET_TEXT_COLOR_WHITE);
+
+    System.out.println(sb);
   }
 }

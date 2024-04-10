@@ -189,3 +189,21 @@ _
 /src/main/java/facade/ServerMessageObserver.java,2\9\294bda8ad5a8afb3045690c5b3035d46c824f045
 d
 4src/test/java/clientTests/HttpCommunicatorTests.java,f\8\f8cbf9f14ae6f426a5fac0bea2559e0f1d102f72
+V
+&src/main/java/facade/ServerFacade.java,0\c\0c6cdcdcc68708b3dbb0e5add4eec6a8d0a51a21
+W
+'src/main/java/command/ServerFacade.java,7\8\78ed425e23a071b227b5b090f6f90e8d5192ab35
+S
+#src/main/java/CommandProcessor.java,a\d\adecc990f908d5d1f9e26718166340e710482952
+O
+src/main/java/ServerFacade.java,5\2\5251eb102f16898a470e832cc5b12f7bd9977ca7
+W
+'src/main/java/ClientMain_structure.puml,4\1\41935fadf8c726557374538aa2bdfef3dee3d0c8
+Z
+*src/main/java/consoleDraw/consoleDraw.java,4\4\44eda9bca4f209e0f83915d9b7cfd29166328ee6
+Z
+*src/main/java/consoleDraw/ConsoleDraw.java,0\b\0bcf8aa9b6aaf5b072ff97a9a29fe3cf5e795b28
+S
+#src/main/java/chess/ChessPiece.java,8\5\85a88ea4958ed1b3e2cc2a545a3ad992329e985a
+N
+src/main/java/ClientState.java,f\2\f20677046238c52016f53df26ff3172f538e770b

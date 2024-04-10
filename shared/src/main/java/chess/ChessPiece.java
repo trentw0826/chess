@@ -1,6 +1,6 @@
 package chess;
 
-import consoleDraw.consoleDraw;
+import consoleDraw.ConsoleDraw;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -40,23 +40,23 @@ public class ChessPiece implements Cloneable {
     //TODO update piecetype enum to contain these values rather than having to retrieve them
     if (pieceColor == WHITE) {
       switch (pieceType) {
-        case KING -> str = consoleDraw.WHITE_KING;
-        case QUEEN -> str = consoleDraw.WHITE_QUEEN;
-        case KNIGHT -> str = consoleDraw.WHITE_KNIGHT;
-        case BISHOP -> str = consoleDraw.WHITE_BISHOP;
-        case ROOK -> str = consoleDraw.WHITE_ROOK;
-        case PAWN -> str = consoleDraw.WHITE_PAWN;
+        case KING -> str = ConsoleDraw.WHITE_KING;
+        case QUEEN -> str = ConsoleDraw.WHITE_QUEEN;
+        case KNIGHT -> str = ConsoleDraw.WHITE_KNIGHT;
+        case BISHOP -> str = ConsoleDraw.WHITE_BISHOP;
+        case ROOK -> str = ConsoleDraw.WHITE_ROOK;
+        case PAWN -> str = ConsoleDraw.WHITE_PAWN;
         default -> throw new IllegalStateException();
       }
     }
     else if (pieceColor == BLACK) {
       switch (pieceType) {
-        case KING -> str = consoleDraw.BLACK_KING;
-        case QUEEN -> str = consoleDraw.BLACK_QUEEN;
-        case KNIGHT -> str = consoleDraw.BLACK_KNIGHT;
-        case BISHOP -> str = consoleDraw.BLACK_BISHOP;
-        case ROOK -> str = consoleDraw.BLACK_ROOK;
-        case PAWN -> str = consoleDraw.BLACK_PAWN;
+        case KING -> str = ConsoleDraw.BLACK_KING;
+        case QUEEN -> str = ConsoleDraw.BLACK_QUEEN;
+        case KNIGHT -> str = ConsoleDraw.BLACK_KNIGHT;
+        case BISHOP -> str = ConsoleDraw.BLACK_BISHOP;
+        case ROOK -> str = ConsoleDraw.BLACK_ROOK;
+        case PAWN -> str = ConsoleDraw.BLACK_PAWN;
         default -> throw new IllegalStateException();
       }
     }

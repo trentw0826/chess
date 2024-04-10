@@ -1,7 +1,5 @@
 package chess;
 
-import consoleDraw.consoleDraw;
-
 import java.util.*;
 
 import static chess.ChessPiece.PieceType.*;
@@ -33,10 +31,6 @@ public class ChessBoard implements Cloneable {
     }
 
 
-    /**
-     * @param o other ChessBoard object
-     * @return true if the boards are equal
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -45,41 +39,9 @@ public class ChessBoard implements Cloneable {
         return Arrays.deepEquals(board, that.board);
     }
 
-
-    /**
-     * @return deepHashCode of board attribute
-     */
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(board);
-    }
-
-
-    public String getPrintable(boolean isWhite) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(consoleDraw.SET_TEXT_COLOR_BLACK);
-
-        int startRow = isWhite ? 8 : 1;
-        int endRow = isWhite ? 0 : 9;
-        int rowIncrement = isWhite ? -1 : 1;
-
-        for (int i = startRow; i != endRow; i += rowIncrement) {
-            ChessPiece[] row = board[i - 1];
-            final int startCol = isWhite ? 0 : 7;
-            final int endCol = isWhite ? 8 : -1;
-            final int colIncrement = isWhite ? 1 : -1;
-
-            for (int j = startCol; j != endCol; j += colIncrement) {
-                ChessPiece piece = row[j];
-                String pieceStr = (piece == null) ? consoleDraw.EMPTY : piece.toString();
-                sb.append(((i + j) % 2 == 1) ? consoleDraw.DARK_SQUARE_BG_COLOR : consoleDraw.LIGHT_SQUARE_BG_COLOR)
-                        .append(pieceStr);
-            }
-            sb.append(consoleDraw.RESET_BG_COLOR).append("\n");
-        }
-        sb.append(consoleDraw.SET_TEXT_COLOR_WHITE);
-
-        return sb.toString();
     }
 
 
