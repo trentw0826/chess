@@ -141,3 +141,13 @@ U
 .src/main/java/ui/command/CommandException.java,2\4\243b99c09c0d8c1ca253773a3509a5d01b9f292a
 e
 5src/main/java/ui/command/PreLoginCommandExecutor.java,4\b\4b36f03e63002d68a79f1f23ea1c235e6fd64221
+Z
+*src/main/java/playerColor/PlayerColor.java,8\8\88435f5a80c6d734cb30124188edf55e461190e7
+j
+:src/test/java/passoffTests/serverTests/WebSocketTests.java,7\0\70854cd385238f0f3a2b74a52116b5c6f4af0553
+Q
+!src/main/java/model/GameData.java,6\7\67153312f42cfc25e918e7241d99ff3d32f0ce01
+R
+"src/main/java/chess/ChessGame.java,7\3\73bf4fdc57c71c6f70f600b9fea515a646b27eef
+S
+#src/main/java/chess/ChessBoard.java,1\3\139d0d4bb2b8e11a4e03dbed5b694452387fb52a

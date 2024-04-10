@@ -18,6 +18,7 @@ public class ChessBoard implements Cloneable {
      * Constructs ChessBoard object, a blank double array of size 8x8.
      */
     public ChessBoard() {
+        //TODO get rid of the 1st line of this constructor (useless)
         board = new ChessPiece[ChessConstants.BOARD_SIZE][ChessConstants.BOARD_SIZE];
         resetBoard();
     }

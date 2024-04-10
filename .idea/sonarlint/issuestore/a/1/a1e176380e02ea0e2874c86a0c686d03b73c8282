@@ -1,10 +1,12 @@
 
 “
-java:S1301&"KReplace this "switch" statement by "if" statements to increase readability.(óŽÌ’üÿÿÿÿ8­Íþ¢ì1J$e7c22c21-4a6f-4975-b6ce-ae4353393a0c
-´
-java:S1130$"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.( ˜Î”þÿÿÿÿ8ÓÍþ¢ì1J$6548786c-ea97-419b-9021-19907aaa7d1a
-ƒ	java:S125("<This block of commented-out lines of code should be removed.(ìù”àúÿÿÿÿ8ÖÍþ¢ì1J$84deb812-a766-4e06-b7cd-f91e0d685ce9
+java:S1301'"KReplace this "switch" statement by "if" statements to increase readability.(óŽÌ’üÿÿÿÿ8¤Ëªì1J$588c26ac-f75a-470a-887c-49a00d866ccf
+ƒ	java:S125)"<This block of commented-out lines of code should be removed.(ìù”àúÿÿÿÿ8·Ëªì1J$2ddfe375-f065-4aff-9eea-2bd71383606f
+Œ
+java:S2147G"DCombine this catch with the one at line 68, which has the same body.(©œ¡ÿÿÿÿÿ8ÙèÕªì1J$987e47fa-62e9-412f-886b-8605d97736a8
 u
-java:S1135B"2Complete the task associated to this TODO comment.(þ²Èò8ÛÍþ¢ì1J$ad49989f-53d7-43cb-a5fb-84ce097a1e68
+java:S1135E"2Complete the task associated to this TODO comment.(þ²Èò8¹Ëªì1J$525e1499-df3d-4b2e-b56d-7aea934c9433
 z
-java:S1135O"2Complete the task associated to this TODO comment.( ûÊÒýÿÿÿÿ8ÝÍþ¢ì1J$2bab367d-107e-4bf2-9972-2489851cff1c
+java:S1135H"2Complete the task associated to this TODO comment.(÷Åÿ™úÿÿÿÿ8¿²Öªì1J$cf1df6cf-589a-4264-ae6d-d92ef9a13f74
+z
+java:S1135U"2Complete the task associated to this TODO comment.( ûÊÒýÿÿÿÿ8ºËªì1J$971a0edf-8e62-46bd-a0f2-845111ffa310

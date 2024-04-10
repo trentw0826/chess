@@ -1,8 +1,10 @@
 package ui.facade;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
 import exception.ResponseException;
 import playerColor.PlayerColor;
+import request.webSocketMessages.serverMessages.LoadGame;
 import request.webSocketMessages.serverMessages.Notification;
 import request.webSocketMessages.serverMessages.ServerMessage;
 import request.webSocketMessages.userCommands.JoinPlayerCommand;
@@ -29,8 +31,7 @@ public class WebsocketFacade extends Endpoint {
       this.currSession.addMessageHandler(new MessageHandler.Whole<String>() {
         @Override
         public void onMessage(String s) {
-          ServerMessage serverMessage = gson.fromJson(s, ServerMessage.class);
-          ServerMessage.ServerMessageType messageType = serverMessage.getServerMessageType();
+          ServerMessage.ServerMessageType messageType = gson.fromJson(s, ServerMessage.class).getServerMessageType();
           switch (messageType) {
             case NOTIFICATION:
               Notification notification = gson.fromJson(s, Notification.class);
@@ -38,7 +39,9 @@ public class WebsocketFacade extends Endpoint {
               System.out.printf("Server notification: %s%n", notification.getMessage());
               break;
             case LOAD_GAME:
-              //TODO implement logic upon recieving load game request from server
+              LoadGame loadGame = gson.fromJson(s, LoadGame.class);
+              ChessGame loadedGame = loadGame.getGame();
+              System.out.printf("%n%s%n", loadedGame.getBoard().getPrintable(true));  //TODO factor in color
               break;
             case ERROR:
               //TODO implement logic upon receiving error from server

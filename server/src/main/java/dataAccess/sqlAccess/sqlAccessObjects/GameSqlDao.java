@@ -28,10 +28,10 @@ public class GameSqlDao extends SqlAccessObject<Integer, GameData> implements Ga
   @Override
   public Integer create(GameData data) throws DataAccessException {
     try {
-      //TODO Should game be initialized as a new ChessGame or null?
       return executeUpdate("INSERT INTO " + GAME_TABLE +
                     " (whiteUsername, blackUsername, gameName, game) VALUES(?, ?, ?, ?)",
-                    data.getWhiteUsername(), data.getBlackUsername(), data.getGameName(), null);
+                    data.getWhiteUsername(), data.getBlackUsername(), data.getGameName(),
+                    new ChessGame());
     }
     catch (SQLException e) {
       throw new DataAccessException("Game data couldn't be inserted: " + e.getMessage());

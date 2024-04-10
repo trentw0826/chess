@@ -1,5 +1,6 @@
 package server.websocket;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import dataAccess.dataAccessObject.AuthDao;
@@ -23,11 +24,13 @@ public class WebSocketHandler {
   private final Gson gson;
   private final ConnectionManager connectionManager;
   private final AuthDao authDao;
+  private final GameDao gameDao;
 
   public WebSocketHandler() {
     gson = new Gson();
     this.connectionManager = new ConnectionManager();
     this.authDao = new AuthSqlDao();
+    this.gameDao = new GameSqlDao();
   }
 
   @OnWebSocketMessage
@@ -59,9 +62,14 @@ public class WebSocketHandler {
 
       Notification notification = new Notification(outgoingMessage);
       broadcast(desiredGameID, notification, currAuthToken);
+      ChessGame desiredGame = gameDao.get(desiredGameID).getGame();
+      sendLoadGame(session, desiredGame);
     }
     catch (DataAccessException e) {
       //TODO send error message to requesting connection
+    }
+    catch (IOException e) {
+      //TODO what should happen when a load game cannot be sent?
     }
   }
 
@@ -78,6 +86,12 @@ public class WebSocketHandler {
           }
         }
       }
+    }
+  }
+
+  private void sendLoadGame(Session session, ChessGame game) throws IOException {
+    if (session.isOpen()) {
+      session.getRemote().sendString(gson.toJson(new LoadGame(game)));
     }
   }
 }
