@@ -33,7 +33,7 @@ public class Command {
     JOIN("join", "join an existing chess game as the given color", GAME_ID_ARG, COLOR_ARG),
     OBSERVE("observe", "observe an existing chess game", GAME_ID_ARG),
     // gameplay
-    REDRAW("redraw", "redraw the current chess board to your console"),
+    DRAW("redraw", "redraw the current chess board to your console"),
     MOVE("[a-hA-H][1-8][a-hA-H][1-8]", "make a chess move (eg. e4e5)"),
     RESIGN("resign", "admit defeat"),
     LEAVE("leave", "leave the game (doesn't resign)"),

@@ -7,7 +7,8 @@ import static command.Command.Commands.*;
 enum ClientState {
   PRE_LOGIN(List.of(REGISTER, LOGIN, HELP, QUIT)),
   POST_LOGIN(List.of(LIST, CREATE, JOIN, OBSERVE, LOGOUT, HELP)),
-  GAMEPLAY(List.of(REDRAW, MOVE, RESIGN, LEAVE, HIGHLIGHT, HELP));
+  GAMEPLAY(List.of(DRAW, MOVE, RESIGN, LEAVE, HIGHLIGHT, HELP)),
+  OBSERVING(List.of(DRAW, LEAVE, HIGHLIGHT, HELP));
 
   private final List<Command.Commands> associatedCommands;
 

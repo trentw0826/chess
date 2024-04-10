@@ -1,9 +1,5 @@
 import command.CommandException;
 import exception.ResponseException;
-import facade.ServerMessageObserver;
-import request.webSocketMessages.serverMessages.*;
-import request.webSocketMessages.serverMessages.Error;
-import request.webSocketMessages.serverMessages.ServerMessage;
 
 import java.util.Scanner;
 
@@ -12,13 +8,13 @@ import java.util.Scanner;
  * Center for handling user interactions.
  * Acts as an in-between for the user's console and the server facade
  */
-public class Repl implements ServerMessageObserver {
+public class Repl {
 
   private final Scanner scanner = new Scanner(System.in);
-  private final CommandProcessor processor;
+  private final ClientHandler clientHandler;
 
   public Repl(String serverUrl) {
-    this.processor = new CommandProcessor(serverUrl, this);
+    this.clientHandler = new ClientHandler(serverUrl);
   }
 
   /**
@@ -32,8 +28,8 @@ public class Repl implements ServerMessageObserver {
       String processedOutput;
 
       try {
-        processedOutput = processor.processUserInputArr(userInput);
-        if (processedOutput.equals(CommandProcessor.TERMINATE)) {
+        processedOutput = clientHandler.processUserInputArr(userInput);
+        if (processedOutput.equals(ClientHandler.TERMINATE)) {
           break;
         }
         ClientConsoleControl.printNeutralMessage(processedOutput);
@@ -47,16 +43,6 @@ public class Repl implements ServerMessageObserver {
       }
     }
     System.exit(0);
-  }
-
-
-  @Override
-  public void notifyOfMessage(ServerMessage message) {
-    switch (message.getServerMessageType()) {
-      case NOTIFICATION -> ClientConsoleControl.printNotification(((Notification) message).getMessage());
-      case ERROR -> ClientConsoleControl.printErrorMessage(((Error) message).getErrorMessage());
-      case LOAD_GAME -> ClientConsoleControl.printChessBoard(((LoadGame) message).getGame(), true); //TODO factor in active color
-    }
   }
 
 

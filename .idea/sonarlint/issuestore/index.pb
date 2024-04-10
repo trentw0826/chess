@@ -207,3 +207,7 @@ S
 #src/main/java/chess/ChessPiece.java,8\5\85a88ea4958ed1b3e2cc2a545a3ad992329e985a
 N
 src/main/java/ClientState.java,f\2\f20677046238c52016f53df26ff3172f538e770b
+I
+src/main/java/Client.java,a\f\afb1b584708e6ac3bfba707cbf2bc88ec58914a5
+P
+ src/main/java/ClientHandler.java,f\d\fd9ef9036e6379b54618e13034b83410af458bb8
