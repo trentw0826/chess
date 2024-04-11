@@ -7,11 +7,13 @@ import dataAccess.dataAccessObject.AuthDao;
 import dataAccess.dataAccessObject.GameDao;
 import dataAccess.sqlAccess.sqlAccessObjects.AuthSqlDao;
 import dataAccess.sqlAccess.sqlAccessObjects.GameSqlDao;
+import model.GameData;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import playerColor.PlayerColor;
 import request.webSocketMessages.serverMessages.*;
+import request.webSocketMessages.serverMessages.Error;
 import request.webSocketMessages.userCommands.JoinPlayerCommand;
 import request.webSocketMessages.userCommands.UserGameCommand;
 
@@ -47,43 +49,41 @@ public class WebSocketHandler {
   }
 
   private void join(JoinPlayerCommand joinPlayerCommand, Session session) {
-    int desiredGameID = joinPlayerCommand.getGameID();
-    String currAuthToken = joinPlayerCommand.getAuthToken();
-    PlayerColor desiredColor = joinPlayerCommand.getPlayerColor();
-
-    connectionManager.add(desiredGameID, currAuthToken, session);
-
-    String requestingUsername;
     try {
-      requestingUsername = authDao.getUsernameFromAuthToken(currAuthToken);
+      int desiredGameID = joinPlayerCommand.getGameID();
+      String currAuthToken = joinPlayerCommand.getAuthToken();
+      PlayerColor desiredColor = joinPlayerCommand.getPlayerColor();
+
+      String requestingUsername = authDao.getUsernameFromAuthToken(currAuthToken);
+      GameData desiredGameData = gameDao.get(desiredGameID);
+      String existingUsername = (desiredColor == PlayerColor.WHITE) ?
+              desiredGameData.getWhiteUsername() : desiredGameData.getBlackUsername();
+
+      if (!(existingUsername != null && existingUsername.equals(requestingUsername))) {
+        sendError(session, String.format("Error: %s is already taken by %s", desiredColor.toString(), existingUsername));
+        return;
+      }
 
       String outgoingMessage = String.format("'%s' has joined the game as %s",
               requestingUsername, desiredColor.toString());
 
+      ChessGame desiredGame = desiredGameData.getGame();
+      connectionManager.add(desiredGameID, currAuthToken, session);
       Notification notification = new Notification(outgoingMessage);
       broadcast(desiredGameID, notification, currAuthToken);
-      ChessGame desiredGame = gameDao.get(desiredGameID).getGame();
       sendLoadGame(session, desiredGame);
     }
-    catch (DataAccessException e) {
-      //TODO send error message to requesting connection
-    }
-    catch (IOException e) {
-      //TODO what should happen when a load game cannot be sent?
+    catch (IOException | DataAccessException e) {
+      throw new IllegalStateException(e);
     }
   }
 
-  private void broadcast(int gameID, Notification notification, String responsibleAuth) {
+  private void broadcast(int gameID, Notification notification, String responsibleAuth) throws IOException {
     ConcurrentMap<String, Connection> activeConnections = connectionManager.getActiveGameConnections(gameID);
     if (activeConnections != null) {
       for (Connection conn : activeConnections.values()) {
         if (conn.getSession().isOpen() && !conn.getAuthToken().equals(responsibleAuth)) {
-          try {
-            conn.send(gson.toJson(notification));
-          }
-          catch (IOException e) {
-            // TODO how should broadcast handle not being able to send a notification?
-          }
+          conn.send(gson.toJson(notification));
         }
       }
     }
@@ -92,6 +92,12 @@ public class WebSocketHandler {
   private void sendLoadGame(Session session, ChessGame game) throws IOException {
     if (session.isOpen()) {
       session.getRemote().sendString(gson.toJson(new LoadGame(game)));
+    }
+  }
+
+  private void sendError(Session session, String message) throws IOException {
+    if (session.isOpen()) {
+      session.getRemote().sendString(gson.toJson(new Error(message)));
     }
   }
 }

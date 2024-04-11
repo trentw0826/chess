@@ -2,14 +2,13 @@ import chess.ChessGame;
 import chess.ChessPiece;
 import consoleDraw.ConsoleDraw;
 
-import static consoleDraw.ConsoleDraw.WHITE_KING;
-import static consoleDraw.ConsoleDraw.WHITE_QUEEN;
+import static consoleDraw.ConsoleDraw.*;
 
 public class ClientConsoleControl {
 
   private ClientConsoleControl() {}
 
-  private static final String WELCOME_MESSAGE = WHITE_KING + " Chess Client " + WHITE_QUEEN;
+  private static final String WELCOME_MESSAGE = SET_TEXT_COLOR_DEFAULT + WHITE_KING + " Chess Client " + WHITE_QUEEN;
   private static final String PROMPT_ICON = ">>>";
 
   public static void displayWelcomeMessage() {
@@ -31,7 +30,8 @@ public class ClientConsoleControl {
   }
 
   public static void printErrorMessage(String message) {
-    System.out.printf("<!> %s <!>%n", message);
+    System.out.printf("%s<!>%s %s %s<!>%s%n", SET_TEXT_COLOR_RED, SET_TEXT_COLOR_DEFAULT, message,
+            SET_TEXT_COLOR_RED, SET_TEXT_COLOR_DEFAULT);
   }
 
   public static void printNotification(String message) {
@@ -39,9 +39,9 @@ public class ClientConsoleControl {
   }
 
   public static void printChessBoard(ChessGame game, boolean isWhite) {
-    StringBuilder sb = new StringBuilder();
     var board = game.getBoard().getBoard();
-    sb.append(ConsoleDraw.SET_TEXT_COLOR_BLACK);
+    StringBuilder sb = new StringBuilder();
+    sb.append("\n").append(ConsoleDraw.SET_TEXT_COLOR_BLACK);
 
     int startRow = isWhite ? 8 : 1;
     int endRow = isWhite ? 0 : 9;

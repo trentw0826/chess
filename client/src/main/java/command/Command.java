@@ -34,7 +34,7 @@ public class Command {
     OBSERVE("observe", "observe an existing chess game", GAME_ID_ARG),
     // gameplay
     DRAW("redraw", "redraw the current chess board to your console"),
-    MOVE("[a-hA-H][1-8][a-hA-H][1-8]", "make a chess move (eg. e4e5)"),
+    MOVE("[a-h][1-8][a-h][1-8](=[QRNB])?", "make a chess move (eg. e4e5)"),
     RESIGN("resign", "admit defeat"),
     LEAVE("leave", "leave the game (doesn't resign)"),
     HIGHLIGHT("[a-hA-H][1-8]", "highlight the valid moves for a given piece (eg. e4)");

@@ -21,6 +21,7 @@ public class Repl {
    * Controls the read->eval->print interaction between the user's console
    * and the command processor.
    */
+  //TODO Combine with client handler
   public void repl() {
     ClientConsoleControl.displayWelcomeMessage();
     while (true) {
