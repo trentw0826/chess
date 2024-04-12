@@ -53,15 +53,16 @@ public abstract class SqlAccessObject<K, T extends DataModel<K>> implements Data
                 whiteUsername VARCHAR(255),
                 blackUsername VARCHAR(255),
                 gameName VARCHAR(255) NOT NULL,
-                game JSON
+                game JSON,
+                gameActive BOOLEAN NOT NULL
             )
             """,
           """
           CREATE TABLE IF NOT EXISTS observers (
+              id INT AUTO_INCREMENT PRIMARY KEY,
               username VARCHAR(255) NOT NULL,
               gameID INT NOT NULL,
               
-              PRIMARY KEY (username),
               FOREIGN KEY (gameID) REFERENCES gamedata(gameID)
           )
           """
@@ -110,7 +111,7 @@ public abstract class SqlAccessObject<K, T extends DataModel<K>> implements Data
           case Integer p -> preparedStatement.setInt(i + 1, p);
           case ChessGame p -> preparedStatement.setString(i + 1, gson.toJson(p));
           case null -> preparedStatement.setNull(i + 1, NULL);
-          default -> { throw new IllegalArgumentException("Illegal parameter include in SQL statement"); }
+          default -> throw new IllegalArgumentException("Illegal parameter include in SQL statement");
         }
       }
       preparedStatement.executeUpdate();
@@ -124,6 +125,4 @@ public abstract class SqlAccessObject<K, T extends DataModel<K>> implements Data
       return -1;
     }
   }
-
-  //TODO executeQuery method
 }

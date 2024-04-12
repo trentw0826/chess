@@ -3,23 +3,23 @@ package facade;
 import com.google.gson.Gson;
 import exception.ResponseException;
 import playerColor.PlayerColor;
+import request.webSocketMessages.serverMessages.*;
 import request.webSocketMessages.serverMessages.Error;
-import request.webSocketMessages.serverMessages.LoadGame;
-import request.webSocketMessages.serverMessages.Notification;
-import request.webSocketMessages.serverMessages.ServerMessage;
+import request.webSocketMessages.userCommands.JoinObserverCommand;
 import request.webSocketMessages.userCommands.JoinPlayerCommand;
 import request.webSocketMessages.userCommands.LeaveCommand;
+import request.webSocketMessages.userCommands.ResignCommand;
 
 import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class WsCommunicator extends Endpoint {
+public class WebSocketCommunicator extends Endpoint {
   private final Gson gson;
   private final Session currSession;
 
-  public WsCommunicator(String url, ServerMessageObserver serverMessageObserver) throws ResponseException {
+  public WebSocketCommunicator(String url, ServerMessageObserver serverMessageObserver) throws ResponseException {
     this.gson = new Gson();
 
     try {
@@ -71,10 +71,31 @@ public class WsCommunicator extends Endpoint {
     }
   }
 
+  public void joinObserver(int gameID, String authToken) throws ResponseException {
+    JoinObserverCommand joinObserverCommand = new JoinObserverCommand(authToken, gameID);
+    try {
+      this.currSession.getBasicRemote().sendText(gson.toJson(joinObserverCommand));
+    }
+    catch (IOException e) {
+      throw new ResponseException(e.getMessage(), 500);
+    }
+  }
+
   public void leave(int gameID, String authToken) throws ResponseException {
     LeaveCommand leaveCommand = new LeaveCommand(authToken, gameID);
     try {
       this.currSession.getBasicRemote().sendText(gson.toJson(leaveCommand));
+    }
+    catch (IOException e) {
+      throw new ResponseException(e.getMessage(), 500);
+    }
+  }
+
+
+  public void resign(int gameID, String authToken) throws ResponseException {
+    ResignCommand resignCommand = new ResignCommand(authToken, gameID);
+    try {
+      this.currSession.getBasicRemote().sendText(gson.toJson(resignCommand));
     }
     catch (IOException e) {
       throw new ResponseException(e.getMessage(), 500);

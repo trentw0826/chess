@@ -16,17 +16,19 @@ public class GameData implements DataModel<Integer> {
   private final Set<String> observers = new HashSet<>();
   private final String gameName;
   private ChessGame game;
+  private boolean gameActive;
 
-  public GameData(Integer gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game) {
+  public GameData(Integer gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game, boolean gameActive) {
     this.gameID = gameID;
     this.whiteUsername = whiteUsername;
     this.blackUsername = blackUsername;
     this.gameName = gameName;
     this.game = game;
+    this.gameActive = gameActive;
   }
 
   public GameData(String gameName) {
-    this(null, null, null, gameName, new ChessGame());
+    this(null, null, null, gameName, new ChessGame(), true);
   }
 
   public String getWhiteUsername() {
@@ -69,6 +71,10 @@ public class GameData implements DataModel<Integer> {
     observers.add(newObserverUsername);
   }
 
+  public boolean isGameActive() {
+    return gameActive;
+  }
+
   @Override
   public boolean hasNullFields() {
     return (gameName == null || game == null);
@@ -97,6 +103,8 @@ public class GameData implements DataModel<Integer> {
       }
     }
 
-    return String.format("[\"%s\"] [%s]", gameName, playerStatus);
+    String gameActiveStr = gameActive ? "" : " [finished]";
+
+    return String.format("[\"%s\"] [%s]%s", gameName, playerStatus, gameActiveStr);
   }
 }

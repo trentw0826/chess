@@ -41,7 +41,7 @@ public class WebSocketHandler {
     commandHandlers.put(JOIN_OBSERVER, this::observe);
 //    commandHandlers.put(MAKE_MOVE, this::makeMove);
     commandHandlers.put(LEAVE, this::leave);
-//    commandHandlers.put(RESIGN, this::resign);
+    commandHandlers.put(RESIGN, this::resign);
   }
 
   @OnWebSocketMessage
@@ -65,7 +65,11 @@ public class WebSocketHandler {
       GameData desiredGameData = gameDao.get(desiredGameID);
       String existingUsername = (desiredColor == PlayerColor.WHITE) ? desiredGameData.getWhiteUsername() : desiredGameData.getBlackUsername();
 
-      if (!(existingUsername != null && existingUsername.equals(requestingUsername))) {
+      if (existingUsername == null) {
+        sendError(session, "You haven't reserved this spot with HTTP yet!");
+        return;
+      }
+      else if (!existingUsername.equals(requestingUsername)) {
         sendError(session, String.format("Error: %s is already taken by %s", desiredColor.toString(), existingUsername));
         return;
       }
@@ -73,7 +77,7 @@ public class WebSocketHandler {
       String outgoingMessage = String.format("'%s' has joined the game as %s", requestingUsername, desiredColor);
       ChessGame desiredGame = desiredGameData.getGame();
       connectionManager.add(desiredGameID, currAuthToken, session);
-      broadcast(desiredGameID, new Notification(outgoingMessage), currAuthToken);
+      broadcast(desiredGameID, new Notification(outgoingMessage), currAuthToken, true);
       sendLoadGame(session, desiredGame);
     }
     catch (DataAccessException e) {
@@ -89,10 +93,10 @@ public class WebSocketHandler {
     try {
     String requestingUsername = authDao.getUsernameFromAuthToken(currAuthToken);
       GameData desiredGameData = gameDao.get(desiredGameID);
-      String outgoingMessage = String.format("'%s' has joined the game as an observer", requestingUsername);
+      String outgoingMessage = String.format("'%s' is now observing this game", requestingUsername);
       ChessGame desiredGame = desiredGameData.getGame();
       connectionManager.add(desiredGameID, currAuthToken, session);
-      broadcast(desiredGameID, new Notification(outgoingMessage), currAuthToken);
+      broadcast(desiredGameID, new Notification(outgoingMessage), currAuthToken, true);
       sendLoadGame(session, desiredGame);
     }
     catch (DataAccessException e) {
@@ -108,22 +112,60 @@ public class WebSocketHandler {
     try {
       String requestingUsername = authDao.getUsernameFromAuthToken(currAuthToken);
 
-      String outgoingMessage = String.format("'%s' has left the game", requestingUsername);
+      if (gameDao.usernameIsPlaying(desiredGameID, requestingUsername)) {
+        gameDao.removePlayer(desiredGameID, requestingUsername);
+      }
+      else if (gameDao.usernameIsObserving(desiredGameID, requestingUsername)) {
+        gameDao.removeObserver(desiredGameID, requestingUsername);
+      }
+      else {
+        sendError(session, "you are not in this game!");
+      }
+
       connectionManager.remove(desiredGameID, currAuthToken);
-      broadcast(desiredGameID, new Notification(outgoingMessage), currAuthToken);
+
+      String outgoingMessage = String.format("'%s' has left the game", requestingUsername);
+      broadcast(desiredGameID, new Notification(outgoingMessage), currAuthToken, true);
     }
     catch (DataAccessException e) {
       sendError(session, e.getMessage());
     }
   }
 
-  private void broadcast(int gameID, Notification notification, String responsibleAuth) {
-    ConcurrentMap<String, Connection> activeConnections = connectionManager.getActiveGameConnections(gameID);
-    if (activeConnections != null) {
-      activeConnections.values().stream()
-              .filter(conn -> conn.getSession().isOpen() && !conn.getAuthToken().equals(responsibleAuth))
+
+  private void resign(Session session, String message) {
+    ResignCommand resignCommand = gson.fromJson(message, ResignCommand.class);
+    int desiredGameID = resignCommand.getGameID();
+    String currAuthToken = resignCommand.getAuthToken();
+
+    try {
+      if (!gameDao.isGameActive(desiredGameID)) {
+        sendError(session, "resign not allowed (game inactive)");
+      }
+
+      String requestingUsername = authDao.getUsernameFromAuthToken(currAuthToken);
+      if (!gameDao.usernameIsPlaying(desiredGameID, requestingUsername)) {
+        sendError(session, "you are not authorized to resign this game");
+        return;
+      }
+
+      gameDao.gameOver(desiredGameID);
+
+      String outgoingMessage = String.format("'%s' has resigned!", requestingUsername);
+      broadcast(desiredGameID, new Notification(outgoingMessage), currAuthToken, false);
+    }
+    catch (DataAccessException e) {
+      sendError(session, e.getMessage());
+    }
+  }
+
+  private void broadcast(int gameID, ServerMessage serverMessage, String responsibleAuth, boolean excludeSender) {
+    ConcurrentMap<String, Connection> activeGameConnections = connectionManager.getActiveGameConnections(gameID);
+    if (activeGameConnections != null) {
+      activeGameConnections.values().stream()
+              .filter(conn -> conn.getSession().isOpen() && (!conn.getAuthToken().equals(responsibleAuth) || !excludeSender))
               .map(Connection::getSession)
-              .forEach(session -> sendWsMessage(session, gson.toJson(notification)));
+              .forEach(session -> sendWsMessage(session, gson.toJson(serverMessage)));
     }
   }
 
@@ -131,15 +173,16 @@ public class WebSocketHandler {
     sendWsMessage(session, gson.toJson(new LoadGame(game)));
   }
 
-  private void sendError(Session session, String message) {
-    sendWsMessage(session, gson.toJson(new Error(message)));
+  private void sendError(Session session, String errorMessage) {
+    sendWsMessage(session, gson.toJson(new Error(errorMessage)));
   }
 
   private static void sendWsMessage(Session session, String message) {
     try {
       session.getRemote().sendString(message);
-    } catch (IOException e) {
-      logger.log(Level.WARNING, "Error message couldn't be sent");
+    }
+    catch (IOException e) {
+      logger.log(Level.WARNING, "Websocket message couldn't be sent");
     }
   }
 }

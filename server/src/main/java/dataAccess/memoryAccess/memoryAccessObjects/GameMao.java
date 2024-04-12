@@ -133,4 +133,38 @@ public class GameMao extends MemoryAccessObject<Integer, GameData> implements Ga
 
     localData.put(gameID, retrievedGame);
   }
+
+  @Override
+  public void removePlayer(int gameID, String username) {
+    //TODO implement
+  }
+
+  @Override
+  public void gameOver(int gameID) {
+    //TODO implement
+  }
+
+  @Override
+  public boolean isGameActive(int gameID) throws DataAccessException {
+    //TODO implement
+    return false;
+  }
+
+  @Override
+  public boolean usernameIsPlaying(int gameID, String username) throws DataAccessException {
+    //TODO implement
+    return false;
+  }
+
+  @Override
+  public boolean usernameIsObserving(int gameID, String username) throws DataAccessException {
+    //TODO implement
+    return false;
+  }
+
+  @Override
+  public void removeObserver(int gameID, String username) throws DataAccessException {
+    //TODO implement
+
+  }
 }

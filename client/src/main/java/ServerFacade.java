@@ -2,7 +2,7 @@ import command.CommandException;
 import exception.ResponseException;
 import facade.HttpCommunicator;
 import facade.ServerMessageObserver;
-import facade.WsCommunicator;
+import facade.WebSocketCommunicator;
 import model.GameData;
 import playerColor.PlayerColor;
 import response.CreateGameResponse;
@@ -35,16 +35,18 @@ public class ServerFacade {
     return null;
   }
 
-  public String resign() {
-    //TODO Implement
-    return null;
+  public String resign() throws ResponseException {
+    //TODO do I need to create new WsCommunicators for every usage?
+    WebSocketCommunicator webSocketCommunicator = new WebSocketCommunicator(serverUrl, serverMessageObserver);
+    webSocketCommunicator.resign(currGameId, currAuthToken);
+    return "you've resigned!";
   }
 
   public String leave() throws ResponseException {
-    WsCommunicator wsCommunicator = new WsCommunicator(serverUrl, serverMessageObserver);
-    wsCommunicator.leave(currGameId, currAuthToken);
+    WebSocketCommunicator webSocketCommunicator = new WebSocketCommunicator(serverUrl, serverMessageObserver);
+    webSocketCommunicator.leave(currGameId, currAuthToken);
     currGameId = NO_GAME;
-    return null;
+    return "you've left your game";
   }
 
   public String makeMove(String[] userInputArr) {
@@ -78,16 +80,25 @@ public class ServerFacade {
 
     httpCommunicator.joinPlayer(gameId, currAuthToken, playerColor);
 
-    WsCommunicator wsCommunicator = new WsCommunicator(serverUrl, serverMessageObserver);
-    wsCommunicator.joinPlayer(gameId, currAuthToken, playerColor);
+    WebSocketCommunicator webSocketCommunicator = new WebSocketCommunicator(serverUrl, serverMessageObserver);
+    webSocketCommunicator.joinPlayer(gameId, currAuthToken, playerColor);
 
     currGameId = gameId;
     return String.format("you've joined game #%d as %s", localGameNum, playerColor);
   }
 
-  public String observe(String[] userInput) throws ResponseException {
-    //TODO Implement observe logic
-    return null;
+
+  public String observe(String[] userInput) throws ResponseException, CommandException {
+    int localGameNum = Integer.parseInt(userInput[1]);
+    int gameId = getGameIdFromLocal(localGameNum);
+
+    httpCommunicator.joinPlayer(gameId, currAuthToken, null);
+
+    WebSocketCommunicator webSocketCommunicator = new WebSocketCommunicator(serverUrl, serverMessageObserver);
+    webSocketCommunicator.joinObserver(gameId, currAuthToken);
+
+    currGameId = gameId;
+    return String.format("you're observing game #%d", localGameNum);
   }
 
 

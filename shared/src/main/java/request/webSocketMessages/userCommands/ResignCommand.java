@@ -14,6 +14,10 @@ public class ResignCommand extends UserGameCommand {
     this.gameID = gameID;
   }
 
+  public int getGameID() {
+    return gameID;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

@@ -70,9 +70,9 @@ public class ConsoleDraw {
     public static final String BLACK_PAWN = " ♟ ";
     public static final String EMPTY = " \u2003 ";
 
-    public static String moveCursorToLocation(int x, int y) {
-        return UNICODE_ESCAPE + "[" + y + ";" + x + "H";
-    }
+//    public static String moveCursorToLocation(int x, int y) {
+//        return UNICODE_ESCAPE + "[" + y + ";" + x + "H";
+//    }
 
     public static String italicizeString(String str) {
         return SET_TEXT_ITALIC + str + RESET_TEXT_ITALIC;
@@ -82,23 +82,23 @@ public class ConsoleDraw {
         return SET_TEXT_BOLD + str + RESET_TEXT_BOLD_FAINT;
     }
 
-    public static String underlineString(String str) {
-        return SET_TEXT_UNDERLINE + str + RESET_TEXT_UNDERLINE;
-    }
+//    public static String underlineString(String str) {
+//        return SET_TEXT_UNDERLINE + str + RESET_TEXT_UNDERLINE;
+//    }
 
-    public static String getStringWithBackground(String backgroundColor, String str) {
-        return backgroundColor + str + RESET_BG_COLOR;
-    }
-
-    public static void clearScreen() {
-        System.out.print(ERASE_SCREEN);
-    }
-
-    public static String getColorEscape(int r, int g, int b) {
-        return String.format("\u001B[38;2;%d;%d;%dm", r, g, b);
-    }
-
-    public static void setBackgroundColor(int r, int g, int b) {
-        System.out.printf("\u001B[48;2;%d;%d;%dm", r, g, b);
-    }
+//    public static String getStringWithBackground(String backgroundColor, String str) {
+//        return backgroundColor + str + RESET_BG_COLOR;
+//    }
+//
+//    public static void clearScreen() {
+//        System.out.print(ERASE_SCREEN);
+//    }
+//
+//    public static String getColorEscape(int r, int g, int b) {
+//        return String.format("\u001B[38;2;%d;%d;%dm", r, g, b);
+//    }
+//
+//    public static void setBackgroundColor(int r, int g, int b) {
+//        System.out.printf("\u001B[48;2;%d;%d;%dm", r, g, b);
+//    }
 }   

@@ -12,7 +12,7 @@ public interface GameDao extends DataAccessObject<Integer, GameData> {
    *
    * @param gameID            game ID
    * @param observerUsername  observer's username
-   * @throws DataAccessException  if SQL error thrown during adding
+   * @throws DataAccessException  if error thrown during adding
    */
   void addObserver (final int gameID, final String observerUsername) throws DataAccessException;
 
@@ -23,7 +23,64 @@ public interface GameDao extends DataAccessObject<Integer, GameData> {
    * @param gameID    game ID
    * @param color     desired color ("white" for white, "black" for black, or null for observer)
    * @param username  joining player's username
-   * @throws DataAccessException  if SQL error thrown during adding
+   * @throws DataAccessException  if error thrown during adding
    */
   void setPlayer(final int gameID, final PlayerColor color, final String username) throws DataAccessException;
+
+  /**
+   * Sets the gameActive column at the given index to 0
+   *
+   * @param gameID  desired game index
+   */
+  void gameOver(int gameID) throws DataAccessException;
+
+
+  /**
+   * Returns if a given username is playing as white or black.
+   *
+   * @param gameID    desired game ID
+   * @param username  username to be checked
+   * @return          if 'username' matches either white or black player
+   * @throws DataAccessException  if error thrown during checking
+   */
+  boolean usernameIsPlaying(int gameID, String username) throws DataAccessException;
+
+
+  /**
+   * Returns if a game is currently active.
+   *
+   * @param gameID  desired game ID
+   * @return        if game associated with 'gameID' is active
+   * @throws DataAccessException  if error thrown during retrieval
+   */
+  boolean isGameActive(int gameID) throws DataAccessException;
+
+
+  /**
+   * Returns if the given user is observing the given game.
+   *
+   * @param gameID    desired game ID
+   * @param username  desired username
+   * @return          if 'username' is observing game with id 'gameID'
+   * @throws DataAccessException  if error thrown during access
+   */
+  boolean usernameIsObserving(int gameID, String username) throws DataAccessException;
+
+  /**
+   * Removes a player's reservation in a game, setting that position to null.
+   *
+   * @param gameID    desired game ID
+   * @param username  username of player to be removed
+   * @throws DataAccessException  if error thrown during removal
+   */
+  void removePlayer(int gameID, String username) throws DataAccessException;
+
+  /**
+   * Removes an observer from the given gameID
+   *
+   * @param gameID    desired game ID0
+   * @param username  username of observer to be removed
+   * @throws DataAccessException  if error thrown during removal
+   */
+  void removeObserver(int gameID, String username) throws DataAccessException;
 }

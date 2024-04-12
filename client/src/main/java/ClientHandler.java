@@ -122,7 +122,7 @@ public class ClientHandler implements ServerMessageObserver {
   }
 
 
-  private String processGameplayCommand(Command.Commands command, String[] userInputArr) throws CommandException {
+  private String processGameplayCommand(Command.Commands command, String[] userInputArr) throws ResponseException, CommandException {
     return switch (command) {
       case DRAW -> serverFacade.redraw();
       case MOVE -> serverFacade.makeMove(userInputArr);
@@ -139,7 +139,7 @@ public class ClientHandler implements ServerMessageObserver {
   }
 
 
-  private String processObservingCommand(Command.Commands command, String[] userInputArr) throws CommandException {
+  private String processObservingCommand(Command.Commands command, String[] userInputArr) throws CommandException, ResponseException {
     return switch (command) {
       case DRAW -> serverFacade.redraw();
       case LEAVE -> {
