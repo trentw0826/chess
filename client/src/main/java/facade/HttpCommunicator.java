@@ -46,7 +46,7 @@ public class HttpCommunicator {
     return makeRequest("POST", HttpPath.PATHS.GAME.getPath(), createGameRequest, CreateGameResponse.class, auth);
   }
 
-  public JoinGameResponse joinGame(int gameID, String auth, PlayerColor color) throws ResponseException {
+  public JoinGameResponse joinPlayer(int gameID, String auth, PlayerColor color) throws ResponseException {
     JoinGameRequest joinGameRequest = new JoinGameRequest(auth, color, gameID);
     return makeRequest("PUT", HttpPath.PATHS.GAME.getPath(), joinGameRequest, JoinGameResponse.class, auth);
   }

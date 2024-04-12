@@ -4,8 +4,11 @@ import org.eclipse.jetty.websocket.api.Session;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConnectionManager {
+  private final Logger logger = Logger.getLogger(ConnectionManager.class.getName());
   private final ConcurrentMap<Integer, ConcurrentHashMap<String, Connection>> connections = new ConcurrentHashMap<>();
 
   public void add(int gameID, String authToken, Session session) {
@@ -22,6 +25,17 @@ public class ConnectionManager {
       ConcurrentHashMap<String, Connection> newActiveGameConnections = new ConcurrentHashMap<>();
       newActiveGameConnections.put(authToken, newConnection);
       connections.put(gameID, newActiveGameConnections);
+    }
+  }
+
+  public void remove(int gameID, String authToken) {
+    ConcurrentMap<String, Connection> activeGameConnections = getActiveGameConnections(gameID);
+
+    if (activeGameConnections != null) {
+      activeGameConnections.remove(authToken);
+    }
+    else {
+      logger.log(Level.WARNING, "Failed removal attempted, user with auth '%s' is not connected to game %d");
     }
   }
 

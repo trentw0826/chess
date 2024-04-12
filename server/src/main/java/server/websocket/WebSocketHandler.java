@@ -40,7 +40,7 @@ public class WebSocketHandler {
     commandHandlers.put(JOIN_PLAYER, this::join);
     commandHandlers.put(JOIN_OBSERVER, this::observe);
 //    commandHandlers.put(MAKE_MOVE, this::makeMove);
-//    commandHandlers.put(LEAVE, this::leave);
+    commandHandlers.put(LEAVE, this::leave);
 //    commandHandlers.put(RESIGN, this::resign);
   }
 
@@ -100,6 +100,22 @@ public class WebSocketHandler {
     }
   }
 
+  private void leave(Session session, String message) {
+    LeaveCommand leaveCommand = gson.fromJson(message, LeaveCommand.class);
+    int desiredGameID = leaveCommand.getGameID();
+    String currAuthToken = leaveCommand.getAuthToken();
+
+    try {
+      String requestingUsername = authDao.getUsernameFromAuthToken(currAuthToken);
+
+      String outgoingMessage = String.format("'%s' has left the game", requestingUsername);
+      connectionManager.remove(desiredGameID, currAuthToken);
+      broadcast(desiredGameID, new Notification(outgoingMessage), currAuthToken);
+    }
+    catch (DataAccessException e) {
+      sendError(session, e.getMessage());
+    }
+  }
 
   private void broadcast(int gameID, Notification notification, String responsibleAuth) {
     ConcurrentMap<String, Connection> activeConnections = connectionManager.getActiveGameConnections(gameID);

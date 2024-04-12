@@ -84,23 +84,23 @@ class HttpCommunicatorTests {
   @Test
   void joinGameTest() throws ResponseException {
     facade.createGame("someGameName", validAuth);
-    Assertions.assertDoesNotThrow(() -> facade.joinGame(1, validAuth, PlayerColor.WHITE));
+    Assertions.assertDoesNotThrow(() -> facade.joinPlayer(1, validAuth, PlayerColor.WHITE));
   }
 
   @Test
   void joinNonExistingGameTest() {
-    Assertions.assertThrows(ResponseException.class, () -> facade.joinGame(1, validAuth, PlayerColor.WHITE));
+    Assertions.assertThrows(ResponseException.class, () -> facade.joinPlayer(1, validAuth, PlayerColor.WHITE));
   }
 
   @Test
   void observeGameTest() throws ResponseException {
     facade.createGame("someGameName", validAuth);
-    Assertions.assertDoesNotThrow(() -> facade.joinGame(1, validAuth, null));
+    Assertions.assertDoesNotThrow(() -> facade.joinPlayer(1, validAuth, null));
   }
 
   @Test
   void observeNonExistingGameTest() {
-    Assertions.assertThrows(ResponseException.class, () -> facade.joinGame(1, validAuth, null));
+    Assertions.assertThrows(ResponseException.class, () -> facade.joinPlayer(1, validAuth, null));
   }
 
 

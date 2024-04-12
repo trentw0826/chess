@@ -8,6 +8,7 @@ import request.webSocketMessages.serverMessages.LoadGame;
 import request.webSocketMessages.serverMessages.Notification;
 import request.webSocketMessages.serverMessages.ServerMessage;
 import request.webSocketMessages.userCommands.JoinPlayerCommand;
+import request.webSocketMessages.userCommands.LeaveCommand;
 
 import javax.websocket.*;
 import java.io.IOException;
@@ -64,6 +65,16 @@ public class WsCommunicator extends Endpoint {
     JoinPlayerCommand joinPlayerCommand = new JoinPlayerCommand(authToken, gameID, color);
     try {
       this.currSession.getBasicRemote().sendText(gson.toJson(joinPlayerCommand));
+    }
+    catch (IOException e) {
+      throw new ResponseException(e.getMessage(), 500);
+    }
+  }
+
+  public void leave(int gameID, String authToken) throws ResponseException {
+    LeaveCommand leaveCommand = new LeaveCommand(authToken, gameID);
+    try {
+      this.currSession.getBasicRemote().sendText(gson.toJson(leaveCommand));
     }
     catch (IOException e) {
       throw new ResponseException(e.getMessage(), 500);

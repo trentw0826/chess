@@ -13,10 +13,12 @@ import response.RegisterResponse;
 import java.util.ArrayList;
 
 public class ServerFacade {
+  private static final int NO_GAME = -1;
   private final HttpCommunicator httpCommunicator;
   private final ServerMessageObserver serverMessageObserver;
   private final ArrayList<GameData> currAvailableGames;
   private final String serverUrl;
+  private int currGameId;
   private String currAuthToken;
 
 
@@ -38,8 +40,10 @@ public class ServerFacade {
     return null;
   }
 
-  public String leave() {
-    //TODO Implement
+  public String leave() throws ResponseException {
+    WsCommunicator wsCommunicator = new WsCommunicator(serverUrl, serverMessageObserver);
+    wsCommunicator.leave(currGameId, currAuthToken);
+    currGameId = NO_GAME;
     return null;
   }
 
@@ -68,27 +72,16 @@ public class ServerFacade {
 
   public String join(String[] userInput) throws ResponseException, CommandException {
     int localGameNum = Integer.parseInt(userInput[1]);
-    int gameId = 0;
-    if (localGameNum > 0 && localGameNum <= currAvailableGames.size()) {
-      gameId = currAvailableGames.get(localGameNum - 1).getGameID();
-    }
-    else {
-      throw new CommandException(String.format("Game with id '%d' not locally listed ('list' for games)", localGameNum));
-    }
+    int gameId = getGameIdFromLocal(localGameNum);
 
-    PlayerColor playerColor;
-    try {
-      playerColor = PlayerColor.valueOf(userInput[2].toUpperCase());
-    }
-    catch (IllegalArgumentException e) {
-      throw new CommandException("Make sure your color is 'white' or 'black'");
-    }
+    PlayerColor playerColor = getPlayerColorFromString(userInput);
 
-    httpCommunicator.joinGame(gameId, currAuthToken, playerColor);
+    httpCommunicator.joinPlayer(gameId, currAuthToken, playerColor);
 
     WsCommunicator wsCommunicator = new WsCommunicator(serverUrl, serverMessageObserver);
     wsCommunicator.joinPlayer(gameId, currAuthToken, playerColor);
 
+    currGameId = gameId;
     return String.format("you've joined game #%d as %s", localGameNum, playerColor);
   }
 
@@ -128,6 +121,28 @@ public class ServerFacade {
     httpCommunicator.logout(currAuthToken);
     resetCurrAuth();
     return "logged out successfully.";
+  }
+
+  private static PlayerColor getPlayerColorFromString(String[] userInput) throws CommandException {
+    PlayerColor playerColor;
+    try {
+      playerColor = PlayerColor.valueOf(userInput[2].toUpperCase());
+    }
+    catch (IllegalArgumentException e) {
+      throw new CommandException("Make sure your color is 'white' or 'black'");
+    }
+    return playerColor;
+  }
+
+  private int getGameIdFromLocal(int localGameNum) throws CommandException {
+    int gameId;
+    if (localGameNum > 0 && localGameNum <= currAvailableGames.size()) {
+      gameId = currAvailableGames.get(localGameNum - 1).getGameID();
+    }
+    else {
+      throw new CommandException(String.format("Game with id '%d' not locally listed ('list' for games)", localGameNum));
+    }
+    return gameId;
   }
 
   private void resetCurrAuth() {
