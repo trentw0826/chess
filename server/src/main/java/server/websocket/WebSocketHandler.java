@@ -17,9 +17,13 @@ import request.webSocketMessages.serverMessages.Error;
 import request.webSocketMessages.userCommands.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static request.webSocketMessages.userCommands.UserGameCommand.CommandType.*;
 
 @WebSocket
 public class WebSocketHandler {
@@ -30,21 +34,28 @@ public class WebSocketHandler {
   private final AuthDao authDao = new AuthSqlDao();
   private final GameDao gameDao = new GameSqlDao();
 
-  @OnWebSocketMessage
-  public void onMessage(Session session, String message) {
-    UserGameCommand userGameCommand = new Gson().fromJson(message, UserGameCommand.class);
-    switch (userGameCommand.getCommandType()) {
-      case JOIN_PLAYER -> join(session, gson.fromJson(message, JoinPlayerCommand.class));
-      case JOIN_OBSERVER -> observe(session, gson.fromJson(message, JoinObserverCommand.class));
-//      case MAKE_MOVE -> makeMove(session, gson.fromJson(message, MakeMoveCommand.class));
-//      case LEAVE -> leave(session, gson.fromJson(message, LeaveCommand.class));
-//      case RESIGN -> resign(session, gson.fromJson(message, ResignCommand.class));
-      default -> throw new IllegalStateException(String.format("Bad enum passed to onMessage (%s)", userGameCommand.getCommandType().toString()));
-    }
+  private final Map<UserGameCommand.CommandType, CommandHandler> commandHandlers = new HashMap<>();
+
+  public WebSocketHandler() {
+    commandHandlers.put(JOIN_PLAYER, this::join);
+    commandHandlers.put(JOIN_OBSERVER, this::observe);
+//    commandHandlers.put(MAKE_MOVE, this::makeMove);
+//    commandHandlers.put(LEAVE, this::leave);
+//    commandHandlers.put(RESIGN, this::resign);
   }
 
+  @OnWebSocketMessage
+  public void onMessage(Session session, String message) {
+    UserGameCommand userGameCommand = gson.fromJson(message, UserGameCommand.class);
+    commandHandlers.get(userGameCommand.getCommandType()).handle(session, message);
+  }
 
-  private void join(Session session, JoinPlayerCommand joinPlayerCommand) {
+  private interface CommandHandler {
+    void handle(Session session, String message);
+  }
+
+  private void join(Session session, String message) {
+    JoinPlayerCommand joinPlayerCommand = gson.fromJson(message, JoinPlayerCommand.class);
     int desiredGameID = joinPlayerCommand.getGameID();
     String currAuthToken = joinPlayerCommand.getAuthToken();
     PlayerColor desiredColor = joinPlayerCommand.getPlayerColor();
@@ -52,17 +63,14 @@ public class WebSocketHandler {
     try {
       String requestingUsername = authDao.getUsernameFromAuthToken(currAuthToken);
       GameData desiredGameData = gameDao.get(desiredGameID);
-      String existingUsername = (desiredColor == PlayerColor.WHITE) ?
-              desiredGameData.getWhiteUsername() : desiredGameData.getBlackUsername();
+      String existingUsername = (desiredColor == PlayerColor.WHITE) ? desiredGameData.getWhiteUsername() : desiredGameData.getBlackUsername();
 
       if (!(existingUsername != null && existingUsername.equals(requestingUsername))) {
         sendError(session, String.format("Error: %s is already taken by %s", desiredColor.toString(), existingUsername));
         return;
       }
 
-      String outgoingMessage = String.format("'%s' has joined the game as %s",
-              requestingUsername, desiredColor.toString());
-
+      String outgoingMessage = String.format("'%s' has joined the game as %s", requestingUsername, desiredColor);
       ChessGame desiredGame = desiredGameData.getGame();
       connectionManager.add(desiredGameID, currAuthToken, session);
       broadcast(desiredGameID, new Notification(outgoingMessage), currAuthToken);
@@ -73,17 +81,16 @@ public class WebSocketHandler {
     }
   }
 
-
-  private void observe(Session session, JoinObserverCommand joinObserverCommand) {
+  private void observe(Session session, String message) {
+    JoinObserverCommand joinObserverCommand = gson.fromJson(message, JoinObserverCommand.class);
     int desiredGameID = joinObserverCommand.getGameID();
     String currAuthToken = joinObserverCommand.getAuthToken();
 
     try {
-      String requestingUsername = authDao.getUsernameFromAuthToken(currAuthToken);
-
+    String requestingUsername = authDao.getUsernameFromAuthToken(currAuthToken);
+      GameData desiredGameData = gameDao.get(desiredGameID);
       String outgoingMessage = String.format("'%s' has joined the game as an observer", requestingUsername);
-
-      ChessGame desiredGame = gameDao.get(desiredGameID).getGame();
+      ChessGame desiredGame = desiredGameData.getGame();
       connectionManager.add(desiredGameID, currAuthToken, session);
       broadcast(desiredGameID, new Notification(outgoingMessage), currAuthToken);
       sendLoadGame(session, desiredGame);
@@ -97,12 +104,10 @@ public class WebSocketHandler {
   private void broadcast(int gameID, Notification notification, String responsibleAuth) {
     ConcurrentMap<String, Connection> activeConnections = connectionManager.getActiveGameConnections(gameID);
     if (activeConnections != null) {
-      for (Connection conn : activeConnections.values()) {
-        Session session = conn.getSession();
-        if (session.isOpen() && !conn.getAuthToken().equals(responsibleAuth)) {
-          sendWsMessage(session, gson.toJson(notification));
-        }
-      }
+      activeConnections.values().stream()
+              .filter(conn -> conn.getSession().isOpen() && !conn.getAuthToken().equals(responsibleAuth))
+              .map(Connection::getSession)
+              .forEach(session -> sendWsMessage(session, gson.toJson(notification)));
     }
   }
 
@@ -110,15 +115,14 @@ public class WebSocketHandler {
     sendWsMessage(session, gson.toJson(new LoadGame(game)));
   }
 
-  private void sendError(Session session, String message)  {
+  private void sendError(Session session, String message) {
     sendWsMessage(session, gson.toJson(new Error(message)));
   }
 
-  private static void sendWsMessage(Session session, String gson) {
+  private static void sendWsMessage(Session session, String message) {
     try {
-      session.getRemote().sendString(gson);
-    }
-    catch (IOException e) {
+      session.getRemote().sendString(message);
+    } catch (IOException e) {
       logger.log(Level.WARNING, "Error message couldn't be sent");
     }
   }
