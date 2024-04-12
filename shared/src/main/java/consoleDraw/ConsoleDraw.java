@@ -38,8 +38,6 @@ public class ConsoleDraw {
     public static final String SET_TEXT_COLOR_MAGENTA = SET_TEXT_COLOR + "5m";
     public static final String SET_TEXT_COLOR_WHITE = SET_TEXT_COLOR + "15m";
 
-    public static final String SET_TEXT_COLOR_DEFAULT = SET_TEXT_COLOR_LIGHT_GREY;
-
     public static final String SET_BG_COLOR_BLACK = SET_BG_COLOR + "0m";
     public static final String SET_BG_COLOR_LIGHT_GREY = SET_BG_COLOR + "242m";
     public static final String SET_BG_COLOR_DARK_GREY = SET_BG_COLOR + "235m";
@@ -82,9 +80,9 @@ public class ConsoleDraw {
         return SET_TEXT_BOLD + str + RESET_TEXT_BOLD_FAINT;
     }
 
-//    public static String underlineString(String str) {
-//        return SET_TEXT_UNDERLINE + str + RESET_TEXT_UNDERLINE;
-//    }
+    public static String underlineString(String str) {
+        return SET_TEXT_UNDERLINE + str + RESET_TEXT_UNDERLINE;
+    }
 
 //    public static String getStringWithBackground(String backgroundColor, String str) {
 //        return backgroundColor + str + RESET_BG_COLOR;

@@ -68,7 +68,7 @@ public class ServerFacade {
   public String login(String[] userInput) throws ResponseException {
     LoginResponse loginResponse = httpCommunicator.login(userInput[1], userInput[2]);
     currAuthToken = loginResponse.getAuthToken();
-    return String.format("user '%s' logged in%n", loginResponse.getUsername());
+    return String.format("welcome!", loginResponse.getUsername());
   }
 
 

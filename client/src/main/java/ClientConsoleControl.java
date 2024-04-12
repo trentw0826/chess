@@ -8,25 +8,34 @@ public class ClientConsoleControl {
 
   private ClientConsoleControl() {}
 
-  private static final String WELCOME_MESSAGE = SET_TEXT_COLOR_DEFAULT + WHITE_KING + " Chess Client " + WHITE_QUEEN;
+  private static final String SET_TEXT_COLOR_DEFAULT = SET_TEXT_COLOR_LIGHT_GREY;
+  private static final String SET_TEXT_COLOR_NEUTRAL = SET_TEXT_COLOR_WHITE;
+
+  private static final String TITLE = "Chess Client";
+  private static final String WELCOME_MESSAGE = String.format("%s%s%s %s %s%s%n", SET_TEXT_COLOR_DEFAULT,
+          WHITE_PAWN, WHITE_KING, TITLE, WHITE_QUEEN, WHITE_PAWN);
   private static final String PROMPT_ICON = ">>>";
 
   public static void displayWelcomeMessage() {
-    ClientConsoleControl.printInfoMessage(WELCOME_MESSAGE);
+    ClientConsoleControl.printNeutralMessage(WELCOME_MESSAGE);
   }
 
-  //TODO stylize unique messages
+  public static void printPromptIcon(String username) {
+    String userTag = username == null ? "logged out" : username;
+    System.out.printf("%n%s[%s] %s%s ", SET_TEXT_COLOR_DEFAULT, userTag, PROMPT_ICON, SET_TEXT_COLOR_DEFAULT);
+  }
 
-  public static void printPromptIcon() {
-    System.out.printf("%n%s ", PROMPT_ICON);
+  public static void printSoftMessage(String message) {
+    System.out.printf("%n%s%s%s ", SET_TEXT_COLOR_DEFAULT, message, SET_TEXT_COLOR_DEFAULT);
   }
 
   public static void printNeutralMessage(String message) {
-    System.out.println(message);
+    System.out.printf(message);
   }
 
   public static void printInfoMessage(String message) {
-    System.out.println(message);
+    System.out.printf("%s[~]%s %s %s[~]%s%n", SET_TEXT_COLOR_GREEN, SET_TEXT_COLOR_DEFAULT, message,
+            SET_TEXT_COLOR_GREEN, SET_TEXT_COLOR_DEFAULT);
   }
 
   public static void printErrorMessage(String message) {
@@ -35,7 +44,8 @@ public class ClientConsoleControl {
   }
 
   public static void printNotification(String message) {
-    System.out.println(message);
+    System.out.printf("%s[-]%s %s %s[-]%s%n", SET_TEXT_COLOR_YELLOW, SET_TEXT_COLOR_DEFAULT, message,
+            SET_TEXT_COLOR_YELLOW, SET_TEXT_COLOR_DEFAULT);
   }
 
   public static void printChessBoard(ChessGame game, boolean isWhite) {

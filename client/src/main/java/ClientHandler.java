@@ -8,13 +8,17 @@ import request.webSocketMessages.serverMessages.LoadGame;
 import request.webSocketMessages.serverMessages.Notification;
 import request.webSocketMessages.serverMessages.ServerMessage;
 
+import java.util.Scanner;
+
 import static playerColor.PlayerColor.*;
 
 public class ClientHandler implements ServerMessageObserver {
 
   public static final String TERMINATE = "terminate";
 
+  private final Scanner scanner = new Scanner(System.in);
   private final ServerFacade serverFacade;
+  private String currUsername;
   private ClientState currState;
   private PlayerColor currColor;
 
@@ -23,6 +27,36 @@ public class ClientHandler implements ServerMessageObserver {
     this.currState = ClientState.PRE_LOGIN;
     this.currColor = null;
   }
+
+
+  /**
+   * Controls the read->eval->print interaction between the user's console
+   * and the command processor.
+   */
+  public void repl() {
+    ClientConsoleControl.displayWelcomeMessage();
+    while (true) {
+      String[] userInput = getUserInput();
+      String processedOutput;
+
+      try {
+        processedOutput = processUserInputArr(userInput);
+        if (processedOutput.equals(ClientHandler.TERMINATE)) {
+          break;
+        }
+        ClientConsoleControl.printNeutralMessage(processedOutput);
+      }
+      // TODO Implement filtering of Command and Response exceptions into user-friendly messages
+      catch (CommandException e) {
+        ClientConsoleControl.printErrorMessage(e.getMessage());
+      }
+      catch (ResponseException e) {
+        ClientConsoleControl.printErrorMessage(String.format("%s [%d]", e.getMessage(), e.getStatusCode()));
+      }
+    }
+    System.exit(0);
+  }
+
 
   @Override
   public void notifyOfMessage(ServerMessage message) {
@@ -85,6 +119,7 @@ public class ClientHandler implements ServerMessageObserver {
       }
       case LOGIN -> {
         String loginResult = serverFacade.login(userInputArr);
+        currUsername = userInputArr[1];
         currState = ClientState.POST_LOGIN;
         yield loginResult;
       }
@@ -100,7 +135,8 @@ public class ClientHandler implements ServerMessageObserver {
     return switch (command) {
       case LOGOUT -> {
         String logoutResult = serverFacade.logout();
-        currState = ClientState.POST_LOGIN;
+        currUsername = null;
+        currState = ClientState.PRE_LOGIN;
         yield logoutResult;
       }
       case LIST -> serverFacade.list();
@@ -171,5 +207,14 @@ public class ClientHandler implements ServerMessageObserver {
       throw new CommandException(String.format("'%s' expected %d arguments (%d provided)",
               command.getName(), expectedNumArgs, actualNumArgs));
     }
+  }
+
+
+  /**
+   * @return  Line of user input from the console
+   */
+  private String[] getUserInput() {
+    ClientConsoleControl.printPromptIcon(currUsername);
+    return scanner.nextLine().trim().split("\\s+");
   }
 }
