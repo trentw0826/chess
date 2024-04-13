@@ -60,7 +60,7 @@ public class ClientConsoleControl {
       Collection<ChessMove> validMoves = game.validMoves(highlightedPosition);
       var highlightedPiece = retrievedBoard.getPiece(highlightedPosition);
 
-      if (highlightedPiece == null || ((highlightedPiece.getTeamColor() == ChessGame.TeamColor.WHITE) != isWhite) || validMoves == null) {
+      if (highlightedPiece == null || highlightedPiece.getTeamColor() != game.getTeamTurn() || validMoves == null) {
         highlightValidMoves = false;
       }
       else {
