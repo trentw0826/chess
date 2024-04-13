@@ -189,6 +189,7 @@ public class WebSocketHandler {
         if ((requestingUsername.equals(whiteUsername) && currTurn != ChessGame.TeamColor.WHITE) ||
                 requestingUsername.equals(blackUsername) && currTurn != ChessGame.TeamColor.BLACK) {
           sendError(session, "you are not authorized to make that move!");
+          return;
         }
       }
 
