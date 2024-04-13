@@ -20,9 +20,23 @@ public class ChessPosition {
      * @param col   desired col position
      */
     public ChessPosition(int row, int col) {
-
         this.row = row;
         this.col = col;
+    }
+
+
+    /**
+     * Constructor that takes string representations of positions (i.e. f5)
+     * @param positionStr   string of the form [a-hA-H][1-8]
+     */
+    public ChessPosition(String positionStr) {
+        if (!positionStr.matches("[a-hA-H][1-8]")) {
+            throw new IllegalArgumentException("Bad string passed to ChessPosition constructor");
+        }
+
+        char colChar = positionStr.charAt(0);
+        this.row = Character.getNumericValue(positionStr.charAt(1));
+        this.col = colChar - 'a' + 1;
     }
 
 
@@ -76,6 +90,7 @@ public class ChessPosition {
     /**
      * @return if both the row and the col are within the 8x8 bounds of the board
      */
+    //TODO extract magic numbers
     public boolean positionIsWithinBounds() {
         return (0 < row && row <= 8 && 0 < col && col <= 8);
     }

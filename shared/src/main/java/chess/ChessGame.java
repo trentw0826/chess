@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 
-
 /**
  * For a class that can manage a chess game, making moves on a board
  * <p>
@@ -14,8 +13,16 @@ import java.util.Objects;
 public class ChessGame {
 
   //TODO Reorganize structure such that 'validMoves' doesn't need to exist
+
+  // Identifies the two possible teams
+  public enum TeamColor {
+    WHITE,
+    BLACK
+  }
+
   private ChessBoard board;
   private TeamColor teamTurn;
+
   private Collection<ChessMove> validMoves;
 
   /**
@@ -44,9 +51,6 @@ public class ChessGame {
   }
 
 
-  /**
-   * Overwritten equals method
-   */
   @Override
   public boolean equals(Object o) {
       if (this == o) return true;
@@ -55,41 +59,21 @@ public class ChessGame {
       return teamTurn == chessGame.teamTurn && Objects.equals(board, chessGame.board);
   }
 
-
-  /**
-   * Overwritten hashCode method
-   */
   @Override
   public int hashCode() {
       return Objects.hash(teamTurn, board);
   }
 
-  /**
-   * Overwritten toString method
-   */
   @Override
   public String toString() {
       return board.toString();
   }
 
 
-  /**
-   * Setter for teamTurn
-   *
-   * @param team the team whose turn it is
-   */
   public void setTeamTurn(TeamColor team) {
         teamTurn = team;
     }
 
-
-  /**
-   * Enum identifying the 2 possible teams in a chess game
-   */
-  public enum TeamColor {
-      WHITE,
-      BLACK
-  }
 
 
   /**

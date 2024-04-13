@@ -1,6 +1,8 @@
 package dataAccess.memoryAccess.memoryAccessObjects;
 
 
+import chess.ChessMove;
+import chess.InvalidMoveException;
 import dataAccess.DataAccessException;
 import dataAccess.dataAccessObject.GameDao;
 import dataAccess.memoryAccess.MemoryAccessObject;
@@ -165,6 +167,10 @@ public class GameMao extends MemoryAccessObject<Integer, GameData> implements Ga
   @Override
   public void removeObserver(int gameID, String username) throws DataAccessException {
     //TODO implement
+  }
 
+  @Override
+  public void makeMove(int gameID, ChessMove move) throws InvalidMoveException, DataAccessException {
+    //TODO implement
   }
 }

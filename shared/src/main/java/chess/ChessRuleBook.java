@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 import static chess.ChessGame.TeamColor;
@@ -14,12 +15,16 @@ public interface ChessRuleBook {
    *
    * @param board    given chess board
    * @param position position on the given chess board
-   * @return collection of valid chess moves
+   * @return collection of valid chess moves (null if position doesn't contain a piece)
    */
   static Collection<ChessMove> getValidMoves(ChessBoard board, ChessPosition position) {
+    ChessPiece piece = board.getPiece(position);
+    if (piece == null) {
+      return Collections.emptyList();
+    }
 
     Collection<ChessMove> possibleMoves = PieceMovement.getPossibleMoves(board, position);
-    TeamColor turnColor = board.getPiece(position).getTeamColor();
+    TeamColor turnColor = piece.getTeamColor();
 
     // For every possible move, see if the king would be in check
     Iterator<ChessMove> iterator = possibleMoves.iterator();
@@ -36,7 +41,8 @@ public interface ChessRuleBook {
 
       try {
         boardAfterMove.makeMove(move);
-      } catch (InvalidMoveException e) {
+      }
+      catch (InvalidMoveException e) {
         throw new RuntimeException(e);
       }
 

@@ -1,6 +1,8 @@
 package dataAccess.sqlAccess.sqlAccessObjects;
 
 import chess.ChessGame;
+import chess.ChessMove;
+import chess.InvalidMoveException;
 import dataAccess.DataAccessException;
 import dataAccess.dataAccessObject.GameDao;
 import dataAccess.sqlAccess.SqlAccessObject;
@@ -309,6 +311,20 @@ public class GameSqlDao extends SqlAccessObject<Integer, GameData> implements Ga
     }
     catch (SQLException e) {
       throw new DataAccessException(String.format("Unable to check if '%s' is observing game id:%d", username, gameID));
+    }
+  }
+
+  @Override
+  public void makeMove(int gameID, ChessMove move) throws InvalidMoveException, DataAccessException {
+    ChessGame retrievedGame = get(gameID).getGame();
+    retrievedGame.makeMove(move);
+
+    String updateGameString = "UPDATE " + GAME_TABLE + " SET game=? WHERE gameID=?";
+    try {
+      executeUpdate(updateGameString, retrievedGame, gameID);
+    }
+    catch (SQLException e) {
+      throw new DataAccessException(String.format("Unable to make move %s", move.toString()));
     }
   }
 

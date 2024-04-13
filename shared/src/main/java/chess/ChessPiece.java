@@ -68,12 +68,23 @@ public class ChessPiece implements Cloneable {
    * The various different chess piece options
    */
   public enum PieceType {
-    KING,
-    QUEEN,
-    BISHOP,
-    KNIGHT,
-    ROOK,
-    PAWN,
+    KING('k'),
+    QUEEN('q'),
+    BISHOP('b'),
+    KNIGHT('n'),
+    ROOK('r'),
+    PAWN('p'),
+    ;
+
+    private final char c;
+
+    PieceType(char c) {
+      this.c = c;
+    }
+
+    public char getPieceChar() {
+      return c;
+    }
   }
 
 

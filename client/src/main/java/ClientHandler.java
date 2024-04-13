@@ -1,3 +1,5 @@
+import chess.ChessGame;
+import chess.ChessPosition;
 import command.Command;
 import command.CommandException;
 import exception.ResponseException;
@@ -21,6 +23,7 @@ public class ClientHandler implements ServerMessageObserver {
   private String currUsername;
   private ClientState currState;
   private PlayerColor currColor;
+  private ChessGame currGame;
 
   public ClientHandler(String serverUrl) {
     this.serverFacade = new ServerFacade(serverUrl, this);
@@ -63,9 +66,13 @@ public class ClientHandler implements ServerMessageObserver {
     switch (message.getServerMessageType()) {
       case NOTIFICATION -> ClientConsoleControl.printNotification(((Notification) message).getMessage());
       case ERROR -> ClientConsoleControl.printErrorMessage(((Error) message).getErrorMessage());
-      case LOAD_GAME -> ClientConsoleControl.printChessBoard(((LoadGame) message).getGame(), currColor == WHITE);
+      case LOAD_GAME -> {
+        currGame = ((LoadGame) message).getGame();
+        System.out.print(drawCurrGame());
+      }
     }
   }
+
 
   /**
    * Given an array of user input strings, pass it to the proper command processor.
@@ -114,6 +121,7 @@ public class ClientHandler implements ServerMessageObserver {
       case REGISTER -> {
         String registerResult = serverFacade.register(userInputArr);
         String loginResult = serverFacade.login(userInputArr);
+        currUsername = userInputArr[1];
         currState = ClientState.POST_LOGIN;
         yield registerResult + loginResult;
       }
@@ -160,16 +168,17 @@ public class ClientHandler implements ServerMessageObserver {
 
   private String processGameplayCommand(Command.Commands command, String[] userInputArr) throws ResponseException, CommandException {
     return switch (command) {
-      case DRAW -> serverFacade.redraw();
+      case DRAW -> drawCurrGame();
       case MOVE -> serverFacade.makeMove(userInputArr);
-      case RESIGN -> serverFacade.resign(); //TODO set gamestate to observing?
+      case RESIGN -> serverFacade.resign();
       case LEAVE -> {
         String leaveResult = serverFacade.leave();
         currState = ClientState.POST_LOGIN;
         currColor = null;
+        currGame = null;
         yield leaveResult;
       }
-      case HIGHLIGHT -> serverFacade.highlight(userInputArr);
+      case HIGHLIGHT -> highlight(userInputArr);
       default -> throw new CommandException(String.format("command '%s' not currently available", command.getName()));
     };
   }
@@ -177,19 +186,40 @@ public class ClientHandler implements ServerMessageObserver {
 
   private String processObservingCommand(Command.Commands command, String[] userInputArr) throws CommandException, ResponseException {
     return switch (command) {
-      case DRAW -> serverFacade.redraw();
+      case DRAW -> drawCurrGame();
       case LEAVE -> {
         String leaveResult = serverFacade.leave();
         currState = ClientState.POST_LOGIN;
         currColor = null;
         yield leaveResult;
       }
-      case HIGHLIGHT -> serverFacade.highlight(userInputArr);
+      case HIGHLIGHT -> highlight(userInputArr);
       default -> throw new CommandException(String.format("command '%s' not currently available", command.getName()));
     };
   }
 
 
+  /**
+   * Return current game's board as a printable string
+   */
+  private String drawCurrGame() {
+    return ClientConsoleControl.printChessBoard(currGame, currColor == WHITE, null);
+  }
+
+
+  /**
+   * @param userInputArr user input array containing desired chess position at index 0
+   * @return  printable board string with valid moves highlighted
+   */
+  public String highlight(String[] userInputArr) {
+    ChessPosition highlightedPosition = new ChessPosition(userInputArr[0]);
+    return ClientConsoleControl.printChessBoard(currGame, currColor == WHITE, highlightedPosition);
+  }
+
+
+  /**
+   * Return current available commands as a printable string
+   */
   private String help() {
     StringBuilder sb = new StringBuilder();
 

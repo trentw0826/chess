@@ -1,5 +1,7 @@
 package dataAccess.dataAccessObject;
 
+import chess.ChessMove;
+import chess.InvalidMoveException;
 import dataAccess.DataAccessException;
 import dataAccess.DataAccessObject;
 import model.GameData;
@@ -83,4 +85,15 @@ public interface GameDao extends DataAccessObject<Integer, GameData> {
    * @throws DataAccessException  if error thrown during removal
    */
   void removeObserver(int gameID, String username) throws DataAccessException;
+
+
+  /**
+   * Update a game by making a move in the database.
+   *
+   * @param gameID  game ID to be updated
+   * @param move    chess move
+   * @throws InvalidMoveException if chess move is invalid
+   * @throws DataAccessException  if error thrown during update
+   */
+  void makeMove(int gameID, ChessMove move) throws InvalidMoveException, DataAccessException;
 }

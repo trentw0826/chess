@@ -39,7 +39,7 @@ public class WebSocketHandler {
   public WebSocketHandler() {
     commandHandlers.put(JOIN_PLAYER, this::join);
     commandHandlers.put(JOIN_OBSERVER, this::observe);
-//    commandHandlers.put(MAKE_MOVE, this::makeMove);
+    commandHandlers.put(MAKE_MOVE, this::makeMove);
     commandHandlers.put(LEAVE, this::leave);
     commandHandlers.put(RESIGN, this::resign);
   }
@@ -157,6 +157,32 @@ public class WebSocketHandler {
     catch (DataAccessException e) {
       sendError(session, e.getMessage());
     }
+  }
+
+
+  private void makeMove(Session session, String message) {
+    //FIXME fix make move logic
+//    MakeMoveCommand makeMoveCommand = gson.fromJson(message, MakeMoveCommand.class);
+//    int desiredGameID = makeMoveCommand.getGameID();
+//    String currAuthToken = makeMoveCommand.getAuthToken();
+//    ChessMove desiredMove = makeMoveCommand.getMove();
+//
+//    try {
+//      String requestingUsername = authDao.getUsernameFromAuthToken(currAuthToken);
+//      if (!gameDao.isGameActive(desiredGameID)) {
+//        sendError(session, "move not allowed (game inactive)");
+//      }
+//
+//      gameDao.makeMove(desiredGameID, desiredMove);
+//      String madeMoveMessage = String.format("'%s' made move %s", requestingUsername, desiredMove);
+//      broadcast(desiredGameID, new Notification(madeMoveMessage), currAuthToken, false);
+//    }
+//    catch (DataAccessException e) {
+//      throw new RuntimeException(e);
+//    }
+//    catch (InvalidMoveException e) {
+//      throw new RuntimeException(e);
+//    }
   }
 
   private void broadcast(int gameID, ServerMessage serverMessage, String responsibleAuth, boolean excludeSender) {

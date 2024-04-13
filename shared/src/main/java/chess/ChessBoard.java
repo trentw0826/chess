@@ -27,7 +27,7 @@ public class ChessBoard implements Cloneable {
      * @param board ChessBoard object to be cloned
      */
     public ChessBoard(ChessBoard board) throws CloneNotSupportedException {
-        this.board = board.clone().getBoard();
+        this.board = board.clone().getBoardMatrix();
     }
 
 
@@ -215,7 +215,7 @@ public class ChessBoard implements Cloneable {
     /**
      * @return  'board' attribute
      */
-    public ChessPiece[][] getBoard() {
+    public ChessPiece[][] getBoardMatrix() {
         return board;
     }
 

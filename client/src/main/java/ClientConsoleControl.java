@@ -1,6 +1,9 @@
-import chess.ChessGame;
-import chess.ChessPiece;
+import chess.*;
 import consoleDraw.ConsoleDraw;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 import static consoleDraw.ConsoleDraw.*;
 
@@ -48,31 +51,62 @@ public class ClientConsoleControl {
             SET_TEXT_COLOR_YELLOW, SET_TEXT_COLOR_DEFAULT);
   }
 
-  public static void printChessBoard(ChessGame game, boolean isWhite) {
-    var board = game.getBoard().getBoard();
+  public static String printChessBoard(ChessGame game, boolean isWhite, ChessPosition highlightedPosition) {
+    boolean highlightValidMoves = highlightedPosition != null;
+    Collection<ChessPosition> validPositions = Collections.emptyList();
+    ChessBoard retrievedBoard = game.getBoard();
+
+    if (highlightValidMoves) {
+      Collection<ChessMove> validMoves = game.validMoves(highlightedPosition);
+      var highlightedPiece = retrievedBoard.getPiece(highlightedPosition);
+
+      if (highlightedPiece == null || ((highlightedPiece.getTeamColor() == ChessGame.TeamColor.WHITE) != isWhite) || validMoves == null) {
+        highlightValidMoves = false;
+      }
+      else {
+        validPositions = validMoves.stream().map(ChessMove::getEndPosition).toList();
+      }
+    }
+
+    final int startVal = isWhite ? 8 : 1;
+    final int endVal = isWhite ? 0 : 9;
+    final int rowIncrement = isWhite ? -1 : 1;
+    final int colIncrement = -rowIncrement;
+
+    var board = retrievedBoard.getBoardMatrix();
     StringBuilder sb = new StringBuilder();
     sb.append("\n").append(ConsoleDraw.SET_TEXT_COLOR_BLACK);
 
-    int startRow = isWhite ? 8 : 1;
-    int endRow = isWhite ? 0 : 9;
-    int rowIncrement = isWhite ? -1 : 1;
 
-    for (int i = startRow; i != endRow; i += rowIncrement) {
-      ChessPiece[] row = board[i - 1];
-      final int startCol = isWhite ? 0 : 7;
-      final int endCol = isWhite ? 8 : -1;
-      final int colIncrement = isWhite ? 1 : -1;
+    String darkColor;
+    String lightColor;
 
-      for (int j = startCol; j != endCol; j += colIncrement) {
-        ChessPiece piece = row[j];
+    for (int currRow = startVal; currRow != endVal; currRow += rowIncrement) {
+      ChessPiece[] row = board[currRow - 1];
+
+      for (int currCol = endVal + colIncrement; currCol != startVal + colIncrement; currCol += colIncrement) {
+        ChessPosition currPosition = new ChessPosition(currRow, currCol);
+        ChessPiece piece = row[currCol - 1];
         String pieceStr = (piece == null) ? ConsoleDraw.EMPTY : piece.toString();
-        boolean isDark = (i + j) % 2 == 1;
-        sb.append(isDark ? ConsoleDraw.DARK_SQUARE_BG_COLOR : ConsoleDraw.LIGHT_SQUARE_BG_COLOR).append(pieceStr);
-      }
-      sb.append(ConsoleDraw.RESET_BG_COLOR).append("\n");
-    }
-    sb.append(ConsoleDraw.SET_TEXT_COLOR_WHITE);
 
-    System.out.println(sb);
+        if (highlightValidMoves && validPositions.contains(currPosition)) {
+          darkColor = DARK_HIGHLIGHT_BG_COLOR;
+          lightColor = LIGHT_HIGHLIGHT_BG_COLOR;
+        }
+        else if (currPosition.equals(highlightedPosition)) {
+          darkColor = INITIAL_BG_COLOR;
+          lightColor = INITIAL_BG_COLOR;
+        }
+        else {
+          darkColor = DARK_SQUARE_BG_COLOR;
+          lightColor = LIGHT_SQUARE_BG_COLOR;
+        }
+        boolean isDark = ((currRow + currCol) % 2 == 1);
+        sb.append(isDark ? darkColor : lightColor).append(pieceStr);
+      }
+      sb.append(RESET_BG_COLOR).append("\n");
+    }
+
+    return sb.toString();
   }
 }

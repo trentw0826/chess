@@ -2,7 +2,7 @@ import command.CommandException;
 import exception.ResponseException;
 import facade.HttpCommunicator;
 import facade.ServerMessageObserver;
-import facade.WebSocketCommunicator;
+import facade.WSCommunicator;
 import model.GameData;
 import playerColor.PlayerColor;
 import response.CreateGameResponse;
@@ -30,34 +30,30 @@ public class ServerFacade {
     resetCurrAuth();
   }
 
-  public String redraw() {
-    //TODO Implement
-    return null;
-  }
 
   public String resign() throws ResponseException {
     //TODO do I need to create new WsCommunicators for every usage?
-    WebSocketCommunicator webSocketCommunicator = new WebSocketCommunicator(serverUrl, serverMessageObserver);
+    WSCommunicator webSocketCommunicator = new WSCommunicator(serverUrl, serverMessageObserver);
     webSocketCommunicator.resign(currGameId, currAuthToken);
     return "you've resigned!";
   }
 
   public String leave() throws ResponseException {
-    WebSocketCommunicator webSocketCommunicator = new WebSocketCommunicator(serverUrl, serverMessageObserver);
+    WSCommunicator webSocketCommunicator = new WSCommunicator(serverUrl, serverMessageObserver);
     webSocketCommunicator.leave(currGameId, currAuthToken);
     currGameId = NO_GAME;
     return "you've left your game";
   }
 
-  public String makeMove(String[] userInputArr) {
-    //TODO Implement
+
+  public String makeMove(String[] userInputArr) throws ResponseException {
+    //FIXME fix makeMove logic
+//    WSCommunicator webSocketCommunicator = new WSCommunicator(serverUrl, serverMessageObserver);
+//    webSocketCommunicator.makeMove(currGameId, currAuthToken, new ChessMove(new ChessPosition(2, 2), 2, 2));
+//    return "";
     return null;
   }
 
-  public String highlight(String[] userInputArr) {
-    //TODO Implement
-    return null;
-  }
 
   public String register(String[] userInput) throws ResponseException {
     RegisterResponse registerResponse = httpCommunicator.registerUser(userInput[1], userInput[2], userInput[3]);
@@ -68,7 +64,7 @@ public class ServerFacade {
   public String login(String[] userInput) throws ResponseException {
     LoginResponse loginResponse = httpCommunicator.login(userInput[1], userInput[2]);
     currAuthToken = loginResponse.getAuthToken();
-    return String.format("welcome!", loginResponse.getUsername());
+    return "welcome!";
   }
 
 
@@ -80,7 +76,7 @@ public class ServerFacade {
 
     httpCommunicator.joinPlayer(gameId, currAuthToken, playerColor);
 
-    WebSocketCommunicator webSocketCommunicator = new WebSocketCommunicator(serverUrl, serverMessageObserver);
+    WSCommunicator webSocketCommunicator = new WSCommunicator(serverUrl, serverMessageObserver);
     webSocketCommunicator.joinPlayer(gameId, currAuthToken, playerColor);
 
     currGameId = gameId;
@@ -94,7 +90,7 @@ public class ServerFacade {
 
     httpCommunicator.joinPlayer(gameId, currAuthToken, null);
 
-    WebSocketCommunicator webSocketCommunicator = new WebSocketCommunicator(serverUrl, serverMessageObserver);
+    WSCommunicator webSocketCommunicator = new WSCommunicator(serverUrl, serverMessageObserver);
     webSocketCommunicator.joinObserver(gameId, currAuthToken);
 
     currGameId = gameId;

@@ -1,6 +1,8 @@
 package chess;
 
 import java.util.Objects;
+//import java.util.regex.Matcher;
+//import java.util.regex.Pattern;
 
 /**
  * Represents moving a chess piece on a chessboard
@@ -9,6 +11,9 @@ import java.util.Objects;
  * signature of the existing methods.
  */
 public class ChessMove {
+
+//    private static final String MOVE_REGEX = "([a-h][1-8][a-h][1-8])(=[QRNB])?";
+//    Pattern pattern = Pattern.compile(MOVE_REGEX);
 
     private final ChessPosition startPosition;
     private final ChessPosition endPosition;
@@ -36,6 +41,32 @@ public class ChessMove {
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition) {
         this(startPosition, endPosition,null);
     }
+
+
+//    public ChessMove(String chessMoveStr) {
+//        Matcher matcher = pattern.matcher(chessMoveStr);
+//
+//        if (!matcher.matches()) {
+//            throw new IllegalArgumentException("Bad string passed to ChessMove constructor");
+//        }
+//        else {
+//            String startPositionStr = matcher.group(1);
+//            String endPositionStr = matcher.group(2);
+//            char queeningTypeChar = matcher.group(3).charAt(1);
+//
+//            this.startPosition = new ChessPosition(startPositionStr);
+//            this.endPosition = new ChessPosition(endPositionStr);
+//
+//            ChessPiece.PieceType queeningType = null;
+//            for (var promotionType : ChessConstants.PROMOTION_TYPES) {
+//                if (promotionType.getPieceChar() == queeningTypeChar) {
+//                    queeningType = promotionType;
+//                    break;
+//                }
+//            }
+//            this.promotionPiece = queeningType;
+//        }
+//    }
 
 
     /**

@@ -51,6 +51,9 @@ public class ConsoleDraw {
 
     public static final String DARK_SQUARE_BG_COLOR = "\u001B[48;5;252m";
     public static final String LIGHT_SQUARE_BG_COLOR = "\u001B[48;5;254m";
+    public static final String DARK_HIGHLIGHT_BG_COLOR = "\u001B[48;5;22m"; // Dark green background
+    public static final String LIGHT_HIGHLIGHT_BG_COLOR = "\u001B[48;5;120m"; // Light green background
+    public static final String INITIAL_BG_COLOR = "\u001B[48;5;203m"; // Light red background
 
     public static final String RESET_BG_COLOR = "\u001B[49m";
 
@@ -83,6 +86,10 @@ public class ConsoleDraw {
     public static String underlineString(String str) {
         return SET_TEXT_UNDERLINE + str + RESET_TEXT_UNDERLINE;
     }
+
+//    public static String getEmSpace(String str) {
+//        return String.format(" %" + EMPTY.length() + "s ", str);
+//    }
 
 //    public static String getStringWithBackground(String backgroundColor, String str) {
 //        return backgroundColor + str + RESET_BG_COLOR;

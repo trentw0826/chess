@@ -18,6 +18,14 @@ public class MakeMoveCommand extends UserGameCommand {
     this.move = move;
   }
 
+  public int getGameID() {
+    return gameID;
+  }
+
+  public ChessMove getMove() {
+    return move;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

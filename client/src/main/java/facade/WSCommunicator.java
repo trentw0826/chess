@@ -1,25 +1,23 @@
 package facade;
 
+import chess.ChessMove;
 import com.google.gson.Gson;
 import exception.ResponseException;
 import playerColor.PlayerColor;
 import request.webSocketMessages.serverMessages.*;
 import request.webSocketMessages.serverMessages.Error;
-import request.webSocketMessages.userCommands.JoinObserverCommand;
-import request.webSocketMessages.userCommands.JoinPlayerCommand;
-import request.webSocketMessages.userCommands.LeaveCommand;
-import request.webSocketMessages.userCommands.ResignCommand;
+import request.webSocketMessages.userCommands.*;
 
 import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class WebSocketCommunicator extends Endpoint {
+public class WSCommunicator extends Endpoint {
   private final Gson gson;
   private final Session currSession;
 
-  public WebSocketCommunicator(String url, ServerMessageObserver serverMessageObserver) throws ResponseException {
+  public WSCommunicator(String url, ServerMessageObserver serverMessageObserver) throws ResponseException {
     this.gson = new Gson();
 
     try {
@@ -102,6 +100,16 @@ public class WebSocketCommunicator extends Endpoint {
     }
   }
 
+
+  public void makeMove(int gameID, String authToken, ChessMove move) throws ResponseException {
+    MakeMoveCommand makeMoveCommand = new MakeMoveCommand(authToken, gameID, move);
+    try {
+      this.currSession.getBasicRemote().sendText(gson.toJson(makeMoveCommand));
+    }
+    catch (IOException e) {
+      throw new ResponseException(e.getMessage(), 500);
+    }
+  }
 
   @Override
   public void onOpen(Session session, EndpointConfig endpointConfig) {}
