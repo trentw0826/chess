@@ -1,3 +1,4 @@
+import chess.ChessMove;
 import command.CommandException;
 import exception.ResponseException;
 import facade.HttpCommunicator;
@@ -47,11 +48,9 @@ public class ServerFacade {
 
 
   public String makeMove(String[] userInputArr) throws ResponseException {
-    //FIXME fix makeMove logic
-//    WSCommunicator webSocketCommunicator = new WSCommunicator(serverUrl, serverMessageObserver);
-//    webSocketCommunicator.makeMove(currGameId, currAuthToken, new ChessMove(new ChessPosition(2, 2), 2, 2));
-//    return "";
-    return null;
+    WSCommunicator webSocketCommunicator = new WSCommunicator(serverUrl, serverMessageObserver);
+    webSocketCommunicator.makeMove(currGameId, currAuthToken, new ChessMove(userInputArr[0]));
+    return "";
   }
 
 

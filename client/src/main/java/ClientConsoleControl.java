@@ -3,7 +3,6 @@ import consoleDraw.ConsoleDraw;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 import static consoleDraw.ConsoleDraw.*;
 
@@ -107,6 +106,7 @@ public class ClientConsoleControl {
       sb.append(RESET_BG_COLOR).append("\n");
     }
 
+    sb.append(RESET_BG_COLOR);
     return sb.toString();
   }
 }

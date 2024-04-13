@@ -1,6 +1,8 @@
 package server.websocket;
 
 import chess.ChessGame;
+import chess.ChessMove;
+import chess.InvalidMoveException;
 import com.google.gson.Gson;
 import dataAccess.DataAccessException;
 import dataAccess.dataAccessObject.AuthDao;
@@ -161,28 +163,31 @@ public class WebSocketHandler {
 
 
   private void makeMove(Session session, String message) {
-    //FIXME fix make move logic
-//    MakeMoveCommand makeMoveCommand = gson.fromJson(message, MakeMoveCommand.class);
-//    int desiredGameID = makeMoveCommand.getGameID();
-//    String currAuthToken = makeMoveCommand.getAuthToken();
-//    ChessMove desiredMove = makeMoveCommand.getMove();
-//
-//    try {
-//      String requestingUsername = authDao.getUsernameFromAuthToken(currAuthToken);
-//      if (!gameDao.isGameActive(desiredGameID)) {
-//        sendError(session, "move not allowed (game inactive)");
-//      }
-//
-//      gameDao.makeMove(desiredGameID, desiredMove);
-//      String madeMoveMessage = String.format("'%s' made move %s", requestingUsername, desiredMove);
-//      broadcast(desiredGameID, new Notification(madeMoveMessage), currAuthToken, false);
-//    }
-//    catch (DataAccessException e) {
-//      throw new RuntimeException(e);
-//    }
-//    catch (InvalidMoveException e) {
-//      throw new RuntimeException(e);
-//    }
+    MakeMoveCommand makeMoveCommand = gson.fromJson(message, MakeMoveCommand.class);
+    int desiredGameID = makeMoveCommand.getGameID();
+    String currAuthToken = makeMoveCommand.getAuthToken();
+    ChessMove desiredMove = makeMoveCommand.getMove();
+
+    try {
+      String requestingUsername = authDao.getUsernameFromAuthToken(currAuthToken);
+
+      if (!gameDao.isGameActive(desiredGameID)) {
+        sendError(session, "move not allowed (game inactive)");
+      }
+      else if (!gameDao.usernameIsPlaying(desiredGameID, requestingUsername)) {
+        sendError(session, "you are not authorized to make that move!");
+      }
+
+      gameDao.makeMove(desiredGameID, desiredMove);
+      ChessGame updatedGame = gameDao.get(desiredGameID).getGame();
+
+      String madeMoveMessage = String.format("'%s' made move %s", requestingUsername, desiredMove);
+      broadcast(desiredGameID, new LoadGame(updatedGame), currAuthToken, false);
+      broadcast(desiredGameID, new Notification(madeMoveMessage), currAuthToken, true);
+    }
+    catch (DataAccessException | InvalidMoveException e) {
+      sendError(session, e.getMessage());
+    }
   }
 
   private void broadcast(int gameID, ServerMessage serverMessage, String responsibleAuth, boolean excludeSender) {
