@@ -27,10 +27,6 @@ public class ClientConsoleControl {
     System.out.printf("%n%s[%s] %s%s ", SET_TEXT_COLOR_DEFAULT, userTag, PROMPT_ICON, SET_TEXT_COLOR_DEFAULT);
   }
 
-  public static void printSoftMessage(String message) {
-    System.out.printf("%n%s%s%s ", SET_TEXT_COLOR_DEFAULT, message, SET_TEXT_COLOR_DEFAULT);
-  }
-
   public static void printNeutralMessage(String message) {
     System.out.printf(message);
   }
