@@ -3,7 +3,9 @@ package consoleDraw;
 /**
  * This class contains constants and functions relating to ANSI Escape Sequences that are useful in the Client display
  */
-// TODO split into distinct classes such that it doesn't need to be shared
+// FIXME split into distinct classes such that it doesn't need to be in shared package
+    //TODO create color customizing methods
+    //TODO move cursor to location?
 public class ConsoleDraw {
 
     private ConsoleDraw() {}
@@ -30,12 +32,9 @@ public class ConsoleDraw {
 
     public static final String SET_TEXT_COLOR_BLACK = SET_TEXT_COLOR + "0m";
     public static final String SET_TEXT_COLOR_LIGHT_GREY = SET_TEXT_COLOR + "247m";
-    public static final String SET_TEXT_COLOR_DARK_GREY = SET_TEXT_COLOR + "235m";
     public static final String SET_TEXT_COLOR_RED = SET_TEXT_COLOR + "160m";
     public static final String SET_TEXT_COLOR_GREEN = SET_TEXT_COLOR + "46m";
     public static final String SET_TEXT_COLOR_YELLOW = SET_TEXT_COLOR + "226m";
-    public static final String SET_TEXT_COLOR_BLUE = SET_TEXT_COLOR + "12m";
-    public static final String SET_TEXT_COLOR_MAGENTA = SET_TEXT_COLOR + "5m";
     public static final String SET_TEXT_COLOR_WHITE = SET_TEXT_COLOR + "15m";
 
     public static final String SET_BG_COLOR_BLACK = SET_BG_COLOR + "0m";
@@ -49,11 +48,11 @@ public class ConsoleDraw {
     public static final String SET_BG_COLOR_MAGENTA = SET_BG_COLOR + "5m";
     public static final String SET_BG_COLOR_WHITE = SET_BG_COLOR + "15m";
 
-    public static final String DARK_SQUARE_BG_COLOR = "\u001B[48;5;252m";
-    public static final String LIGHT_SQUARE_BG_COLOR = "\u001B[48;5;254m";
-    public static final String DARK_HIGHLIGHT_BG_COLOR = "\u001B[48;5;22m"; // Dark green background
-    public static final String LIGHT_HIGHLIGHT_BG_COLOR = "\u001B[48;5;120m"; // Light green background
-    public static final String INITIAL_BG_COLOR = "\u001B[48;5;203m"; // Light red background
+    public static final String DARK_SQUARE_BG_COLOR = SET_BG_COLOR + "252m";
+    public static final String LIGHT_SQUARE_BG_COLOR = SET_BG_COLOR + "254m";
+    public static final String DARK_HIGHLIGHT_BG_COLOR = SET_BG_COLOR + "22m"; // Dark green background
+    public static final String LIGHT_HIGHLIGHT_BG_COLOR = SET_BG_COLOR + "120m"; // Light green background
+    public static final String INITIAL_BG_COLOR = SET_BG_COLOR + "203m"; // Light red background
 
     public static final String RESET_BG_COLOR = "\u001B[49m";
 
@@ -71,9 +70,6 @@ public class ConsoleDraw {
     public static final String BLACK_PAWN = " ♟ ";
     public static final String EMPTY = " \u2003 ";
 
-//    public static String moveCursorToLocation(int x, int y) {
-//        return UNICODE_ESCAPE + "[" + y + ";" + x + "H";
-//    }
 
     public static String italicizeString(String str) {
         return SET_TEXT_ITALIC + str + RESET_TEXT_ITALIC;
@@ -82,28 +78,4 @@ public class ConsoleDraw {
     public static String boldString(String str) {
         return SET_TEXT_BOLD + str + RESET_TEXT_BOLD_FAINT;
     }
-
-    public static String underlineString(String str) {
-        return SET_TEXT_UNDERLINE + str + RESET_TEXT_UNDERLINE;
-    }
-
-//    public static String getEmSpace(String str) {
-//        return String.format(" %" + EMPTY.length() + "s ", str);
-//    }
-
-//    public static String getStringWithBackground(String backgroundColor, String str) {
-//        return backgroundColor + str + RESET_BG_COLOR;
-//    }
-//
-//    public static void clearScreen() {
-//        System.out.print(ERASE_SCREEN);
-//    }
-//
-//    public static String getColorEscape(int r, int g, int b) {
-//        return String.format("\u001B[38;2;%d;%d;%dm", r, g, b);
-//    }
-//
-//    public static void setBackgroundColor(int r, int g, int b) {
-//        System.out.printf("\u001B[48;2;%d;%d;%dm", r, g, b);
-//    }
 }   

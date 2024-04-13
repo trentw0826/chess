@@ -63,10 +63,6 @@ public class GameData implements DataModel<Integer> {
     return game;
   }
 
-  public void setGame(ChessGame game) {
-    this.game = game;
-  }
-
   public void addObserver(String newObserverUsername) {
     observers.add(newObserverUsername);
   }

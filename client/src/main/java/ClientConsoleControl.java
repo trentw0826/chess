@@ -35,11 +35,6 @@ public class ClientConsoleControl {
     System.out.printf(message);
   }
 
-  public static void printInfoMessage(String message) {
-    System.out.printf("%s[~]%s %s %s[~]%s%n", SET_TEXT_COLOR_GREEN, SET_TEXT_COLOR_DEFAULT, message,
-            SET_TEXT_COLOR_GREEN, SET_TEXT_COLOR_DEFAULT);
-  }
-
   public static void printErrorMessage(String message) {
     System.out.printf("%s<!>%s %s %s<!>%s%n", SET_TEXT_COLOR_RED, SET_TEXT_COLOR_DEFAULT, message,
             SET_TEXT_COLOR_RED, SET_TEXT_COLOR_DEFAULT);
