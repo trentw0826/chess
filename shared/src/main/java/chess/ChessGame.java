@@ -12,8 +12,6 @@ import java.util.Objects;
  */
 public class ChessGame {
 
-  //TODO Reorganize structure such that 'validMoves' doesn't need to exist
-
   // Identifies the two possible teams
   public enum TeamColor {
     WHITE,
@@ -43,7 +41,8 @@ public class ChessGame {
   public ChessGame(ChessBoard board, TeamColor teamTurn) {
     try {
       this.board = board.clone();
-    } catch (CloneNotSupportedException e) {
+    }
+    catch (CloneNotSupportedException e) {
       throw new RuntimeException(e);
     }
     this.teamTurn = teamTurn;

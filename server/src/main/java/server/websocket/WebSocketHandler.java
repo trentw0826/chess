@@ -173,9 +173,23 @@ public class WebSocketHandler {
 
       if (!gameDao.isGameActive(desiredGameID)) {
         sendError(session, "move not allowed (game inactive)");
+        return;
       }
       else if (!gameDao.usernameIsPlaying(desiredGameID, requestingUsername)) {
         sendError(session, "you are not authorized to make that move!");
+        return;
+      }
+      else {
+        GameData retrievedGame = gameDao.get(desiredGameID);
+        var currTurn = retrievedGame.getGame().getTeamTurn();
+        String whiteUsername = retrievedGame.getWhiteUsername();
+        String blackUsername = retrievedGame.getBlackUsername();
+
+        //TODO simplify this code by combining the PlayerColor and TeamColor enums
+        if ((requestingUsername.equals(whiteUsername) && currTurn != ChessGame.TeamColor.WHITE) ||
+                requestingUsername.equals(blackUsername) && currTurn != ChessGame.TeamColor.BLACK) {
+          sendError(session, "you are not authorized to make that move!");
+        }
       }
 
       gameDao.makeMove(desiredGameID, desiredMove);
